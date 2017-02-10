@@ -50,7 +50,7 @@ public final class Main {
 		Scanner in = new Scanner(System.in);
 		AClass myclass = new AClass();
 		
-		
+		// onödig kommentar
 		while(input != -2) {
 			input = in.nextInt();
 			testFunction(myclass, "myFunction");

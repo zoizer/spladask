@@ -5,7 +5,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import risk.event.InputEvent;
+import risk.event.RiskEvent;
 import risk.general.event.EventManager;
+import risk.general.util.ErrorHandler;
 
 public class UI extends WindowAdapter implements ActionListener {
 	EventManager eventManager;
@@ -16,7 +19,19 @@ public class UI extends WindowAdapter implements ActionListener {
 	
 	 @Override
      public void actionPerformed(ActionEvent e) {
-         f(); // only for exit atm
+		 String cmd = e.getActionCommand();
+		 
+		 if(cmd.equals("Exit")) {
+			 f();
+		 } else if(cmd.equals("New Game")) {
+			 //eventManager.QueueEvent(new InputEvent(0.0f, 0, 0, InputEvent.INPUT_EVENT_NEW_GAME));
+			 EventManager.Get().QueueEvent(new RiskEvent(0.0f, RiskEvent.EVENT_REQUEST_NEW_GAME));
+		 } else {
+			 int i = Integer.parseInt(cmd);
+			 int x = i / 8;
+			 int y = i % 8;
+			 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_MAP_LEFT_CLICK, x, y));
+		 }
      }
      
      public void windowClosing(WindowEvent e) {

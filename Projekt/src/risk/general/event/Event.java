@@ -17,7 +17,7 @@ public class Event implements IEvent {
 	@Override
 	public int GetEventType() {
 		// TODO Auto-generated method stub
-		return 0;
+		return eventType;
 	}
 
 	@Override

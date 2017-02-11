@@ -12,7 +12,9 @@ public final class Main {
 	private Main(){}; // pure static class.
 	
 	public static void main(String[] args) {
-		GameTest gt = new GameTest();
+		//GameTest gt = new GameTest();
+		
+		Game g = new Game();
 		
 		// Game game = new Game();
 		

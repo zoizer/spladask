@@ -8,7 +8,7 @@ public class Game {
 	private GUI gui;
 	private EventManager inputEventManager;
 	
-	
+	// en ny kommentar.
 	public Game() {
 		inputEventManager = new EventManager();
 		ui = new UI(inputEventManager);

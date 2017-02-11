@@ -1,11 +1,11 @@
-package risk.event;
+package risk.general.event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ListIterator;
 
-import risk.util.Delegate;
-import risk.util.ErrorHandler;
+import risk.general.util.Delegate;
+import risk.general.util.ErrorHandler;
 
 public class EventManager implements IEventManager {
 	protected static EventManager eventManager = null;

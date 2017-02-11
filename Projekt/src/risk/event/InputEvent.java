@@ -1,5 +1,7 @@
 package risk.event;
 
+import risk.general.event.Event;
+
 public class InputEvent extends Event {
 	public final static int INPUT_EVENT_MAP_LEFT_CLICK = 1;
 	public final static int INPUT_EVENT_MAP_RIGHT_CLICK = 2;

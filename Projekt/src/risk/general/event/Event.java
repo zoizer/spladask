@@ -1,4 +1,4 @@
-package risk.event;
+package risk.general.event;
 
 public class Event implements IEvent {
 	protected final float timestamp;

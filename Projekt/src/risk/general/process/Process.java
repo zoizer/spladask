@@ -1,6 +1,6 @@
-package risk.process;
+package risk.general.process;
 
-import risk.util.ErrorHandler;
+import risk.general.util.ErrorHandler;
 
 /**
  * The base class of all processes.

@@ -1,6 +1,6 @@
-package risk.event;
+package risk.general.event;
 
-import risk.util.Delegate;
+import risk.general.util.Delegate;
 
 public interface IEventManager {
 	public abstract void AttachListener(Delegate eventdel, int eventType);

@@ -1,4 +1,4 @@
-package risk.event;
+package risk.general.event;
 
 /*public abstract class Event {
 	// see EventManager.h 

@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import risk.event.EventManager;
+import risk.general.event.EventManager;
 
 public class UI extends WindowAdapter implements ActionListener {
 	EventManager eventManager;

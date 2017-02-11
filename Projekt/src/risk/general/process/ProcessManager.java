@@ -1,4 +1,4 @@
-package risk.process;
+package risk.general.process;
 
 import java.util.ArrayList;
 import java.util.Iterator;

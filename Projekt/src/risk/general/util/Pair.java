@@ -1,4 +1,4 @@
-package risk.util;
+package risk.general.util;
 
 public class Pair<Left, Right> {
 	protected final Left left;

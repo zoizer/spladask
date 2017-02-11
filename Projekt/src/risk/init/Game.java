@@ -1,6 +1,6 @@
 package risk.init;
 
-import risk.event.EventManager;
+import risk.general.event.EventManager;
 import risk.ui.*;
 
 public class Game {
@@ -10,6 +10,7 @@ public class Game {
 
 // Test ....
 	public Game() {
+		EventManager.CreateGlobalEventManager();
 		inputEventManager = new EventManager();
 		ui = new UI(inputEventManager);
 		gui = new GUI(ui);

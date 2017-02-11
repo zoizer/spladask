@@ -1,4 +1,4 @@
-package risk.util;
+package risk.general.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

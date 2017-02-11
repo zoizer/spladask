@@ -4,8 +4,8 @@ import java.util.Scanner;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-// test
-import risk.process.*;
+
+import risk.general.process.*;
 import risk.testing.*;
 
 public final class Main {

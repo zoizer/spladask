@@ -9,5 +9,5 @@ public interface IEventManager {
 	public abstract void QueueEvent(IEvent event); // remember thread safety.
 	public abstract void AbortLastEventOfType(int eventType);
 	public abstract void AbortAllOfEvent(int eventType);
-	public abstract void Update(int time);
+	public abstract void Update();
 }

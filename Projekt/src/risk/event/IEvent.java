@@ -9,5 +9,6 @@ package risk.event;
 
 public interface IEvent {
 	public float GetTimeStamp();
+	public int GetEventType();
 	public String ToString();
 }

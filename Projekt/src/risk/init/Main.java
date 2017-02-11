@@ -1,3 +1,4 @@
+package risk.init;
 //import java.io.*;
 import java.util.Scanner;
 import java.lang.reflect.InvocationTargetException;
@@ -11,6 +12,8 @@ public final class Main {
 	private Main(){}; // pure static class.
 	
 	public static void main(String[] args) {
+		GameTest gt = new GameTest();
+		
 		// Game game = new Game();
 		
 		
@@ -46,7 +49,7 @@ public final class Main {
 		//delegateList = new List<>
 		
 		
-		int input = 0;
+		/*int input = 0;
 		Scanner in = new Scanner(System.in);
 		AClass myclass = new AClass();
 		
@@ -58,11 +61,11 @@ public final class Main {
 		}
 		
 		
-		in.close();
+		in.close();*/
 		
 	}
 	
-	public static void testFunction(Object obj, String func) {
+	/*public static void testFunction(Object obj, String func) {
 		Method method;
 		try {
 			method = obj.getClass().getMethod(func);
@@ -71,5 +74,5 @@ public final class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} // Comment Test
-	}
+	}*/
 }

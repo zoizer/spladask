@@ -3,6 +3,7 @@ package risk.event;
 import risk.general.event.EventManager;
 import risk.general.event.IEvent;
 import risk.general.util.Delegate;
+import risk.general.util.ErrorHandler;
 
 public class InputEventManager extends EventManager {
 	public InputEventManager() {
@@ -11,7 +12,8 @@ public class InputEventManager extends EventManager {
 	
 	
 	public void clickTest(IEvent event) {
-		System.out.println("CLICK TEST ACTIVATED.");
+		ErrorHandler.ASSERT(event instanceof InputEvent);
+		System.out.println("Column: " + ((InputEvent)event).GetDataX() + ", Row: " + ((InputEvent)event).GetDataY());
 	}
 	
 }

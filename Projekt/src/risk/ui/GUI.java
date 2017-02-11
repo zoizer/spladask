@@ -3,6 +3,11 @@ package risk.ui;
 import java.awt.*;
 import javax.swing.*;
 
+import risk.event.RiskEvent;
+import risk.general.event.EventManager;
+import risk.general.event.IEvent;
+import risk.general.util.Delegate;
+
 public class GUI extends JFrame {
 	private UI ui;
 	private JMenuBar MenuBar = new JMenuBar();
@@ -21,13 +26,22 @@ public class GUI extends JFrame {
         setLocation(100, 100);
         pack();
         setVisible(true);
+        
+        AttachListeners();
+    }
+    
+    private void AttachListeners() {
+    	EventManager.Get().AttachListener(new Delegate(this, "StartMap"), RiskEvent.EVENT_NEW_GAME);
+    	////
+    	//// add more later.
+    	////
     }
     
     public void ChangeUI(UI ui) {
     	this.ui = ui;
     }
 
-    public void StartMap() {
+    public void StartMap(IEvent event) {
     	InitGrid();
     	pack();
     	setVisible(true);

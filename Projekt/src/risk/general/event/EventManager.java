@@ -1,18 +1,27 @@
 package risk.general.event;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import risk.general.util.Delegate;
 import risk.general.util.ErrorHandler;
 
 public class EventManager implements IEventManager {
 	protected static EventManager eventManager = null;
-	private Map<Integer, ArrayList<Delegate>> listeners; // Integer is EventType, ArrayList<Delegate> is listeners.
-	private List<IEvent> eventQueue; // Event queue, containing the Event interface.
+	private Map<Integer, List<Delegate>> listeners; // Integer is EventType, ArrayList<Delegate> is listeners.
+	//private List<IEvent> eventQueue; // Event queue, containing the Event interface.
+	private EventQueue[] eventQueues; // REMEMBER THIS IS NOT SYNCHRONIZED LIKE BEFORE.
+	private final int queueCount;
+	private int writingQueue; // also know as active queue, but writing queue is more clear, since the queue you're reading from (and clearing) could also be called active.
 	
 	public EventManager() {
-		listeners = Collections.synchronizedMap(new HashMap<Integer, ArrayList<Delegate>>());
-		eventQueue = Collections.synchronizedList(new ArrayList<IEvent>());
+		listeners = Collections.synchronizedMap(new ConcurrentHashMap<Integer, List<Delegate>>());
+		//eventQueue = Collections.synchronizedList(new ArrayList<IEvent>());
+		queueCount = 2;
+		writingQueue = 0;
+		eventQueues = new EventQueue[queueCount];
+		eventQueues[0] = new EventQueue(); 
+		eventQueues[1] = new EventQueue();
 	}
 	
 	public static final void CreateGlobalEventManager() {
@@ -28,9 +37,9 @@ public class EventManager implements IEventManager {
 	@Override
 	public void AttachListener(Delegate listener, int eventType) {
 		synchronized(listeners) {
-			ArrayList<Delegate> delegates = listeners.get(eventType);
+			List<Delegate> delegates = listeners.get(eventType);
 			if(delegates == null) { // list of listeners not found
-				delegates = new ArrayList<Delegate>();
+				delegates = Collections.synchronizedList(new ArrayList<Delegate>());
 				listeners.put(eventType, delegates);
 			} else if(delegates.contains(listener)) { // list of listeners should now exist.
 				ErrorHandler.WARNING("Double registering of listeners for eventType: " + eventType); // is the listener already registered?
@@ -44,7 +53,7 @@ public class EventManager implements IEventManager {
 	@Override
 	public void DetachListener(Delegate listener, int eventType) {
 		synchronized(listeners) {
-			ArrayList<Delegate> delegates = listeners.get(eventType);
+			List<Delegate> delegates = listeners.get(eventType);
 			if(delegates == null || !delegates.remove(listener)) { // list of listeners not found
 				ErrorHandler.WARNING("Tried to unregister a non-existing listener of type: " + eventType);
 				return;
@@ -56,7 +65,7 @@ public class EventManager implements IEventManager {
 	public void TriggerEvent(IEvent event) {
 		boolean wasHandled = false;
 		synchronized(listeners) {
-			ArrayList<Delegate> delegates = listeners.get(event.GetEventType());
+			List<Delegate> delegates = listeners.get(event.GetEventType());
 			if(delegates != null) {
 				for(Delegate d : delegates) {
 					d.Execute(new Object[] {event});
@@ -70,15 +79,15 @@ public class EventManager implements IEventManager {
 
 	@Override
 	public void QueueEvent(IEvent event) {
-		synchronized(eventQueue) {
-			eventQueue.add(event);
+		synchronized(eventQueues[writingQueue]) {
+			eventQueues[writingQueue].add(event);
 		}
 	}
 
 	@Override
 	public void AbortLastEventOfType(int eventType) {
-		synchronized(eventQueue) {
-			ListIterator<IEvent> li = eventQueue.listIterator(eventQueue.size());
+		synchronized(eventQueues[writingQueue]) {
+			ListIterator<IEvent> li = eventQueues[writingQueue].listIterator(eventQueues[writingQueue].size());
 			while(li.hasPrevious()) {
 				IEvent e = li.previous();
 				if(e.GetEventType() == eventType) {
@@ -93,8 +102,8 @@ public class EventManager implements IEventManager {
 
 	@Override
 	public void AbortAllOfEvent(int eventType) {
-		synchronized(eventQueue) {
-			ListIterator<IEvent> it = eventQueue.listIterator();
+		synchronized(eventQueues[writingQueue]) {
+			ListIterator<IEvent> it = eventQueues[writingQueue].listIterator();
 			while(it.hasNext()) {
 				IEvent event = it.next();
 				if(event.GetEventType() == eventType) it.remove();
@@ -102,16 +111,21 @@ public class EventManager implements IEventManager {
 		}
 	}
 
+	// TWO QUEUES ARE NECESSARY!!! DAMN
 	@Override
 	public void Update() {
-		synchronized(eventQueue) {
-			ListIterator<IEvent> it = eventQueue.listIterator();
+		final int updateQueue = writingQueue;
+		if(writingQueue == (queueCount - 1)) writingQueue = 0;
+		else ++writingQueue;
+		
+		synchronized(eventQueues[updateQueue]) {
+			ListIterator<IEvent> it = eventQueues[updateQueue].listIterator();
 			while(it.hasNext()) {
 				IEvent event = it.next();
 				
 				// Execute the events.
 				synchronized(listeners) {
-					ArrayList<Delegate> delegates = listeners.get(event.GetEventType());
+					List<Delegate> delegates = listeners.get(event.GetEventType());
 					if(delegates != null) 
 						for(Delegate d : delegates) 
 							d.Execute(new Object[] {event});

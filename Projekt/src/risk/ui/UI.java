@@ -24,8 +24,7 @@ public class UI extends WindowAdapter implements ActionListener {
 		 if(cmd.equals("Exit")) {
 			 f();
 		 } else if(cmd.equals("New Game")) {
-			 //eventManager.QueueEvent(new InputEvent(0.0f, 0, 0, InputEvent.INPUT_EVENT_NEW_GAME));
-			 EventManager.Get().QueueEvent(new RiskEvent(0.0f, RiskEvent.EVENT_REQUEST_NEW_GAME));
+			 EventManager.Get().QueueEvent(new RiskEvent(0.0f, RiskEvent.EVENT_NEW_GAME_REQUEST));
 		 } else {
 			 int i = Integer.parseInt(cmd);
 			 int x = i / 8;

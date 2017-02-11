@@ -13,6 +13,8 @@ public class Game {
 		inputEventManager = new EventManager();
 		ui = new UI(inputEventManager);
 		gui = new GUI(ui);
+		
+		// onödig kommentar för test
 	}
 	
 	

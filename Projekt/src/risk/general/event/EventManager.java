@@ -9,14 +9,12 @@ import risk.general.util.ErrorHandler;
 public class EventManager implements IEventManager {
 	protected static EventManager eventManager = null;
 	private Map<Integer, List<Delegate>> listeners; // Integer is EventType, ArrayList<Delegate> is listeners.
-	//private List<IEvent> eventQueue; // Event queue, containing the Event interface.
 	private EventQueue[] eventQueues; // REMEMBER THIS IS NOT SYNCHRONIZED LIKE BEFORE.
 	private final int queueCount;
 	private int writingQueue; // also know as active queue, but writing queue is more clear, since the queue you're reading from (and clearing) could also be called active.
 	
 	public EventManager() {
 		listeners = Collections.synchronizedMap(new ConcurrentHashMap<Integer, List<Delegate>>());
-		//eventQueue = Collections.synchronizedList(new ArrayList<IEvent>());
 		queueCount = 2;
 		writingQueue = 0;
 		eventQueues = new EventQueue[queueCount];
@@ -111,7 +109,6 @@ public class EventManager implements IEventManager {
 		}
 	}
 
-	// TWO QUEUES ARE NECESSARY!!! DAMN
 	@Override
 	public void Update() {
 		final int updateQueue = writingQueue;

@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
+import risk.game.Game;
 import risk.general.process.*;
 import risk.testing.*;
 

@@ -27,8 +27,8 @@ public class UI extends WindowAdapter implements ActionListener {
 			 EventManager.Get().QueueEvent(new RiskEvent(0.0f, RiskEvent.EVENT_NEW_GAME_REQUEST));
 		 } else {
 			 int i = Integer.parseInt(cmd);
-			 int x = i / 8;
-			 int y = i % 8;
+			 int x = i % 8;
+			 int y = i / 8;
 			 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_MAP_LEFT_CLICK, x, y));
 		 }
      }

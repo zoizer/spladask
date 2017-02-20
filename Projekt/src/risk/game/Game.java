@@ -1,13 +1,9 @@
-package risk.init;
+package risk.game;
 
-import risk.event.InputEventManager;
 import risk.event.RiskEvent;
-import risk.gameview.GameView;
 import risk.gameview.PlayerGameView;
-import risk.general.event.EventManager;
-import risk.general.event.IEvent;
+import risk.general.event.*;
 import risk.general.util.Delegate;
-import risk.ui.*;
 
 public class Game {
 	private PlayerGameView pgv;
@@ -15,9 +11,7 @@ public class Game {
 // Test ....
 	public Game() {
 		EventManager.CreateGlobalEventManager();
-		pgv = new PlayerGameView(1, GameView.GAME_VIEW_TYPE_PLAYER);
-		
-		// om PGV tar hand om både ui och gui kanske man kan få spelet att spela mot datorer utan fönster.
+		pgv = new PlayerGameView(1);
 
 		AttachListeners();
 		InitGame();
@@ -28,6 +22,14 @@ public class Game {
 		}
 	}
 	
+	/*
+	 * HUR SKA GRAFIKEN BINDAS?
+	 * 
+	 * Genom event självklart!
+	 * Vid start: EVENT_NEW_ZONE (x,y,owner) etc.
+	 * Vid click på zone: någon form av GET event kanske?
+	 * 
+	 */
 	
 	private void AttachListeners() {
 		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME_REQUEST);
@@ -41,8 +43,6 @@ public class Game {
 	}
 	
 	public void RequestNewGame(IEvent event) {
-		//gui.StartMap();
-		
 		if(event.GetEventType() == RiskEvent.EVENT_NEW_GAME_REQUEST) { // Allow the request.
 			EventManager.Get().QueueEvent(new RiskEvent(0.0f, RiskEvent.EVENT_NEW_GAME_PRE));
 		} else if (event.GetEventType() == RiskEvent.EVENT_NEW_GAME_PRE) { // Queue the next event.
@@ -50,7 +50,7 @@ public class Game {
 		} else if (event.GetEventType() == RiskEvent.EVENT_NEW_GAME) {
 			EventManager.Get().QueueEvent(new RiskEvent(0.0f, RiskEvent.EVENT_NEW_GAME_POST));
 		} else if (event.GetEventType() == RiskEvent.EVENT_NEW_GAME_POST) {
-			// Do nothing.
+			// The new game have been created.
 		}
 	}
 	

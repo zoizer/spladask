@@ -10,9 +10,8 @@ public class PlayerGameView extends GameView {
 	private GUI gui;
 	private EventManager inputEventManager;
 
-	public PlayerGameView(int id, int type) {
-		super(id, type);
-		// TODO Auto-generated constructor stub
+	public PlayerGameView(int id) {
+		super(id, GameView.GAME_VIEW_TYPE_PLAYER);
 		inputEventManager = new InputEventManager();
 		ui = new UI(inputEventManager);
 		gui = new GUI(ui);

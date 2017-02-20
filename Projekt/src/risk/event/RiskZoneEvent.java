@@ -3,10 +3,12 @@ package risk.event;
 import risk.game.Zone;
 
 public class RiskZoneEvent extends RiskEvent {
-
-	public RiskZoneEvent(float timestamp, int eventType) {
+	public final static int ZONE_EVENT_ID = 2000;
+	public final static int EVENT_NEW_ZONE = 1 + ZONE_EVENT_ID;
+	
+	public RiskZoneEvent(float timestamp, int eventType, Zone dst) {
 		super(timestamp, eventType);
-		// TODO Auto-generated constructor stub
+		this.dst = dst;
 	}
 
 	public Zone GetDst() {

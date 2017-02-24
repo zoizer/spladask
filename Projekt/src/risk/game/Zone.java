@@ -1,9 +1,10 @@
 package risk.game;
 
 public class Zone {
-	private final int x;
-	private final int y;
+	private final int uniqueID;
 	private final int production;
+	Polygon outline;
+	ArrayList<int> neighbours;
 	
 	private int ownerid;
 	

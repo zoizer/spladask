@@ -1,5 +1,10 @@
 package risk.resources;
 
-public class Continent {
-
+public enum Continent {
+	NORTHAMERICA,
+	SOUTHAMERICA,
+	EUROPE,
+	AFRICA,
+	ASIA,
+	AUSTRALIA;
 }

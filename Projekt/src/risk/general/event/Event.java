@@ -1,4 +1,4 @@
-package risk.event;
+package risk.general.event;
 
 public class Event implements IEvent {
 	protected final float timestamp;
@@ -17,7 +17,7 @@ public class Event implements IEvent {
 	@Override
 	public int GetEventType() {
 		// TODO Auto-generated method stub
-		return 0;
+		return eventType;
 	}
 
 	@Override

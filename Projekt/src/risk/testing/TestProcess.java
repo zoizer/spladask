@@ -1,6 +1,6 @@
 package risk.testing;
 
-import risk.process.Process;
+import risk.general.process.Process;
 
 public class TestProcess extends Process {
 	int counter;

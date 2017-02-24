@@ -1,4 +1,4 @@
-package risk.util;
+package risk.general.util;
 
 public final class ErrorHandler {
 	private ErrorHandler() {}

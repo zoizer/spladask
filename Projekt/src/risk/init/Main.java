@@ -4,15 +4,18 @@ import java.util.Scanner;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-// test
-import risk.process.*;
+
+import risk.game.Game;
+import risk.general.process.*;
 import risk.testing.*;
 
 public final class Main {
 	private Main(){}; // pure static class.
 	
 	public static void main(String[] args) {
-		GameTest gt = new GameTest();
+		//GameTest gt = new GameTest();
+		
+		Game g = new Game();
 		
 		// Game game = new Game();
 		

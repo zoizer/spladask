@@ -1,3 +1,5 @@
+package risk.ui;
+
 import javax.swing.JComponent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;

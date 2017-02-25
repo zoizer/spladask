@@ -9,8 +9,8 @@ public class StateManager {
 	}
 	
 	public static GameState gameState = GameState.MAINMENU;
-	public static MainMenu mainMenu;
-	public static Game game;
+	//public static MainMenu mainMenu;
+	//public static Game game;
 	public static Editor editor;
 
 	public static void update(String s) {
@@ -23,7 +23,7 @@ public class StateManager {
 		case MAINMENU:
 			javax.swing.SwingUtilities.invokeLater(new Runnable() {
 	            public void run() {
-	                MainMenu.createAndShowGUI();
+	                //MainMenu.createAndShowGUI();
 	            }
 	        });
 			break;

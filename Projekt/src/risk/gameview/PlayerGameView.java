@@ -2,8 +2,7 @@ package risk.gameview;
 
 import risk.event.InputEventManager;
 import risk.general.event.EventManager;
-import risk.ui.GUI;
-import risk.ui.UI;
+import risk.ui.*;
 
 public class PlayerGameView extends GameView {
 	private UI ui;

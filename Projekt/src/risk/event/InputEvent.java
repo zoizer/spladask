@@ -3,18 +3,16 @@ package risk.event;
 import risk.general.event.Event;
 
 public class InputEvent extends Event {
-	public final static int INPUT_EVENT_MAP_LEFT_CLICK = 1;
-	public final static int INPUT_EVENT_MAP_RIGHT_CLICK = 2;
+	public final static int INPUT_EVENT_ZONE_LEFT_CLICK = 1; // zone id
+	public final static int INPUT_EVENT_ZONE_RIGHT_CLICK = 2; // zone id
 	public final static int INPUT_EVENT_NEW_GAME = 3;
-	private int datax;
-	private int datay;
+	public final static int INPUT_EVENT_QUIT = 4; // Error code
+	private int data;
 	
-	public InputEvent(float timestamp, int eventType, int datax, int datay) {
+	public InputEvent(float timestamp, int eventType, int data) {
 		super(timestamp, eventType);
-		this.datax = datax;
-		this.datay = datay;
+		this.data = data;
 	}
 	
-	public int GetDataX() { return datax; }
-	public int GetDataY() { return datay; }
+	public int GetData() { return data; }
 }

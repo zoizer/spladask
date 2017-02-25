@@ -32,7 +32,6 @@ public class Game {
 	 */
 	
 	private void AttachListeners() {
-		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME_REQUEST);
 		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME_PRE);
 		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME);
 		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME_POST);
@@ -43,9 +42,7 @@ public class Game {
 	}
 	
 	public void RequestNewGame(IEvent event) {
-		if(event.GetEventType() == RiskEvent.EVENT_NEW_GAME_REQUEST) { // Allow the request.
-			EventManager.Get().QueueEvent(new RiskEvent(0.0f, RiskEvent.EVENT_NEW_GAME_PRE));
-		} else if (event.GetEventType() == RiskEvent.EVENT_NEW_GAME_PRE) { // Queue the next event.
+		if (event.GetEventType() == RiskEvent.EVENT_NEW_GAME_PRE) { // Queue the next event.
 			EventManager.Get().QueueEvent(new RiskEvent(0.0f, RiskEvent.EVENT_NEW_GAME));
 		} else if (event.GetEventType() == RiskEvent.EVENT_NEW_GAME) {
 			EventManager.Get().QueueEvent(new RiskEvent(0.0f, RiskEvent.EVENT_NEW_GAME_POST));

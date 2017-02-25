@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import risk.event.InputEvent;
 import risk.event.RiskEvent;
 import risk.general.event.EventManager;
+import risk.general.util.Delegate;
 import risk.general.util.ErrorHandler;
 
 public class UI extends WindowAdapter implements ActionListener {
@@ -16,29 +17,28 @@ public class UI extends WindowAdapter implements ActionListener {
 	
 	public UI(EventManager eventManager) {
 		this.eventManager = eventManager;
+		
+		// Attach Listeners //
+		eventManager.AttachListener(new Delegate(this, "Quit"), InputEvent.INPUT_EVENT_NEW_GAME);
 	}
 	
 	 @Override
      public void actionPerformed(ActionEvent e) {
 		 String cmd = e.getActionCommand();
 		 
-		 if(cmd.equals("Exit")) {
-			 f();
-		 } else if(cmd.equals("New Game")) {
-			 EventManager.Get().QueueEvent(new RiskEvent(0.0f, RiskEvent.EVENT_NEW_GAME_REQUEST));
-		 } else {
-			 int i = Integer.parseInt(cmd);
-			 int x = i % 8;
-			 int y = i / 8;
-			 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_MAP_LEFT_CLICK, x, y));
-		 }
+		 if(cmd.equals("Exit"))
+			 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_QUIT, 0));
+		 else if(cmd.equals("New Game"))
+			 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_NEW_GAME, 0));
+		 else
+			 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_ZONE_LEFT_CLICK, Integer.parseInt(cmd)));
      }
      
      public void windowClosing(WindowEvent e) {
-     	f();
+     	Quit(0);
      }
      
-     public void f() {
+     public void Quit(int x) {
      	/*int confirm = JOptionPane.showOptionDialog(null,
                  "Are You Sure to Close this Application?",
                  "Exit Confirmation", JOptionPane.YES_NO_OPTION,
@@ -46,6 +46,6 @@ public class UI extends WindowAdapter implements ActionListener {
          if (confirm == JOptionPane.YES_OPTION) {
              System.exit(0);
          }*/
-     	System.exit(0);
+     	System.exit(x);
      }
 }

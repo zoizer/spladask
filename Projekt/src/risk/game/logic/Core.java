@@ -45,8 +45,21 @@ public final class Core {
 
 	//////// Zones
 	private Map<Integer, Zone> zones;
+	private int selectedZone = 0;
 	
 	public Zone GetZone(int id) {
 		return zones.get(id);
+	}
+	
+	public int GetSelectedZoneID() {
+		return selectedZone;
+	}
+	
+	public void SelectZone(int id) {
+		selectedZone = id;
+	}
+	
+	public boolean ZoneExists(int id) {
+		return zones.containsKey(id);
 	}
 }

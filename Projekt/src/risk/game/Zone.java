@@ -10,26 +10,20 @@ public class Zone {
 	
 	private int ownerid;
 	
-	public Zone(int x, int y, int production) {
-		//this.x = x;
-		//this.y = y;
-		uniqueID = 0;
+	public Zone(int uniqueID, int production) {
+		this.uniqueID = uniqueID;
 		this.production = production;
 		ownerid = 0;
 	}
 	
+	public Zone(int uniqueID, int production, int ownerID) {
+		this.uniqueID = uniqueID;
+		this.production = production;
+		this.ownerid = ownerID;
+	}
+	
 	public void setOwner(int ownerid) {
 		this.ownerid = ownerid;
-	}
-	
-	public int GetX() {
-		//return x;
-		return 0;
-	}
-	
-	public int GetY() {
-		//return y;
-		return 0;
 	}
 	
 	public int GetID() {

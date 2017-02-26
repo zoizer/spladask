@@ -1,14 +1,12 @@
 package risk.ui;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import risk.event.InputEvent;
-import risk.event.RiskEvent;
-import risk.general.event.EventManager;
+import risk.event.*;
+import risk.general.event.*;
 import risk.general.util.Delegate;
 import risk.general.util.ErrorHandler;
 
@@ -19,7 +17,7 @@ public class UI extends WindowAdapter implements ActionListener {
 		this.eventManager = eventManager;
 		
 		// Attach Listeners //
-		eventManager.AttachListener(new Delegate(this, "Quit"), InputEvent.INPUT_EVENT_NEW_GAME);
+		eventManager.AttachListener(new Delegate(this, "Quit"), InputEvent.INPUT_EVENT_QUIT);
 	}
 	
 	 @Override
@@ -35,10 +33,10 @@ public class UI extends WindowAdapter implements ActionListener {
      }
      
      public void windowClosing(WindowEvent e) {
-     	Quit(0);
+     	Quit(null);
      }
      
-     public void Quit(int x) {
+     public void Quit(IEvent event) {
      	/*int confirm = JOptionPane.showOptionDialog(null,
                  "Are You Sure to Close this Application?",
                  "Exit Confirmation", JOptionPane.YES_NO_OPTION,
@@ -46,6 +44,8 @@ public class UI extends WindowAdapter implements ActionListener {
          if (confirm == JOptionPane.YES_OPTION) {
              System.exit(0);
          }*/
-     	System.exit(x);
+    	if(event != null && event instanceof InputEvent) {
+			System.exit(((InputEvent)event).GetData());
+    	} else System.exit(0);
      }
 }

@@ -49,7 +49,7 @@ public class WorldMapInit  {
         PolygonButton nwBtn = new PolygonButton(nw, "northwest");
         f.getContentPane().add(nwBtn);
         
-        Polygon greenland = new Polygon();
+        Polygon greenland = new Polygon(); // tanken är att alla dessa ska tas bort efter att dom har lagts in som objekt i zones.txt
         greenland.addPoint(500, 2);
         greenland.addPoint(538, 35);
         greenland.addPoint(500,109);

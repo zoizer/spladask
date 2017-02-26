@@ -40,7 +40,7 @@ public class GameTest extends JFrame {
         InitGrid();
         addWindowListener(windowListener);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //setPreferredSize(new Dimension(400, 300));
+	setSize(1000,1000);
         setLocation(100, 100);
         pack();
         setVisible(true);

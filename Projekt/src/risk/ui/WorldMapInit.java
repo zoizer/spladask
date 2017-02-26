@@ -1,3 +1,5 @@
+package risk.ui;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -123,9 +125,9 @@ public class WorldMapInit  {
         out.writeObject(centralBtn);
         
         ObjectInputStream in = new ObjectInputStream(new FileInputStream("zones.txt")); 
-        for(PolygonButton btn : in){ // vill kunna loopa igenom alla objekt här
-            f.getContentPane().add(btn);
-        }
+        //for(PolygonButton btn : in){ // vill kunna loopa igenom alla objekt här
+        //    f.getContentPane().add(btn); // KOMPILERAR EJ
+        //}
         
         //SOUTH AMERICA
         Polygon sa1 = new Polygon();

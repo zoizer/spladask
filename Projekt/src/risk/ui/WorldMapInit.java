@@ -110,6 +110,7 @@ public class WorldMapInit  {
         PolygonButton eastUSBtn = new PolygonButton(eastUS, "eastUS");
         f.getContentPane().add(eastUSBtn);
         
+        /*
         Polygon central = new Polygon();
         central.addPoint(267,418);
         central.addPoint(188,365);  
@@ -123,11 +124,15 @@ public class WorldMapInit  {
         
         ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("zones.txt"));
         out.writeObject(centralBtn);
+        */
         
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream("zones.txt")); 
-        //for(PolygonButton btn : in){ // vill kunna loopa igenom alla objekt här
-        //    f.getContentPane().add(btn); // KOMPILERAR EJ
-        //}
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream("zones.txt")); //centralamerika finns inne än så länge
+        for(int i=0; i<1; i++){
+            Object object = in.readObject();
+            if (object != null) {
+                f.getContentPane().add((PolygonButton) object);
+            }
+        }
         
         //SOUTH AMERICA
         Polygon sa1 = new Polygon();

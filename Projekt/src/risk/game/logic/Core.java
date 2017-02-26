@@ -9,7 +9,7 @@ import risk.game.*;
 
 public final class Core {
 	private static Core core = new Core();
-	public Core Get() { return core; }
+	public static Core Get() { return core; }
 	private Core() {
 		views = new HashMap<Integer, GameView>();
 		zones = new HashMap<Integer, Zone>();

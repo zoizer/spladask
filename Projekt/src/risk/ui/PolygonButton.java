@@ -1,5 +1,3 @@
-package risk.ui;
-
 import javax.swing.JComponent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -80,6 +78,7 @@ class PolygonButton extends JComponent implements MouseListener,
   }
 
   public void mouseClicked(MouseEvent e) {
+      System.out.println("click!");
   }
 
   public void mousePressed(MouseEvent e) {

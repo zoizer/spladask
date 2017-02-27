@@ -4,6 +4,7 @@ import risk.event.RiskEvent;
 import risk.gameview.PlayerGameView;
 import risk.general.event.*;
 import risk.general.util.Delegate;
+import risk.ui.*;
 
 public class Game {
 	private PlayerGameView pgv;
@@ -15,6 +16,7 @@ public class Game {
 
 		AttachListeners();
 		InitGame();
+		WorldMapInit(); // initierar mappen och knapparna
 
 		while(true) {
 			pgv.Update();
@@ -25,9 +27,9 @@ public class Game {
 	/*
 	 * HUR SKA GRAFIKEN BINDAS?
 	 * 
-	 * Genom event sj‰lvklart!
+	 * Genom event sj√§lvklart!
 	 * Vid start: EVENT_NEW_ZONE (x,y,owner) etc.
-	 * Vid click pÂ zone: nÂgon form av GET event kanske?
+	 * Vid click p√• zone: n√•gon form av GET event kanske?
 	 * 
 	 */
 	

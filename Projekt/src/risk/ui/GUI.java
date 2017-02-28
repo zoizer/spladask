@@ -64,26 +64,10 @@ public class GUI extends JFrame {
 			
 			
 			// Add btns here.
-			/*Polygon nw = new Polygon();
-	        nw.addPoint(84, 51);
-	        nw.addPoint(191, 83);
-	        nw.addPoint(215,53);
-	        nw.addPoint(287,113);
-	        nw.addPoint(312, 127);
-	        nw.addPoint(96,128);
-			cp.attachBtn(new ZoneButton(nw, "A zone.", 1, 3));*/
-			Polygon brazil = new Polygon();
-	        brazil.addPoint(378,451);
-	        brazil.addPoint(428,475);
-	        brazil.addPoint(415,538);
-	        brazil.addPoint(392,542);
-	        brazil.addPoint(382,559);
-	        brazil.addPoint(313,469);
 	        
 			FileInputStream fileIn = new FileInputStream(event.ToString() + ".gui");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			cp.attachBtns((ArrayList<ZoneButton>)in.readObject());
-	        cp.attachBtn(new ZoneButton(brazil, "brazil", 99, 2));
 			
 			this.setContentPane(cp);
 	    	pack();

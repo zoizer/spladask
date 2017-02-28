@@ -57,8 +57,8 @@ public class ZoneButton implements Serializable {
 		g.setColor(new Color(1.0f, 0.0f, 0.0f, 1.0f));
 		g.drawPolygon(area);
 		
-		DrawOutline(g);
-		DrawCenter(g);
+		//DrawOutline(g);
+		//DrawCenter(g);
 		DrawText(g);
 	
 	}
@@ -83,14 +83,21 @@ public class ZoneButton implements Serializable {
 	private void DrawText(Graphics g) { // TODO: CHANGE FUNCTION TO WRITE MULTIPLE LINES INSTEAD OF ONE MESS.
 		// TODO: ADD TRANSPARANT DARK (or bright) BOX BEHIND TEXT TO MAKE IT EASIER TO READ.
 		g.setColor(new Color(0.0f, 0.0f, 0.0f, 1.0f));
-		Font font = g.getFont();
+		Font oldfont = g.getFont();
+		Font font = oldfont.deriveFont(Font.BOLD);
+		g.setFont(font);
 		FontMetrics metrics = g.getFontMetrics(font);
+		
+		int j = (metrics.getHeight() - 2 * metrics.getAscent());
+		int i = msg.size();
 		
 		for(String str : msg) {
 		    int x = (outline.width - metrics.stringWidth(str)) / 2;
-		    int y = ((outline.height - metrics.getHeight()) / 2) + metrics.getAscent();
+		    int y = ((outline.height - (metrics.getHeight() + 6) * i--) / 2) + metrics.getAscent();
 		    g.setFont(font);
 		    g.drawString(str, x + outline.x, y + outline.y);
 		}
+		
+		g.setFont(oldfont);
 	}
 }

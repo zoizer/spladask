@@ -5,6 +5,7 @@ import risk.gameview.PlayerGameView;
 import risk.general.event.*;
 import risk.general.util.Delegate;
 import risk.ui.*;
+import risk.general.util.*;
 
 public class Game {
 	private PlayerGameView pgv;
@@ -16,7 +17,12 @@ public class Game {
 
 		AttachListeners();
 		InitGame();
-		WorldMapInit(); // initierar mappen och knapparna
+		try {
+			WorldMapInit graphics = new WorldMapInit(); // initierar mappen och knapparna
+		} catch(Exception e) {
+			e.printStackTrace();
+			ErrorHandler.ASSERT(false);
+		}
 
 		while(true) {
 			pgv.Update();

@@ -1,15 +1,11 @@
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
+package risk.ui;
+
+import javax.swing.*;
 import java.io.*;
 import javax.imageio.*;
-import java.awt.Polygon;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
 import java.util.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class WorldMapInit  {
     JFrame f = new JFrame();
@@ -125,14 +121,14 @@ public class WorldMapInit  {
         //ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("zones.txt"));
         //out.writeObject(centralBtn);
         
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream("zones.txt")); 
+        /*ObjectInputStream in = new ObjectInputStream(new FileInputStream("zones.txt")); 
         
         for(int i=0; i<1; i++){
             Object object = in.readObject();
             if (object != null) {
                 f.getContentPane().add((PolygonButton) object);
             }
-        }
+        }*/
         
         
         //SOUTH AMERICA

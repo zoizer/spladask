@@ -1,23 +1,17 @@
 package risk.ui;
 
-
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import risk.event.RiskEvent;
 import risk.event.RiskGameEvent;
 import risk.general.event.EventManager;
 import risk.general.event.IEvent;
 import risk.general.util.Delegate;
-
 import risk.ui.CustomPanel;
 
 public class GUI extends JFrame {
@@ -27,27 +21,20 @@ public class GUI extends JFrame {
     private JMenuItem newGame = new JMenuItem("New Game");
     private JMenuItem Exit = new JMenuItem("Exit");
     private JMenuItem newMap = new JMenuItem("Create and Store new Map");
-    private JButton[] grid = new JButton[64];
     
     public GUI(UI ui) {
     	this.ui = ui;
         InitMenu(ui);
-        //InitGrid();
         addWindowListener(ui);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //setPreferredSize(new Dimension(400, 300));
         setLocation(100, 100);
         pack();
         setVisible(true);
-        
         AttachListeners();
     }
     
     private void AttachListeners() {
     	EventManager.Get().AttachListener(new Delegate(this, "StartMap"), RiskGameEvent.EVENT_NEW_GAME);
-    	////
-    	//// add more later.
-    	////
     }
     
     public void ChangeUI(UI ui) {
@@ -60,10 +47,6 @@ public class GUI extends JFrame {
 		try {
 			bi = ImageIO.read(new File(event.ToString() + ".png"));
 			cp = new CustomPanel(bi);
-			
-			
-			
-			// Add btns here.
 	        
 			FileInputStream fileIn = new FileInputStream(event.ToString() + ".gui");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -88,21 +71,4 @@ public class GUI extends JFrame {
         MenuBar.add(File);
         setJMenuBar(MenuBar);
     }
-    
-   /* private void InitGrid() {
-    	Container cont = this.getContentPane();
-    	cont.removeAll();
-    	cont.setLayout(new GridLayout(8,8,3,3));
-    	for (int i = 0; i < 64; i++) {
-    		grid[i] = new JButton("" + i);
-    		grid[i].setPreferredSize(new Dimension(50,50));
-    		grid[i].setBackground(Color.GREEN);
-    		//grid[i].setOpaque(true);
-    		grid[i].addActionListener(ui);
-    		cont.add(grid[i]);
-    	}
-    	
-    	grid[10].setText("5");
-    }*/
-    
 }

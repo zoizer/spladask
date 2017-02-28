@@ -1,9 +1,9 @@
 package risk.resources;
-import java.util.ArrayList;
 
 public abstract class Player {
-
-	//player-var
+//TODO DELETE ME.
+	
+	/*//player-var
 	private int nrOfSoldiers;
 	private int nrOfTerritories;
 	private int playerID;
@@ -60,7 +60,7 @@ public abstract class Player {
    
    
    // TO-DO(Torsdag kväll)
-
+*/
    /*
     * add territory
     * lose territory

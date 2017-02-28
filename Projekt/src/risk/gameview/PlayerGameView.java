@@ -6,6 +6,7 @@ import risk.ui.*;
 
 public class PlayerGameView extends GameView {
 	private UI ui;
+	@SuppressWarnings("unused") // GUI and UI can merge, or UI can own GUI. Prefer the latter.
 	private GUI gui;
 	private EventManager inputEventManager;
 

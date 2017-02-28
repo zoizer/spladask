@@ -1,7 +1,5 @@
 package risk.event;
 
-import risk.game.Zone;
-
 public class RiskGameEvent extends RiskEvent {
 	public final static int EVENT_ID = 5000;
 	public final static int EVENT_NEW_GAME = 1 + EVENT_ID;

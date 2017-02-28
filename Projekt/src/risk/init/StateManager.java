@@ -13,6 +13,7 @@ public class StateManager {
 	//public static Game game;
 	//public static Editor editor;
 
+	@SuppressWarnings("unused")
 	public static void update(String s) {
 		if (s == "Meny"){
 			gameState = GameState.MAINMENU;

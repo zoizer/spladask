@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class GameTest extends JFrame {
+	private static final long serialVersionUID = 7243286800500795329L;
 
 	private class WindowListener extends WindowAdapter implements ActionListener {
 

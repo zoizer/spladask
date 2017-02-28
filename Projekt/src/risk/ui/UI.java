@@ -8,7 +8,6 @@ import java.awt.event.WindowEvent;
 import risk.event.*;
 import risk.general.event.*;
 import risk.general.util.Delegate;
-import risk.general.util.ErrorHandler;
 import risk.testing.Editor;
 
 public class UI extends WindowAdapter implements ActionListener {
@@ -47,7 +46,7 @@ public class UI extends WindowAdapter implements ActionListener {
          if (confirm == JOptionPane.YES_OPTION) {
              System.exit(0);
          }*/
-    	if(event != null && event instanceof InputEvent) {
+    	if(event instanceof InputEvent) {
 			System.exit(((InputEvent)event).GetData());
     	} else System.exit(0);
      }

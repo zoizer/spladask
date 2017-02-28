@@ -1,9 +1,9 @@
 package risk.resources;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 public class Territory {
 
-	private String tName;
+	/*private String tName;
 	private int soldiers;
 	private ArrayList<Territory> adjacents;
 	private Player owner;
@@ -74,6 +74,6 @@ public class Territory {
 			return false;
 		} else 
 			return true;
-	}
+	}*/
 	
 }

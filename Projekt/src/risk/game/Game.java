@@ -5,8 +5,6 @@ import risk.event.RiskGameEvent;
 import risk.gameview.PlayerGameView;
 import risk.general.event.*;
 import risk.general.util.Delegate;
-import risk.ui.*;
-import risk.general.util.*;
 
 public class Game {
 	private PlayerGameView pgv;

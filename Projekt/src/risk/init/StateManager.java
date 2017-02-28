@@ -11,7 +11,7 @@ public class StateManager {
 	public static GameState gameState = GameState.MAINMENU;
 	//public static MainMenu mainMenu;
 	//public static Game game;
-	public static Editor editor;
+	//public static Editor editor;
 
 	public static void update(String s) {
 		if (s == "Meny"){

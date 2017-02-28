@@ -9,6 +9,7 @@ import risk.event.*;
 import risk.general.event.*;
 import risk.general.util.Delegate;
 import risk.general.util.ErrorHandler;
+import risk.testing.Editor;
 
 public class UI extends WindowAdapter implements ActionListener {
 	EventManager eventManager;
@@ -28,6 +29,8 @@ public class UI extends WindowAdapter implements ActionListener {
 			 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_QUIT, 0));
 		 else if(cmd.equals("New Game"))
 			 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_NEW_GAME, 0));
+		 else if(cmd.equals("Create and Store new Map"))
+			 Editor.CREATE_MAP("sistariskcolored");
 		 else
 			 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_ZONE_LEFT_CLICK, Integer.parseInt(cmd)));
      }

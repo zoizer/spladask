@@ -18,7 +18,6 @@ class PolygonButton extends JComponent implements MouseListener,
   protected Polygon polygon;
   protected Rectangle rectangle;
   protected boolean isActive;
-  protected static PolygonButton button;
 
   public PolygonButton(Polygon p, String text) {
     polygon = p;
@@ -58,7 +57,7 @@ class PolygonButton extends JComponent implements MouseListener,
     boolean active = polygon.contains(x, y);
 
     if (isActive != active)
-      setState(active);
+      setState(active, ((PolygonButton)e.getSource()));
     if (active)
       e.consume();
   }
@@ -66,21 +65,27 @@ class PolygonButton extends JComponent implements MouseListener,
   public void mouseDragged(MouseEvent e) {
   }
 
-  protected void setState(boolean active) {
+  protected void setState(boolean active, PolygonButton btn) {
     isActive = active;
     repaint();
     if (active) {
-      if (button != null)
-        button.setState(false);
+      if (btn != null)
+    	  btn.setState(false, btn);
       setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     } else {
-      button = null;
+    	btn = null;
       setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
   }
 
   public void mouseClicked(MouseEvent e) {
-      System.out.println("click!");
+      System.out.println("click!"); // INPUT EVENT
+      e.getButton(); // BUTTON1, BUTTON2 etc.
+      if(e.getButton() == MouseEvent.BUTTON1) {
+    	  System.out.println("OK");
+    	  ((PolygonButton)e.getSource()).setName("Test");
+    	  ((PolygonButton)e.getSource()).setForeground(Color.BLACK);
+      }
   }
 
   public void mousePressed(MouseEvent e) {

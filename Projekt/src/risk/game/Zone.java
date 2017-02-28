@@ -1,33 +1,31 @@
 package risk.game;
 
 import risk.game.logic.*;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Zone {
-	private final int uniqueID;
+public class Zone implements Serializable {
+	private static final long serialVersionUID = -645992308047933435L;
 	private final int production;
 	ArrayList<Integer> neighbours;
 	
 	private int ownerid;
 	
-	public Zone(int uniqueID, int production) {
-		this.uniqueID = uniqueID;
+	public Zone(int production) {
 		this.production = production;
 		ownerid = 0;
+		neighbours = new ArrayList<Integer>();
 	}
 	
-	public Zone(int uniqueID, int production, int ownerID) {
-		this.uniqueID = uniqueID;
+	public Zone(int production, int ownerID) {
 		this.production = production;
 		this.ownerid = ownerID;
+		neighbours = new ArrayList<Integer>();
 	}
 	
 	public void setOwner(int ownerid) {
 		this.ownerid = ownerid;
-	}
-	
-	public int GetID() {
-		return uniqueID;
 	}
 	
 	public int GetProduction() {
@@ -42,5 +40,9 @@ public class Zone {
 		if(neighbours.contains(id)) {
 			return Core.Get().GetZone(id);
 		} else return null;
+	}
+	
+	public void AddNeighbour(int id) {
+		neighbours.add(id);
 	}
 }

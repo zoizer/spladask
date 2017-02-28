@@ -22,6 +22,7 @@ public class ZoneButton implements Serializable {
 
 	public ZoneButton(Polygon area, String name, int zoneID, int production) {
 		this.area = area;
+		this.zoneID = zoneID;
 		outline = area.getBounds();
 		center = new Point(outline.x + (outline.width / 2),outline.y + (outline.height / 2));
 		msg = new ArrayList<String>();
@@ -63,11 +64,13 @@ public class ZoneButton implements Serializable {
 	
 	}
 	
+	@SuppressWarnings("unused")
 	private void DrawOutline(Graphics g) {
 		g.setColor(new Color(0.0f, 1.0f, 0.0f, 1.0f));
 		g.drawRect(outline.x, outline.y, outline.width, outline.height);
 	}
 	
+	@SuppressWarnings("unused")
 	private void DrawCenter(Graphics g) {
 		g.setColor(new Color(0.0f, 0.0f, 1.0f, 1.0f));
 		Polygon p = new Polygon();
@@ -80,6 +83,7 @@ public class ZoneButton implements Serializable {
 		g.drawPolygon(p);
 	}
 	
+	@SuppressWarnings("unused")
 	private void DrawText(Graphics g) { // TODO: CHANGE FUNCTION TO WRITE MULTIPLE LINES INSTEAD OF ONE MESS.
 		// TODO: ADD TRANSPARANT DARK (or bright) BOX BEHIND TEXT TO MAKE IT EASIER TO READ.
 		g.setColor(new Color(0.0f, 0.0f, 0.0f, 1.0f));

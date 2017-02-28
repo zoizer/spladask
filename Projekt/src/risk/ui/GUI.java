@@ -15,7 +15,10 @@ import risk.general.util.Delegate;
 import risk.ui.CustomPanel;
 
 public class GUI extends JFrame {
-	private UI ui;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4784853772774531316L;
 	private JMenuBar MenuBar = new JMenuBar();
     private JMenu File = new JMenu("File");
     private JMenuItem newGame = new JMenuItem("New Game");
@@ -23,7 +26,6 @@ public class GUI extends JFrame {
     private JMenuItem newMap = new JMenuItem("Create and Store new Map");
     
     public GUI(UI ui) {
-    	this.ui = ui;
         InitMenu(ui);
         addWindowListener(ui);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -37,11 +39,8 @@ public class GUI extends JFrame {
     	EventManager.Get().AttachListener(new Delegate(this, "StartMap"), RiskGameEvent.EVENT_NEW_GAME);
     }
     
-    public void ChangeUI(UI ui) {
-    	this.ui = ui;
-    }
-
-    public void StartMap(IEvent event) {
+    @SuppressWarnings("unchecked")
+	public void StartMap(IEvent event) {
     	BufferedImage bi;
     	CustomPanel cp;
 		try {
@@ -51,6 +50,7 @@ public class GUI extends JFrame {
 			FileInputStream fileIn = new FileInputStream(event.ToString() + ".gui");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			cp.attachBtns((ArrayList<ZoneButton>)in.readObject());
+			in.close();
 			
 			this.setContentPane(cp);
 	    	pack();

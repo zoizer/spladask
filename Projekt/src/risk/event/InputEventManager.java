@@ -2,7 +2,6 @@ package risk.event;
 
 import risk.game.Zone;
 import risk.game.logic.Core;
-import risk.event.*;
 import risk.general.event.*;
 import risk.general.util.Delegate;
 import risk.general.util.ErrorHandler;

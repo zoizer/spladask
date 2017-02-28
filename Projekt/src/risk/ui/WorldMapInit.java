@@ -27,7 +27,7 @@ public class WorldMapInit  {
             e.printStackTrace();
         }
         
-        //Initializes the buttons on the districts -- refactor  
+        //Initializes the buttons on the districts 
         ObjectInputStream in = new ObjectInputStream(new FileInputStream("zones.txt")); 
         for(int i=0; i<42; i++){
             Object object = in.readObject();

@@ -13,12 +13,9 @@ import java.awt.*;
 
 public class WorldMapInit  {
     JFrame f = new JFrame();
-    
-    
+
     public WorldMapInit()throws FileNotFoundException, IOException, ClassNotFoundException {
         
-        f.setVisible(true);
-        f.pack();
         //Initializes the map
         try {
             f.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("sistariskcolored.png")))));

@@ -1,6 +1,7 @@
 package risk.game;
 
 import risk.event.RiskEvent;
+import risk.event.RiskGameEvent;
 import risk.gameview.PlayerGameView;
 import risk.general.event.*;
 import risk.general.util.Delegate;
@@ -17,12 +18,12 @@ public class Game {
 
 		AttachListeners();
 		InitGame();
-		try {
+		/*try {
 			WorldMapInit graphics = new WorldMapInit(); // initierar mappen och knapparna
 		} catch(Exception e) {
 			e.printStackTrace();
 			ErrorHandler.ASSERT(false);
-		}
+		}*/
 
 		while(true) {
 			pgv.Update();
@@ -41,7 +42,7 @@ public class Game {
 	
 	private void AttachListeners() {
 		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME_PRE);
-		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME);
+		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskGameEvent.EVENT_NEW_GAME);
 		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME_POST);
 	}
 
@@ -51,8 +52,8 @@ public class Game {
 	
 	public void RequestNewGame(IEvent event) {
 		if (event.GetEventType() == RiskEvent.EVENT_NEW_GAME_PRE) { // Queue the next event.
-			EventManager.Get().QueueEvent(new RiskEvent(0.0f, RiskEvent.EVENT_NEW_GAME));
-		} else if (event.GetEventType() == RiskEvent.EVENT_NEW_GAME) {
+			EventManager.Get().QueueEvent(new RiskGameEvent(0.0f, RiskGameEvent.EVENT_NEW_GAME, "sistariskcolored"));
+		} else if (event.GetEventType() == RiskGameEvent.EVENT_NEW_GAME) {
 			EventManager.Get().QueueEvent(new RiskEvent(0.0f, RiskEvent.EVENT_NEW_GAME_POST));
 		} else if (event.GetEventType() == RiskEvent.EVENT_NEW_GAME_POST) {
 			// The new game have been created.

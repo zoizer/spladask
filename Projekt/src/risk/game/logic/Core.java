@@ -62,4 +62,8 @@ public final class Core {
 	public boolean ZoneExists(int id) {
 		return zones.containsKey(id);
 	}
+	
+	public void InitZones(HashMap<Integer, Zone> map) {
+		zones = map;
+	}
 }

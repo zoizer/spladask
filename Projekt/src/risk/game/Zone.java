@@ -42,7 +42,15 @@ public class Zone implements Serializable {
 		} else return null;
 	}
 	
+	public ArrayList<Integer> GetNeighbours() {
+		return neighbours;
+	}
+	
 	public void AddNeighbour(int id) {
 		neighbours.add(id);
+	}
+	
+	public void AddNeighbour(int ... ids) {
+		for(int i = 0; i < ids.length; i++) AddNeighbour(ids[i]);
 	}
 }

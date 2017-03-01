@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import risk.event.RiskZoneEvent;
+import risk.game.logic.Core;
 import risk.general.event.EventManager;
 import risk.general.event.IEvent;
 import risk.general.util.Delegate;
@@ -57,9 +58,19 @@ public class CustomPanel extends JPanel {
 	public void SelectZone(IEvent event) {
 		// HERE A ZONE WAS SELECTED. SHOW IT GRAPHICALLY
 		RiskZoneEvent rze = (RiskZoneEvent)event;
-		for(ZoneButton btn : btns) 
-			if(btn.getID() == rze.GetDst())
-				btn.Select(true);
+		for(ZoneButton btn : btns) {
+			if(btn.getID() == rze.GetDst()) btn.Select(true);
+			else {
+				btn.ClearStatus();
+			}
+		}
+		
+		ArrayList<Integer> ar = Core.Get().GetZone(rze.GetDst()).GetNeighbours();
+		for(Integer i : ar) {
+			for(ZoneButton btn : btns) {
+				if(btn.getID() == i) btn.Neighbour(true);
+			}
+		}
 		
 		repaint();
 	}

@@ -27,7 +27,7 @@ public class Editor {
         ZoneButton alaskaBtn = new ZoneButton(alaska, "Alaska", 1, 3);
         gzone.add(alaskaBtn);
         Zone z = new Zone(1);
-        z.AddNeighbour(2); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(2,4,29);
         zone.put(1, z);
         
         Polygon nw = new Polygon();
@@ -40,7 +40,7 @@ public class Editor {
         ZoneButton nwBtn = new ZoneButton(nw, "Northwest", 2, 3);
         gzone.add(nwBtn);
         z = new Zone(2);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(1,4,5);
         zone.put(2, z);
         
         Polygon greenland = new Polygon();
@@ -58,7 +58,7 @@ public class Editor {
         ZoneButton greenlandBtn = new ZoneButton(greenland, "greenland", 3, 3);
         gzone.add(greenlandBtn);
         z = new Zone(3);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(6,19);
         zone.put(3, z);
           
         Polygon n1 = new Polygon();
@@ -69,7 +69,7 @@ public class Editor {
         ZoneButton n1Btn = new ZoneButton(n1, "n1", 4, 3);
         gzone.add(n1Btn);
         z = new Zone(4);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(1,2,5,7);
         zone.put(4, z);
     
         Polygon n2 = new Polygon();
@@ -81,7 +81,7 @@ public class Editor {
         ZoneButton n2Btn = new ZoneButton(n2, "n2", 5, 3);
         gzone.add(n2Btn);
         z = new Zone(5);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(2,4,8);
         zone.put(5, z);
         
         Polygon quebec = new Polygon();
@@ -92,7 +92,7 @@ public class Editor {
         ZoneButton quebecBtn = new ZoneButton(quebec, "quebec", 6, 3);
         gzone.add(quebecBtn);
         z = new Zone(6);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(3,8);
         zone.put(6, z);
         
         Polygon westUS = new Polygon();
@@ -104,7 +104,7 @@ public class Editor {
         ZoneButton westUSBtn = new ZoneButton(westUS, "westUS", 7, 3);
         gzone.add(westUSBtn);
         z = new Zone(7);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(4,8,9);
         zone.put(7, z);
         
         Polygon eastUS = new Polygon();
@@ -117,7 +117,7 @@ public class Editor {
         ZoneButton eastUSBtn = new ZoneButton(eastUS, "eastUS", 8, 3);
         gzone.add(eastUSBtn);
         z = new Zone(8);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(5,6,7);
         zone.put(8, z);
         
         /*Polygon central = new Polygon();
@@ -157,7 +157,7 @@ public class Editor {
         ZoneButton sa1Btn = new ZoneButton(sa1, "sa1", 9, 3);
         gzone.add(sa1Btn);
         z = new Zone(9);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(7,11,10);
         zone.put(9, z);
         
         Polygon brazil = new Polygon();
@@ -170,7 +170,7 @@ public class Editor {
         ZoneButton brazilBtn = new ZoneButton(brazil, "brazil", 10, 3);
         gzone.add(brazilBtn);
         z = new Zone(10);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(9,11,12,13);
         zone.put(10, z);
         
         Polygon sa3 = new Polygon();
@@ -182,7 +182,7 @@ public class Editor {
         ZoneButton sa3Btn = new ZoneButton(sa3, "sa3", 11, 3);
         gzone.add(sa3Btn);
         z = new Zone(11);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(9,10,12);
         zone.put(11, z);
         
         Polygon argentina = new Polygon();
@@ -195,7 +195,7 @@ public class Editor {
         ZoneButton argentinaBtn = new ZoneButton(argentina, "argentina", 12, 3);
         gzone.add(argentinaBtn);
         z = new Zone(12);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(11,10);
         zone.put(12, z);
         
         // AFRICA
@@ -210,7 +210,7 @@ public class Editor {
         ZoneButton northAFBtn = new ZoneButton(northAF, "north africa", 13, 3);
         gzone.add(northAFBtn);
         z = new Zone(13);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(10,16,14,22);
         zone.put(13, z);
         
         Polygon af2 = new Polygon();
@@ -220,7 +220,7 @@ public class Editor {
         ZoneButton af2Btn = new ZoneButton(af2, "af2", 14, 3);
         gzone.add(af2Btn);
         z = new Zone(14);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(13,15,32);
         zone.put(14, z);
         
         Polygon af3 = new Polygon();
@@ -233,7 +233,7 @@ public class Editor {
         ZoneButton af3Btn = new ZoneButton(af3, "af3", 15, 3);
         gzone.add(af3Btn);
         z = new Zone(15);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(16,14,17,18);
         zone.put(15, z);
         
         Polygon af4 = new Polygon();
@@ -245,7 +245,7 @@ public class Editor {
         ZoneButton af4Btn = new ZoneButton(af4, "af4", 16, 3);
         gzone.add(af4Btn);
         z = new Zone(16);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(13,15,17);
         zone.put(16, z);
         
         Polygon southAF = new Polygon();
@@ -258,7 +258,7 @@ public class Editor {
         ZoneButton southAFBtn = new ZoneButton(southAF, "south africa", 17, 3);
         gzone.add(southAFBtn);
         z = new Zone(17);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(16,15,18);
         zone.put(17, z);
         
         Polygon madagascar = new Polygon();
@@ -268,7 +268,7 @@ public class Editor {
         ZoneButton madagascarBtn = new ZoneButton(madagascar, "madagascar", 18, 3);
         gzone.add(madagascarBtn);
         z = new Zone(18);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(17,15);
         zone.put(18, z);
         
         //EUROPE
@@ -280,7 +280,7 @@ public class Editor {
         ZoneButton icelandBtn = new ZoneButton(iceland, "iceland", 19, 3);
         gzone.add(icelandBtn);
         z = new Zone(19);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(3,20,25);
         zone.put(19, z);
         
         Polygon gb = new Polygon();
@@ -290,7 +290,7 @@ public class Editor {
         ZoneButton gbBtn = new ZoneButton(gb, "great britain", 20, 3);
         gzone.add(gbBtn);
         z = new Zone(20);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(19,23);
         zone.put(20, z);
         
         
@@ -304,7 +304,7 @@ public class Editor {
         ZoneButton northEUBtn = new ZoneButton(northEU, "north europe", 21, 3);
         gzone.add(northEUBtn);
         z = new Zone(21);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(25,24,23);
         zone.put(21, z);
         
         
@@ -318,7 +318,7 @@ public class Editor {
         ZoneButton southEUBtn = new ZoneButton(southEU, "south europe", 22, 3);
         gzone.add(southEUBtn);
         z = new Zone(22);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(23,13);
         zone.put(22, z);
         
         Polygon westEU = new Polygon();
@@ -329,7 +329,7 @@ public class Editor {
         ZoneButton westEUBtn = new ZoneButton(westEU, "west europe", 23, 3);
         gzone.add(westEUBtn);
         z = new Zone(23);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(20,21,22);
         zone.put(23, z);
         
         Polygon ukraine = new Polygon();
@@ -341,7 +341,7 @@ public class Editor {
         ZoneButton ukraineBtn = new ZoneButton(ukraine, "ukraine", 24, 3);
         gzone.add(ukraineBtn);
         z = new Zone(24);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(21,31,32);
         zone.put(24, z);
         
         Polygon scandinavia = new Polygon();
@@ -365,7 +365,7 @@ public class Editor {
         ZoneButton scandinaviaBtn = new ZoneButton(scandinavia, "scandinavia", 25, 3);
         gzone.add(scandinaviaBtn);
         z = new Zone(25);
-        //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
+        z.AddNeighbour(21,19,26);
         zone.put(25, z);
         
         //ASIA

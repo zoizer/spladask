@@ -41,9 +41,8 @@ public final class GeneralGameEvents {
 	}
 	
 	public void SelectZone(IEvent event) {
-		GameView gv = Core.Get().GetActiveView();
 		RiskZoneEvent e = ((RiskZoneEvent)event);
-		gv.SetSelectedZoneID(e.GetDst());
+		Core.Get().SelectZone(e.GetDst());
 		System.out.println("Selected Zone: " + e.GetDst());
 	}
 }

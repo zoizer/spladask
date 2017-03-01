@@ -1,7 +1,11 @@
 package risk.game;
 
+import risk.event.InputEventManager;
 import risk.event.RiskEvent;
 import risk.event.RiskGameEvent;
+import risk.event.RiskZoneEvent;
+import risk.game.logic.Core;
+import risk.game.logic.GeneralGameEvents;
 import risk.gameview.PlayerGameView;
 import risk.general.event.*;
 import risk.general.util.Delegate;
@@ -12,8 +16,9 @@ public class Game {
 // Test ....
 	public Game() {
 		EventManager.CreateGlobalEventManager();
-		pgv = new PlayerGameView(1);
-
+		EventManager inputEventManager = new InputEventManager();
+		pgv = new PlayerGameView(1, inputEventManager);
+		
 		AttachListeners();
 		InitGame();
 		/*try {
@@ -22,9 +27,11 @@ public class Game {
 			e.printStackTrace();
 			ErrorHandler.ASSERT(false);
 		}*/
+		
+		Core.Get().AttachGameView(pgv);
 
 		while(true) {
-			pgv.Update();
+			inputEventManager.Update();
 			EventManager.Get().Update();
 		}
 	}
@@ -42,6 +49,8 @@ public class Game {
 		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME_PRE);
 		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskGameEvent.EVENT_NEW_GAME);
 		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME_POST);
+		EventManager.Get().AttachListener(new Delegate(GeneralGameEvents.Get(), "LoadMap"), RiskGameEvent.EVENT_NEW_GAME);
+		EventManager.Get().AttachListener(new Delegate(GeneralGameEvents.Get(), "SelectZone"), RiskZoneEvent.EVENT_SELECT_ZONE);
 	}
 
 

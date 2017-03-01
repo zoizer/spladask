@@ -21,7 +21,7 @@ public final class Core {
 	
 	public int AttachGameView(GameView view) {
 		int rtv = ViewCount();
-		views.put(rtv, view);
+		views.put(view.GetID(), view);
 		return rtv;
 	}
 	
@@ -66,4 +66,6 @@ public final class Core {
 	public void InitZones(HashMap<Integer, Zone> map) {
 		zones = map;
 	}
+	
+	
 }

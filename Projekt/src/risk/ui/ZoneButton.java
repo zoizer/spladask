@@ -19,6 +19,10 @@ public class ZoneButton implements Serializable {
 	private Rectangle outline;
 	private List<String> msg;
 	private int zoneID;
+	private static Color FILL_COLOR = new Color(0.0f, 1.0f, 0.0f, 0.3f);
+	private static Color SELECT_COLOR = new Color(0.0f, 0.0f, 1.0f, 0.3f);
+	private static Color OUTLINE_COLOR = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+	private boolean select = false;
 
 	public ZoneButton(Polygon area, String name, int zoneID, int production) {
 		this.area = area;
@@ -35,7 +39,7 @@ public class ZoneButton implements Serializable {
 	}
 	
 	public boolean contains(Point point) {
-		return area.contains(point);
+		return outline.contains(point) ? area.contains(point) : false;
 	}
 	
 	public Point getCenter() {
@@ -53,15 +57,19 @@ public class ZoneButton implements Serializable {
 	public boolean isVisible() { return false; }
 	
 	public void paint(Graphics g) {
-		g.setColor(new Color(0.0f, 1.0f, 0.0f, 0.3f));
+		g.setColor(select ? SELECT_COLOR : FILL_COLOR);
 		g.fillPolygon(area);
-		g.setColor(new Color(1.0f, 0.0f, 0.0f, 1.0f));
+		g.setColor(OUTLINE_COLOR);
 		g.drawPolygon(area);
 		
 		//DrawOutline(g);
 		//DrawCenter(g);
 		DrawText(g);
 	
+	}
+	
+	public void Select(boolean b) {
+		select = b;
 	}
 	
 	@SuppressWarnings("unused")

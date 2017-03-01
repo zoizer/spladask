@@ -5,10 +5,12 @@ import risk.general.gameview.IGameView;
 public class GameView implements IGameView {
 	private int id;
 	private int type;
+	private int selectedZone;
 	
 	public GameView(int id, int type) {
 		this.id = id;
 		this.type = type;
+		selectedZone = -1;
 	}
 	
 	@Override
@@ -16,6 +18,14 @@ public class GameView implements IGameView {
 
 	@Override
 	public int GetID() { return id; }
+	
+	public int GetSelectedZoneID() {
+		return selectedZone;
+	}
+	
+	public void SetSelectedZoneID(int id) {
+		selectedZone = id;
+	}
 
 }
 /*

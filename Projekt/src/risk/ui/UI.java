@@ -30,9 +30,17 @@ public class UI extends WindowAdapter implements ActionListener {
 			 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_NEW_GAME, 0));
 		 else if(cmd.equals("Create and Store new Map"))
 			 Editor.CREATE_MAP("sistariskcolored");
-		 else
-			 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_ZONE_LEFT_CLICK, Integer.parseInt(cmd)));
+		 else;
+			// eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_ZONE_LEFT_CLICK, Integer.parseInt(cmd)));
      }
+	 
+	 public void ActivateLeftClickMap(int zoneid) {
+		 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_ZONE_LEFT_CLICK, zoneid));
+	 }
+	 
+	 public void ActivateRightClickMap(int zoneid) {
+		 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_ZONE_RIGHT_CLICK, zoneid));
+	 }
      
      public void windowClosing(WindowEvent e) {
      	Quit(null);

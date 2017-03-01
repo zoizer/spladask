@@ -66,4 +66,6 @@ public final class Core {
 	public void InitZones(HashMap<Integer, Zone> map) {
 		zones = map;
 	}
+	
+	
 }

@@ -2,6 +2,7 @@ package risk.event;
 
 import risk.game.Zone;
 import risk.game.logic.Core;
+import risk.gameview.PlayerGameView;
 import risk.general.event.*;
 import risk.general.util.Delegate;
 import risk.general.util.ErrorHandler;
@@ -23,7 +24,9 @@ public class InputEventManager extends EventManager {
 		if(event instanceof InputEvent) {
 			int zoneid = ((InputEvent)event).GetData();
 			if(Core.Get().ZoneExists(zoneid)) {
-				EventManager.Get().QueueEvent(new RiskZoneEvent(0.0f, RiskZoneEvent.EVENT_SELECT_ZONE, Core.Get().GetZone(zoneid))); // SELECT ZONE
+				if(Core.Get().GetActiveView() instanceof PlayerGameView)
+					EventManager.Get().QueueEvent(new RiskZoneEvent(0.0f, RiskZoneEvent.EVENT_SELECT_ZONE, zoneid)); // SELECT ZONE
+				else ErrorHandler.WARNING("Can't Select zone cause it's not the players turn!");
 			} else ErrorHandler.WARNING("Could not find zone to select.");
 		} else ErrorHandler.WARNING("ZoneLeftClick did not get an input event!");
 	}
@@ -33,10 +36,11 @@ public class InputEventManager extends EventManager {
 			int zoneid = ((InputEvent)event).GetData();
 			if(Core.Get().ZoneExists(zoneid)) {
 				Zone activeZone = Core.Get().GetZone(Core.Get().GetSelectedZoneID()); // get source zone
-				Zone neighbour = activeZone.GetNeighbour(zoneid); // get zone to attack.
-				if(neighbour != null) {
-					EventManager.Get().QueueEvent(new RiskZoneInteractionEvent(0.0f, RiskZoneInteractionEvent.EVENT_ATTACK_ZONE, neighbour, activeZone)); // ATTACK ZONE
-				} else ErrorHandler.WARNING("Could not attack this zone, as it is not a neighbour. MAY WANNA ADD AN INGAME WARNING HERE.");
+				if(activeZone != null) {
+					if(activeZone.GetNeighbour(zoneid) != null) {
+						EventManager.Get().QueueEvent(new RiskZoneInteractionEvent(0.0f, RiskZoneInteractionEvent.EVENT_ATTACK_ZONE, zoneid, Core.Get().GetSelectedZoneID())); // ATTACK ZONE
+					} else ErrorHandler.WARNING("Could not attack this zone, as it is not a neighbour. MAY WANNA ADD AN INGAME WARNING HERE.");
+				} else ErrorHandler.WARNING("Could not attack since no zone is selected.");
 			} else ErrorHandler.WARNING("Could not find zone to attack.");
 		} else ErrorHandler.WARNING("ZoneRightClick did not get an input event!");
 	}

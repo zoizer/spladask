@@ -4,19 +4,26 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
 
-import risk.event.RiskGameEvent;
+import risk.event.RiskZoneEvent;
 import risk.game.Zone;
-import risk.general.event.EventManager;
+import risk.gameview.GameView;
+import risk.gameview.NetworkGameView;
+import risk.gameview.PlayerGameView;
 import risk.general.event.IEvent;
-import risk.general.util.Delegate;
 
 public final class GeneralGameEvents {
-	public GeneralGameEvents() {
-		EventManager.Get().AttachListener(new Delegate(this, "LoadMap"), RiskGameEvent.EVENT_NEW_GAME);
-	}
+	private GeneralGameEvents() {}
 
+	private static GeneralGameEvents gge = new GeneralGameEvents();
+	public static GeneralGameEvents Get() {
+		return gge;
+	}
+	
+	
+
+/////// GeneralGameEvents
 	@SuppressWarnings("unchecked")
-	public static void LoadMap(IEvent event) {
+	public void LoadMap(IEvent event) { // THIS IS THE FUNCTION THAT STARTS A NEW GAME
 		try {
 			FileInputStream fileIn = new FileInputStream(event.ToString() + ".dat");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -26,5 +33,16 @@ public final class GeneralGameEvents {
 			e.printStackTrace();
 			// SHOULD GIVE WARNING HERE THAT MAP WASNT FOUND.
 		}
+
+		// Player always exists
+		Core.Get().AttachGameView(new NetworkGameView(2));
+		Core.Get().SetActiveView(1);
+	}
+	
+	public void SelectZone(IEvent event) {
+		GameView gv = Core.Get().GetActiveView();
+		RiskZoneEvent e = ((RiskZoneEvent)event);
+		gv.SetSelectedZoneID(e.GetDst());
+		System.out.println("Selected Zone: " + e.GetDst());
 	}
 }

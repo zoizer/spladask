@@ -22,5 +22,4 @@ public class PlayerGameView extends GameView {
 		inputEventManager.Update();
 		
 	}
-
 }

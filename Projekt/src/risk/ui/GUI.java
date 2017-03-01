@@ -24,9 +24,11 @@ public class GUI extends JFrame {
     private JMenuItem newGame = new JMenuItem("New Game");
     private JMenuItem Exit = new JMenuItem("Exit");
     private JMenuItem newMap = new JMenuItem("Create and Store new Map");
+    UI ui;
     
     public GUI(UI ui) {
         InitMenu(ui);
+        this.ui = ui;
         addWindowListener(ui);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocation(100, 100);
@@ -45,7 +47,7 @@ public class GUI extends JFrame {
     	CustomPanel cp;
 		try {
 			bi = ImageIO.read(new File(event.ToString() + ".png"));
-			cp = new CustomPanel(bi);
+			cp = new CustomPanel(bi, ui);
 	        
 			FileInputStream fileIn = new FileInputStream(event.ToString() + ".gui");
 			ObjectInputStream in = new ObjectInputStream(fileIn);

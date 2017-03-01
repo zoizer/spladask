@@ -23,6 +23,10 @@ public class GUI extends JFrame {
     private JMenu File = new JMenu("File");
     private JMenuItem newGame = new JMenuItem("New Game");
     private JMenuItem Exit = new JMenuItem("Exit");
+    
+    private JMenu File1 = new JMenu("Score");
+    private JMenuItem score = new JMenuItem("High Score");	
+    	
     private JMenuItem newMap = new JMenuItem("Create and Store new Map");
     UI ui;
     

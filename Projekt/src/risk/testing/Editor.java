@@ -441,7 +441,7 @@ public class Editor {
         gzone.add(jakutskBtn);
         z = new Zone(30);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
-        zone.put(31, z);
+        zone.put(30, z);
         
         Polygon afghanistan = new Polygon();
         afghanistan.addPoint(874,235);

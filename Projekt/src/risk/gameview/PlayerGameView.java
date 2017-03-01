@@ -8,18 +8,10 @@ public class PlayerGameView extends GameView {
 	private UI ui;
 	@SuppressWarnings("unused") // GUI and UI can merge, or UI can own GUI. Prefer the latter.
 	private GUI gui;
-	private EventManager inputEventManager;
 
-	public PlayerGameView(int id) {
+	public PlayerGameView(int id, EventManager inputEventManager) {
 		super(id, GameView.GAME_VIEW_TYPE_PLAYER);
-		inputEventManager = new InputEventManager();
 		ui = new UI(inputEventManager);
 		gui = new GUI(ui);
-	}
-	
-	
-	public void Update() {
-		inputEventManager.Update();
-		
 	}
 }

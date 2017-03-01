@@ -36,7 +36,8 @@ public final class GeneralGameEvents {
 
 		// Player always exists
 		Core.Get().AttachGameView(new NetworkGameView(2));
-		Core.Get().SetActiveView(1);
+		if(Core.Get().SetActiveView(1)) System.out.println("Could set active view.");
+		else System.out.println("Could not set active view.");
 	}
 	
 	public void SelectZone(IEvent event) {

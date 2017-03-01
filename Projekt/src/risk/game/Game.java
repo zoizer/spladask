@@ -1,5 +1,6 @@
 package risk.game;
 
+import risk.event.InputEventManager;
 import risk.event.RiskEvent;
 import risk.event.RiskGameEvent;
 import risk.event.RiskZoneEvent;
@@ -15,8 +16,9 @@ public class Game {
 // Test ....
 	public Game() {
 		EventManager.CreateGlobalEventManager();
-		pgv = new PlayerGameView(1);
-
+		EventManager inputEventManager = new InputEventManager();
+		pgv = new PlayerGameView(1, inputEventManager);
+		
 		AttachListeners();
 		InitGame();
 		/*try {
@@ -29,7 +31,7 @@ public class Game {
 		Core.Get().AttachGameView(pgv);
 
 		while(true) {
-			pgv.Update();
+			inputEventManager.Update();
 			EventManager.Get().Update();
 		}
 	}

@@ -2,7 +2,6 @@ package risk.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -111,17 +110,16 @@ public class GUI extends JFrame {
     	}
     	
     	public Controls() {
-    		
     		player.setEditable(false);
+    		player.setHighlighter(null);
     		this.add(player, BorderLayout.NORTH);
     		
     		production.setEditable(false);
+    		production.setHighlighter(null);
     		this.add(production, BorderLayout.NORTH);
     		
         	this.setBackground(Color.lightGray);
         	this.setBorder(BorderFactory.createLineBorder(Color.darkGray));
     	}
-    	
-    	
     }
 }

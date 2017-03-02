@@ -1,5 +1,8 @@
 package risk.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,10 +27,13 @@ public class GUI extends JFrame {
     private JMenuItem newGame = new JMenuItem("New Game");
     private JMenuItem Exit = new JMenuItem("Exit");
     private JMenuItem newMap = new JMenuItem("Create and Store new Map");
+    private JPanel ingame = null;
+    private Controls controls = new Controls();
     UI ui;
     
     public GUI(UI ui) {
         InitMenu(ui);
+        this.add(controls, BorderLayout.SOUTH);
         this.ui = ui;
         addWindowListener(ui);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -54,7 +60,14 @@ public class GUI extends JFrame {
 			cp.attachBtns((ArrayList<ZoneButton>)in.readObject());
 			in.close();
 			
-			this.setContentPane(cp);
+			//this.setContentPane(cp); ////////////
+			if(ingame != null) {
+				this.remove(ingame);
+			}
+			this.add(cp, BorderLayout.NORTH);
+
+			ingame = cp;
+			
 	    	pack();
 	    	setVisible(true);
 		} catch (Exception e) {
@@ -72,5 +85,43 @@ public class GUI extends JFrame {
         File.add(newMap);
         MenuBar.add(File);
         setJMenuBar(MenuBar);
+    }
+    
+    public class Controls extends JPanel {
+		private static final long serialVersionUID = -5022575419076933625L;
+		
+		/////////////////////// PLAYER
+    	private static final String strPlayer = "Player: ";
+    	private String name = "<none>";
+    	JTextField player = new JTextField(strPlayer + name);
+    	
+    	public void setPlayer(String str) {
+    		name = str;
+    		player.setText(strPlayer + name);
+    	}
+    	
+    	//////////////////////// PRODUCTION
+    	private static final String strProd = "Production: ";
+    	private int prod = 0;
+    	JTextField production = new JTextField(strProd + prod);
+    	
+    	public void setProduce(int n) { // MAY NEED TO RE-RENDER.
+    		prod = n;
+    		production.setText(strProd + prod);
+    	}
+    	
+    	public Controls() {
+    		
+    		player.setEditable(false);
+    		this.add(player, BorderLayout.NORTH);
+    		
+    		production.setEditable(false);
+    		this.add(production, BorderLayout.NORTH);
+    		
+        	this.setBackground(Color.lightGray);
+        	this.setBorder(BorderFactory.createLineBorder(Color.darkGray));
+    	}
+    	
+    	
     }
 }

@@ -6,8 +6,6 @@ import java.util.HashMap;
 
 import risk.event.RiskZoneEvent;
 import risk.game.Zone;
-import risk.gameview.GameView;
-import risk.gameview.NetworkGameView;
 import risk.gameview.PlayerGameView;
 import risk.general.event.IEvent;
 
@@ -35,7 +33,8 @@ public final class GeneralGameEvents {
 		}
 
 		// Player always exists
-		Core.Get().AttachGameView(new NetworkGameView(2));
+		Core.Get().AttachGameView(new PlayerGameView(1));
+		Core.Get().AttachGameView(new PlayerGameView(2));
 		if(Core.Get().SetActiveView(1)) System.out.println("Could set active view.");
 		else System.out.println("Could not set active view.");
 	}

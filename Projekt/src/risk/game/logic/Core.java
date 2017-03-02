@@ -1,13 +1,18 @@
 package risk.game.logic;
 
-//import java.util.ArrayList;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import risk.gameview.*;
 import risk.game.*;
 
-public final class Core {
+public final class Core implements Serializable {
+	private static final long serialVersionUID = -3048794182105208641L;
 	private static Core core = new Core();
 	public static Core Get() { return core; }
 	private Core() {
@@ -67,5 +72,32 @@ public final class Core {
 		zones = map;
 	}
 	
+	public void Save(String saveName) {
+		try {
+        	FileOutputStream fileOut = new FileOutputStream(saveName + ".save");
+        	ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        	out.writeObject(this);
+        	out.close();
+        	fileOut.close();
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+	}
 	
+	public void Load(String fileName) {
+		// REMEMBER TO ALSO LOAD GRAPHICS. PROBABLY THROUGH A NEW EVENT.
+		try {
+			FileInputStream fileIn = new FileInputStream(fileName + ".save"); // TODO: CHECK IF THE FILENAME AUTOMATICALLY ENDS WITH .SAVE
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			this.Load(((Core)in.readObject()));
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void Load(Core core2) {
+		this.views = core2.views;
+		this.zones = core2.zones;
+	}
 }

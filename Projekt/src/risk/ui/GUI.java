@@ -88,6 +88,11 @@ public class GUI extends JFrame {
         File.add(newMap);
         MenuBar.add(File);
         setJMenuBar(MenuBar);
+	
+	score.addActionListener(ui);
+    	File.add(score);
+        MenuBar.add(File1);
+        setJMenuBar(MenuBar)
     }
     
     public class Controls extends JPanel {

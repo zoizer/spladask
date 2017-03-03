@@ -26,7 +26,7 @@ public class Editor {
         alaska.addPoint(1,121);
         ZoneButton alaskaBtn = new ZoneButton(alaska, "Alaska", 1, 3);
         gzone.add(alaskaBtn);
-        Zone z = new Zone(1);
+        Zone z = new Zone(3);
         z.AddNeighbour(2,4,29);
         zone.put(1, z);
         
@@ -39,7 +39,7 @@ public class Editor {
         nw.addPoint(96,128);
         ZoneButton nwBtn = new ZoneButton(nw, "Northwest", 2, 3);
         gzone.add(nwBtn);
-        z = new Zone(2);
+        z = new Zone(3);
         z.AddNeighbour(1,4,5);
         zone.put(2, z);
         
@@ -68,7 +68,7 @@ public class Editor {
         n1.addPoint(110,224);
         ZoneButton n1Btn = new ZoneButton(n1, "n1", 4, 3);
         gzone.add(n1Btn);
-        z = new Zone(4);
+        z = new Zone(3);
         z.AddNeighbour(1,2,5,7);
         zone.put(4, z);
     
@@ -80,7 +80,7 @@ public class Editor {
         n2.addPoint(202,203);
         ZoneButton n2Btn = new ZoneButton(n2, "n2", 5, 3);
         gzone.add(n2Btn);
-        z = new Zone(5);
+        z = new Zone(3);
         z.AddNeighbour(2,4,8);
         zone.put(5, z);
         
@@ -91,7 +91,7 @@ public class Editor {
         quebec.addPoint(294,228);  
         ZoneButton quebecBtn = new ZoneButton(quebec, "quebec", 6, 3);
         gzone.add(quebecBtn);
-        z = new Zone(6);
+        z = new Zone(3);
         z.AddNeighbour(3,8);
         zone.put(6, z);
         
@@ -103,8 +103,8 @@ public class Editor {
         westUS.addPoint(110,225); 
         ZoneButton westUSBtn = new ZoneButton(westUS, "westUS", 7, 3);
         gzone.add(westUSBtn);
-        z = new Zone(7);
-        z.AddNeighbour(4,8,9);
+        z = new Zone(3);
+        z.AddNeighbour(4,8,42);
         zone.put(7, z);
         
         Polygon eastUS = new Polygon();
@@ -116,11 +116,11 @@ public class Editor {
         eastUS.addPoint(192,346);
         ZoneButton eastUSBtn = new ZoneButton(eastUS, "eastUS", 8, 3);
         gzone.add(eastUSBtn);
-        z = new Zone(8);
+        z = new Zone(3);
         z.AddNeighbour(5,6,7);
         zone.put(8, z);
         
-        /*Polygon central = new Polygon();
+        Polygon central = new Polygon();
         central.addPoint(267,418);
         central.addPoint(188,365);  
         central.addPoint(191,346);
@@ -128,11 +128,11 @@ public class Editor {
         central.addPoint(155,383);
         central.addPoint(184,391);
         central.addPoint(267,429);
-        
-        
-        PolygonButton centralBtn = new PolygonButton(central, "centralamerica");
-        f.getContentPane().add(centralBtn);
-        */
+        ZoneButton centralBtn = new ZoneButton(central, "centralamerica", 42, 3);
+        gzone.add(centralBtn);
+        z = new Zone(3);
+        z.AddNeighbour(7,9);
+        zone.put(42, z);
        
         //ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("zones.txt"));
         //out.writeObject(centralBtn);
@@ -156,8 +156,8 @@ public class Editor {
         sa1.addPoint(272,434);
         ZoneButton sa1Btn = new ZoneButton(sa1, "sa1", 9, 3);
         gzone.add(sa1Btn);
-        z = new Zone(9);
-        z.AddNeighbour(7,11,10);
+        z = new Zone(3);
+        z.AddNeighbour(42,11,10);
         zone.put(9, z);
         
         Polygon brazil = new Polygon();
@@ -169,7 +169,7 @@ public class Editor {
         brazil.addPoint(313,469);
         ZoneButton brazilBtn = new ZoneButton(brazil, "brazil", 10, 3);
         gzone.add(brazilBtn);
-        z = new Zone(10);
+        z = new Zone(3);
         z.AddNeighbour(9,11,12,13);
         zone.put(10, z);
         
@@ -181,7 +181,7 @@ public class Editor {
         sa3.addPoint(249,487);
         ZoneButton sa3Btn = new ZoneButton(sa3, "sa3", 11, 3);
         gzone.add(sa3Btn);
-        z = new Zone(11);
+        z = new Zone(3);
         z.AddNeighbour(9,10,12);
         zone.put(11, z);
         
@@ -194,7 +194,7 @@ public class Editor {
         argentina.addPoint(330,626);
         ZoneButton argentinaBtn = new ZoneButton(argentina, "argentina", 12, 3);
         gzone.add(argentinaBtn);
-        z = new Zone(12);
+        z = new Zone(3);
         z.AddNeighbour(11,10);
         zone.put(12, z);
         
@@ -209,7 +209,7 @@ public class Editor {
         northAF.addPoint(527,326);
         ZoneButton northAFBtn = new ZoneButton(northAF, "north africa", 13, 3);
         gzone.add(northAFBtn);
-        z = new Zone(13);
+        z = new Zone(3);
         z.AddNeighbour(10,16,14,22);
         zone.put(13, z);
         
@@ -219,7 +219,7 @@ public class Editor {
         af2.addPoint(672,421);
         ZoneButton af2Btn = new ZoneButton(af2, "af2", 14, 3);
         gzone.add(af2Btn);
-        z = new Zone(14);
+        z = new Zone(3);
         z.AddNeighbour(13,15,32);
         zone.put(14, z);
         
@@ -232,7 +232,7 @@ public class Editor {
         af3.addPoint(672,421);
         ZoneButton af3Btn = new ZoneButton(af3, "af3", 15, 3);
         gzone.add(af3Btn);
-        z = new Zone(15);
+        z = new Zone(3);
         z.AddNeighbour(16,14,17,18);
         zone.put(15, z);
         
@@ -244,7 +244,7 @@ public class Editor {
         af4.addPoint(579,430);
         ZoneButton af4Btn = new ZoneButton(af4, "af4", 16, 3);
         gzone.add(af4Btn);
-        z = new Zone(16);
+        z = new Zone(3);
         z.AddNeighbour(13,15,17);
         zone.put(16, z);
         
@@ -257,7 +257,7 @@ public class Editor {
         southAF.addPoint(616,528);
         ZoneButton southAFBtn = new ZoneButton(southAF, "south africa", 17, 3);
         gzone.add(southAFBtn);
-        z = new Zone(17);
+        z = new Zone(3);
         z.AddNeighbour(16,15,18);
         zone.put(17, z);
         
@@ -267,7 +267,7 @@ public class Editor {
         madagascar.addPoint(751,546);
         ZoneButton madagascarBtn = new ZoneButton(madagascar, "madagascar", 18, 3);
         gzone.add(madagascarBtn);
-        z = new Zone(18);
+        z = new Zone(3);
         z.AddNeighbour(17,15);
         zone.put(18, z);
         
@@ -279,7 +279,7 @@ public class Editor {
         iceland.addPoint(491,169);
         ZoneButton icelandBtn = new ZoneButton(iceland, "iceland", 19, 3);
         gzone.add(icelandBtn);
-        z = new Zone(19);
+        z = new Zone(3);
         z.AddNeighbour(3,20,25);
         zone.put(19, z);
         
@@ -289,7 +289,7 @@ public class Editor {
         gb.addPoint(574,243);
         ZoneButton gbBtn = new ZoneButton(gb, "great britain", 20, 3);
         gzone.add(gbBtn);
-        z = new Zone(20);
+        z = new Zone(3);
         z.AddNeighbour(19,23);
         zone.put(20, z);
         
@@ -303,7 +303,7 @@ public class Editor {
         northEU.addPoint(585,243);
         ZoneButton northEUBtn = new ZoneButton(northEU, "north europe", 21, 3);
         gzone.add(northEUBtn);
-        z = new Zone(21);
+        z = new Zone(3);
         z.AddNeighbour(25,24,23);
         zone.put(21, z);
         
@@ -317,7 +317,7 @@ public class Editor {
         southEU.addPoint(551,287);
         ZoneButton southEUBtn = new ZoneButton(southEU, "south europe", 22, 3);
         gzone.add(southEUBtn);
-        z = new Zone(22);
+        z = new Zone(3);
         z.AddNeighbour(23,13);
         zone.put(22, z);
         
@@ -328,7 +328,7 @@ public class Editor {
         westEU.addPoint(552,270);
         ZoneButton westEUBtn = new ZoneButton(westEU, "west europe", 23, 3);
         gzone.add(westEUBtn);
-        z = new Zone(23);
+        z = new Zone(3);
         z.AddNeighbour(20,21,22);
         zone.put(23, z);
         
@@ -340,7 +340,7 @@ public class Editor {
         ukraine.addPoint(613,274);
         ZoneButton ukraineBtn = new ZoneButton(ukraine, "ukraine", 24, 3);
         gzone.add(ukraineBtn);
-        z = new Zone(24);
+        z = new Zone(3);
         z.AddNeighbour(21,31,32);
         zone.put(24, z);
         
@@ -364,7 +364,7 @@ public class Editor {
         scandinavia.addPoint(600,212);
         ZoneButton scandinaviaBtn = new ZoneButton(scandinavia, "scandinavia", 25, 3);
         gzone.add(scandinaviaBtn);
-        z = new Zone(25);
+        z = new Zone(3);
         z.AddNeighbour(21,19,26);
         zone.put(25, z);
         
@@ -379,7 +379,7 @@ public class Editor {
         ural.addPoint(874,234);
         ZoneButton uralBtn = new ZoneButton(ural, "ural", 26, 3);
         gzone.add(uralBtn);
-        z = new Zone(26);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(26, z);
         
@@ -393,7 +393,7 @@ public class Editor {
         siberia.addPoint(880,75);
         ZoneButton siberiaBtn = new ZoneButton(siberia, "siberia", 27, 3);
         gzone.add(siberiaBtn);
-        z = new Zone(27);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(27, z);
         
@@ -404,7 +404,7 @@ public class Editor {
         yakutsk.addPoint(1056,162);
         ZoneButton yakutskBtn = new ZoneButton(yakutsk, "yakutsk", 28, 3);
         gzone.add(yakutskBtn);
-        z = new Zone(28);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(28, z);
         
@@ -424,7 +424,7 @@ public class Editor {
         kamchatka.addPoint(1056,161);
         ZoneButton kamchatkaBtn = new ZoneButton(kamchatka, "kamchatka", 29, 3);
         gzone.add(kamchatkaBtn);
-        z = new Zone(29);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(29, z);
         
@@ -439,7 +439,7 @@ public class Editor {
         jakutsk.addPoint(880,169);
         ZoneButton jakutskBtn = new ZoneButton(jakutsk, "jakutsk", 30, 3);
         gzone.add(jakutskBtn);
-        z = new Zone(30);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(30, z);
         
@@ -456,7 +456,7 @@ public class Editor {
         afghanistan.addPoint(672,200);
         ZoneButton afghanistanBtn = new ZoneButton(afghanistan, "afghanistan", 31, 3);
         gzone.add(afghanistanBtn);
-        z = new Zone(31);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(31, z);
         
@@ -476,7 +476,7 @@ public class Editor {
         middleEast.addPoint(669,312);
         ZoneButton middleEastBtn = new ZoneButton(middleEast, "middle east", 32, 3);
         gzone.add(middleEastBtn);
-        z = new Zone(32);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(32, z);
         
@@ -487,7 +487,7 @@ public class Editor {
         india.addPoint(839,366);
         ZoneButton indiaBtn = new ZoneButton(india, "india", 33, 3);
         gzone.add(indiaBtn);
-        z = new Zone(33);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(33, z);
         
@@ -500,7 +500,7 @@ public class Editor {
         siam.addPoint(965,406);
         ZoneButton siamBtn = new ZoneButton(siam, "siam", 34, 3);
         gzone.add(siamBtn);
-        z = new Zone(34);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(34, z);
         
@@ -513,7 +513,7 @@ public class Editor {
         china.addPoint(933,360);
         ZoneButton chinaBtn = new ZoneButton(china, "china", 35, 3);
         gzone.add(chinaBtn);
-        z = new Zone(35);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(35, z);
         
@@ -525,7 +525,7 @@ public class Editor {
         mongolia.addPoint(875,234);
         ZoneButton mongoliaBtn = new ZoneButton(mongolia, "mongolia", 36, 3);
         gzone.add(mongoliaBtn);
-        z = new Zone(36);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(36, z);
         
@@ -535,7 +535,7 @@ public class Editor {
         japan.addPoint(1080,313);
         ZoneButton japanBtn = new ZoneButton(japan, "japan", 37, 3);
         gzone.add(japanBtn);
-        z = new Zone(37);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(37, z);
         
@@ -547,7 +547,7 @@ public class Editor {
         indonesia.addPoint(991,482);
         ZoneButton indonesiaBtn = new ZoneButton(indonesia, "indonesia", 38, 3);
         gzone.add(indonesiaBtn);
-        z = new Zone(38);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(38, z);
         
@@ -558,7 +558,7 @@ public class Editor {
         newGuinea.addPoint(1132,492);
         ZoneButton newGuineaBtn = new ZoneButton(newGuinea, "new guinea", 39, 3);
         gzone.add(newGuineaBtn);
-        z = new Zone(39);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(39, z);
         
@@ -572,7 +572,7 @@ public class Editor {
         westAUS.addPoint(1079,514);
         ZoneButton westAUSBtn = new ZoneButton(westAUS, "west autralia", 40, 3);
         gzone.add(westAUSBtn);
-        z = new Zone(40);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(40, z);
         
@@ -588,7 +588,7 @@ public class Editor {
         eastAUS.addPoint(1094,602); 
         ZoneButton eastAUSBtn = new ZoneButton(eastAUS, "east australia", 41, 3);
         gzone.add(eastAUSBtn);
-        z = new Zone(41);
+        z = new Zone(3);
         //z.AddNeighbour(); // NEIGHBOURS - VILKA MAN KAN NÅ FRÅN DENNA POSITION.
         zone.put(41, z);
 		

@@ -10,9 +10,12 @@ import risk.general.util.Delegate;
 import risk.ui.GUI;
 import risk.ui.UI;
 
+	 /* 
+	  * 
+	  */
 public class Game {
 	@SuppressWarnings("unused")
-	public Game() {
+	public Game() { //
 		EventManager.CreateGlobalEventManager();
 		EventManager inputEventManager = new InputEventManager();
 

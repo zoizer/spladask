@@ -5,6 +5,7 @@ import risk.general.gameview.IGameView;
 public class GameView implements IGameView {
 	private int id;
 	private int type;
+	private String name = "Unnamed";
 	
 	public GameView(int id, int type) {
 		this.id = id;
@@ -16,6 +17,11 @@ public class GameView implements IGameView {
 
 	@Override
 	public int GetID() { return id; }
+	
+	@Override
+	public String toString() {
+		return name;
+	}
 	
 }
 /*

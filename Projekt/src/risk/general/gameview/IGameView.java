@@ -8,4 +8,5 @@ public interface IGameView {
 	
 	public int GetType();
 	public int GetID();
+	public String toString();
 }

@@ -37,10 +37,10 @@ public class ZoneButton implements Serializable {
 		center = new Point(outline.x + (outline.width / 2),outline.y + (outline.height / 2));
 		msg = new ArrayList<String>();
 		
-		
+		// TODO: UNCOMMENT THIS AND REMOVE THE DEBUG CODE
 		msg.add(name);
 		msg.add("Production: " + production);
-		//msg.add("" + zoneID); // TEMP
+		msg.add("ZoneID: " + zoneID); // TEMP
 	}
 	
 	public void addMsg(String msg) {

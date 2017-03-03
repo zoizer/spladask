@@ -38,9 +38,9 @@ public class ZoneButton implements Serializable {
 		msg = new ArrayList<String>();
 		
 		// TODO: UNCOMMENT THIS AND REMOVE THE DEBUG CODE
-		//msg.add(name);
-		//msg.add("Production: " + production);
-		msg.add("" + zoneID); // TEMP
+		msg.add(name);
+		msg.add("Production: " + production);
+		msg.add("ZoneID: " + zoneID); // TEMP
 	}
 	
 	public void addMsg(String msg) {

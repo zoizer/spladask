@@ -18,6 +18,7 @@ public class Game {
 
 		UI ui = new UI(inputEventManager);
 		GUI gui = new GUI(ui);
+		//Timer t = new Timer(); // Threaded.
 		
 		AttachListeners();
 		

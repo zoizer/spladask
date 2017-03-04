@@ -15,12 +15,12 @@ import risk.ui.UI;
  * Runs the main loop reading the events.
  * 
  * 
- * @author 		Filip Törnqvist
+ * @author 		Filip Tï¿½rnqvist
  * @version 	04/03
  */
 public class Game {
 	@SuppressWarnings("unused")
-	public Game() {
+	public Game() { //
 		EventManager.CreateGlobalEventManager();
 		EventManager inputEventManager = new InputEventManager();
 

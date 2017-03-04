@@ -2,6 +2,13 @@ package risk.event;
 
 import risk.general.event.Event;
 
+/**
+ * RiskEvent is the base event, which may make Event and IEvent unnecessary.
+ * 
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	28/02
+ */
 public class RiskEvent extends Event {
 	public final static int EVENT_ID = 1000;
 	public final static int EVENT_NEW_GAME_PRE		= 2 + EVENT_ID;

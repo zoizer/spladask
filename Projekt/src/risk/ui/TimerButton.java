@@ -10,7 +10,12 @@ import risk.general.event.EventManager;
 import risk.general.event.IEvent;
 import risk.general.util.Delegate;
 
-
+/**
+ * TimerButton is the visual representation of a automatically clicking button that will click itself once the time runs out.
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	04/03
+ */
 public class TimerButton extends JButton {
 	private static final long serialVersionUID = 1685312584989885880L;
 	
@@ -32,9 +37,6 @@ public class TimerButton extends JButton {
 		switch(((TimeEvent)event).GetStatus()) {
 		case UNTIL_TURN:
 			this.setText(preText + ((TimeEvent)event).GetTime());
-			break;
-		case GRACE:
-			this.setText(((TimeEvent)event).GetMsg() + " get ready " + ((TimeEvent)event).GetTime());
 			break;
 		case WAIT:
 			this.setText(waiting);

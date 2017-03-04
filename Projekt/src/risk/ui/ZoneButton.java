@@ -15,7 +15,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * ZoneButton is a polygon shaped button whos sole purpose is to create a custom button.
+ * 
+ * @author 		Filip Törnqvist & Emir Zivcic
+ * @version 	04/03
+ */
 public class ZoneButton implements Serializable {
 	private static final long serialVersionUID = -6146543193300454278L;
 	private Polygon area;
@@ -25,8 +30,8 @@ public class ZoneButton implements Serializable {
 	private int zoneID;
 	private static Color FILL_COLOR = new Color(0.0f, 1.0f, 0.0f, 0.3f);
 	private static Color OUTLINE_COLOR = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-	private static Color SELECT_COLOR = new Color(0.0f, 0.0f, 1.0f, 0.5f);
-	private static Color NEIGHBOUR_COLOR = new Color(0.0f, 1.0f, 0.0f, 0.5f);
+	//private static Color SELECT_COLOR = new Color(0.0f, 0.0f, 1.0f, 0.5f);
+	//private static Color NEIGHBOUR_COLOR = new Color(0.0f, 1.0f, 0.0f, 0.5f);
 	private boolean select = false;
 	private boolean neighbour = false;
 

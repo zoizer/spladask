@@ -2,6 +2,13 @@ package risk.event;
 
 import risk.general.event.Event;
 
+/**
+ * InputEvent handles inputEvents.
+ * 
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	25/02
+ */
 public class InputEvent extends Event {
 	public final static int INPUT_EVENT_ZONE_LEFT_CLICK = 1; // zone id
 	public final static int INPUT_EVENT_ZONE_RIGHT_CLICK = 2; // zone id

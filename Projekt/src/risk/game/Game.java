@@ -4,15 +4,20 @@ import risk.event.InputEventManager;
 import risk.event.RiskEvent;
 import risk.event.RiskGameEvent;
 import risk.event.RiskZoneEvent;
-import risk.game.logic.GeneralGameEvents;
+import risk.game.logic.Core;
 import risk.general.event.*;
 import risk.general.util.Delegate;
 import risk.ui.GUI;
 import risk.ui.UI;
 
-	 /* 
-	  * 
-	  */
+/**
+ * Game is the Game. contains the UI, GUI, Timer etc.
+ * Runs the main loop reading the events.
+ * 
+ * 
+ * @author 		Filip T�rnqvist
+ * @version 	04/03
+ */
 public class Game {
 	@SuppressWarnings("unused")
 	public Game() { //
@@ -21,7 +26,7 @@ public class Game {
 
 		UI ui = new UI(inputEventManager);
 		GUI gui = new GUI(ui);
-		//Timer t = new Timer(); // Threaded.
+		Timer t = new Timer(); // Threaded.
 		
 		AttachListeners();
 		
@@ -44,8 +49,8 @@ public class Game {
 		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME_PRE);
 		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskGameEvent.EVENT_NEW_GAME);
 		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME_POST);
-		EventManager.Get().AttachListener(new Delegate(GeneralGameEvents.Get(), "LoadMap"), RiskGameEvent.EVENT_NEW_GAME);
-		EventManager.Get().AttachListener(new Delegate(GeneralGameEvents.Get(), "SelectZone"), RiskZoneEvent.EVENT_SELECT_ZONE);
+		EventManager.Get().AttachListener(new Delegate(Core.Get(), "LoadMap"), RiskGameEvent.EVENT_NEW_GAME);
+		EventManager.Get().AttachListener(new Delegate(Core.Get(), "SelectZone"), RiskZoneEvent.EVENT_SELECT_ZONE);
 	}
 	
 	public void RequestNewGame(IEvent event) {

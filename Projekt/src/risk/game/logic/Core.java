@@ -9,8 +9,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import risk.gameview.*;
+import risk.general.event.EventManager;
+import risk.general.event.IEvent;
+import risk.event.RiskGameEvent;
+import risk.event.RiskZoneEvent;
 import risk.game.*;
 
+/**
+ * Core is the game core, contains standard game logic functions.
+ * 
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	04/03
+ */
 public final class Core implements Serializable {
 	private static final long serialVersionUID = -3048794182105208641L;
 	private static Core core = new Core();
@@ -46,6 +57,11 @@ public final class Core implements Serializable {
 			activeGameView = id;
 			return true;
 		} else return false;
+	}
+	
+	public int GetNextActiveView() {
+		if(views.containsKey(activeGameView + 1)) return activeGameView + 1;
+		return 0;
 	}
 
 	//////// Zones
@@ -99,5 +115,38 @@ public final class Core implements Serializable {
 	private void Load(Core core2) {
 		this.views = core2.views;
 		this.zones = core2.zones;
+	}
+	
+/////// GeneralGameEvents
+	@SuppressWarnings("unchecked")
+	public void LoadMap(IEvent event) { // THIS IS THE FUNCTION THAT STARTS A NEW GAME
+		try {
+			FileInputStream fileIn = new FileInputStream(event.ToString() + ".dat");
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			Core.Get().InitZones(((HashMap<Integer, Zone>)in.readObject()));
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// SHOULD GIVE WARNING HERE THAT MAP WASNT FOUND.
+		}
+
+		// Player always exists
+		Core.Get().AttachGameView(new PlayerGameView(1));
+		Core.Get().AttachGameView(new PlayerGameView(2));
+		if(Core.Get().SetActiveView(1)) System.out.println("Could set active view.");
+		else System.out.println("Could not set active view.");
+	}
+	
+	public void SelectZone(IEvent event) {
+		RiskZoneEvent e = ((RiskZoneEvent)event);
+		Core.Get().SelectZone(e.GetDst());
+		System.out.println("Selected Zone: " + e.GetDst());
+	}
+	
+	
+	public void TryEndTurn(IEvent event) {
+		if(Core.Get().GetActiveView() instanceof PlayerGameView) { // it is the players turn!
+			EventManager.Get().QueueEvent(new RiskGameEvent(0.0f, RiskGameEvent.EVENT_NEW_TURN, "")); // IF OVER INTERNET, SEND NEW TURN MESSAGE HERE.
+		}
 	}
 }

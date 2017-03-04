@@ -10,6 +10,12 @@ import risk.general.event.*;
 import risk.general.util.Delegate;
 import risk.testing.Editor;
 
+/**
+ * UI manages the user input.
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	04/03
+ */
 public class UI extends WindowAdapter implements ActionListener {
 	EventManager eventManager;
 	

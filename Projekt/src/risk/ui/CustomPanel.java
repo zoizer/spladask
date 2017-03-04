@@ -16,6 +16,13 @@ import risk.general.event.EventManager;
 import risk.general.event.IEvent;
 import risk.general.util.Delegate;
 
+/**
+ * CustomPanel is a wrapper class for the visual representation of the zones.
+ * 
+ * 
+ * @author 		Filip Törnqvist & Emir Zivcic
+ * @version 	04/03
+ */
 public class CustomPanel extends JPanel {
 	private static final long serialVersionUID = -6934313203454347647L;
 	private BufferedImage img = null;

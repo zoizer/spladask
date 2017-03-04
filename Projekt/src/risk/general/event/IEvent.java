@@ -1,11 +1,12 @@
 package risk.general.event;
 
-/*public abstract class Event {
-	// see EventManager.h 
-	// page 309
-	
-	
-}*/
+/**
+ * Base Event
+ * 
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	11/02
+ */
 
 public interface IEvent {
 	public float GetTimeStamp();

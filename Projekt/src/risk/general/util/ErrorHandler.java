@@ -1,5 +1,12 @@
 package risk.general.util;
 
+/**
+ * ErrorHandler is a class that contains static help functions that allows easier warnings and debug.
+ * 
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	11/02
+ */
 public final class ErrorHandler {
 	private ErrorHandler() {}
 	

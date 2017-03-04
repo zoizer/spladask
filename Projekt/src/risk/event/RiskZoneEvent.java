@@ -1,5 +1,12 @@
 package risk.event;
 
+/**
+ * RiskZoneEvent is an event with only one target, the dst, 
+ * 
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	01/03
+ */
 public class RiskZoneEvent extends RiskEvent {
 	public final static int ZONE_EVENT_ID = 2000;
 	public final static int EVENT_NEW_ZONE = 1 + ZONE_EVENT_ID;

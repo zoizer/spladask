@@ -7,6 +7,13 @@ import risk.general.event.*;
 import risk.general.util.Delegate;
 import risk.general.util.ErrorHandler;
 
+/**
+ * This is the EventManager handling all direct input, like clicking zones etc.
+ * 
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	01/03
+ */
 public class InputEventManager extends EventManager {
 	public InputEventManager() {
 		//super.AttachListener(new Delegate(this, "clickTest"), InputEvent.INPUT_EVENT_ZONE_LEFT_CLICK);

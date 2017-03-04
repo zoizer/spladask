@@ -15,10 +15,14 @@ import risk.general.event.IEvent;
 import risk.general.util.Delegate;
 import risk.ui.CustomPanel;
 
+/**
+ * GUI manages ALL graphics.
+ * 
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	04/03
+ */
 public class GUI extends JFrame {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4784853772774531316L;
 	private JMenuBar MenuBar = new JMenuBar();
     private JMenu File = new JMenu("File");

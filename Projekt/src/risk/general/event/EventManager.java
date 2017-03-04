@@ -6,6 +6,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import risk.general.util.Delegate;
 import risk.general.util.ErrorHandler;
 
+/**
+ * EventManager a allows for a simple way to handle events.
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	20/2
+ */
 public class EventManager implements IEventManager {
 	protected static EventManager eventManager = null;
 	private Map<Integer, List<Delegate>> listeners; // Integer is EventType, ArrayList<Delegate> is listeners.

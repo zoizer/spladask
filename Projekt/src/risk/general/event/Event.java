@@ -1,5 +1,11 @@
 package risk.general.event;
 
+/**
+ * Event standard implementation of IEvent.
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	11/02
+ */
 public class Event implements IEvent {
 	protected final float timestamp;
 	protected final int eventType;

@@ -1,5 +1,12 @@
 package risk.general.util;
 
+/**
+ * Pair allows for a C++ style pair.
+ * 
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	11/02
+ */
 public class Pair<Left, Right> {
 	protected final Left left;
 	protected final Right right;

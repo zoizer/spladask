@@ -9,6 +9,14 @@ import java.util.HashMap;
 import risk.game.Zone;
 import risk.ui.ZoneButton;
 
+
+/**
+ * GUI manages ALL graphics.
+ * 
+ * 
+ * @author 		Emir Zivcic
+ * @version 	02/03
+ */
 public class Editor {
 	public static void CREATE_MAP(String name) {
 		ArrayList<ZoneButton> gzone;

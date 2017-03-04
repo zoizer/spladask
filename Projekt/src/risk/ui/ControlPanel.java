@@ -10,6 +10,13 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * the ControlPanel displays and manages some ui directly connected to the game.
+ *  
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	04/03
+ */
 public class ControlPanel extends JPanel {
 	private static final long serialVersionUID = -5022575419076933625L;
 	/////////////////////// GRID LAYOUT

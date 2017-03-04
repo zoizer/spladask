@@ -5,6 +5,12 @@ import java.lang.reflect.Method;
 
 import risk.general.event.IEvent;
 
+/**
+ * This is a C++ style delegate, whos purpose is to create a function pointer to a member function.
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	11/02
+ */
 public class Delegate extends Pair<Object, Method> {
 
 	public Delegate(Object left, String right) {

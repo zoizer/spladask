@@ -5,6 +5,13 @@ import risk.game.logic.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Zone is the game version of a zone.
+ * 
+ * 
+ * @author 		Marco Zaarour & Filip Törnqvist
+ * @version 	01/03
+ */
 public class Zone implements Serializable {
 	private static final long serialVersionUID = -645992308047933435L;
 	private final int production;

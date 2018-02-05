@@ -95,6 +95,6 @@ public class GUI extends JFrame {
 	score.addActionListener(ui);
     	File.add(score);
         MenuBar.add(File1);
-        setJMenuBar(MenuBar)
+        setJMenuBar(MenuBar);
     }
 }

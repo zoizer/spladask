@@ -1,7 +1,5 @@
 package risk.event;
 
-import risk.general.event.Event;
-
 /**
  * InputEvent handles inputEvents.
  * 

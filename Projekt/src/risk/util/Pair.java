@@ -1,4 +1,4 @@
-package risk.general.util;
+package risk.util;
 
 /**
  * Pair allows for a C++ style pair.

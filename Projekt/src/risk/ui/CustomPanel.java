@@ -10,11 +10,11 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import risk.event.EventManager;
+import risk.event.IEvent;
 import risk.event.RiskZoneEvent;
 import risk.game.logic.Core;
-import risk.general.event.EventManager;
-import risk.general.event.IEvent;
-import risk.general.util.Delegate;
+import risk.util.Delegate;
 
 /**
  * CustomPanel is a wrapper class for the visual representation of the zones.

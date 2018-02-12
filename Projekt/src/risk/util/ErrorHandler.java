@@ -1,4 +1,4 @@
-package risk.general.util;
+package risk.util;
 
 /**
  * ErrorHandler is a class that contains static help functions that allows easier warnings and debug.

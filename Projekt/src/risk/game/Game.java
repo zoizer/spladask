@@ -1,14 +1,15 @@
 package risk.game;
 
+import risk.event.EventManager;
+import risk.event.IEvent;
 import risk.event.InputEventManager;
 import risk.event.RiskEvent;
 import risk.event.RiskGameEvent;
 import risk.event.RiskZoneEvent;
 import risk.game.logic.Core;
-import risk.general.event.*;
-import risk.general.util.Delegate;
 import risk.ui.GUI;
 import risk.ui.UI;
+import risk.util.Delegate;
 
 /**
  * Game is the Game. contains the UI, GUI, Timer etc.

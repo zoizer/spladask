@@ -6,9 +6,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import risk.event.*;
-import risk.general.event.*;
-import risk.general.util.Delegate;
 import risk.testing.Editor;
+import risk.util.Delegate;
 
 /**
  * UI manages the user input.

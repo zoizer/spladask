@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import risk.gameview.*;
-import risk.general.event.EventManager;
-import risk.general.event.IEvent;
+import risk.event.EventManager;
+import risk.event.IEvent;
 import risk.event.RiskGameEvent;
 import risk.event.RiskZoneEvent;
 import risk.game.*;

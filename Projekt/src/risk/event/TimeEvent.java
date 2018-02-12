@@ -1,7 +1,5 @@
 package risk.event;
 
-import risk.general.event.Event;
-
 /**
  * TimeEvent is an event containing time for the TimerButton.
  * 

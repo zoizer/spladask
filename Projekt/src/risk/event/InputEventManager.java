@@ -3,9 +3,8 @@ package risk.event;
 import risk.game.Zone;
 import risk.game.logic.Core;
 import risk.gameview.PlayerGameView;
-import risk.general.event.*;
-import risk.general.util.Delegate;
-import risk.general.util.ErrorHandler;
+import risk.util.Delegate;
+import risk.util.ErrorHandler;
 
 /**
  * This is the EventManager handling all direct input, like clicking zones etc.

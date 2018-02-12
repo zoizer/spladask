@@ -1,4 +1,4 @@
-package risk.general.event;
+package risk.event;
 
 import java.util.Vector;
 

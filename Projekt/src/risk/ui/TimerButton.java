@@ -4,11 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
+import risk.event.EventManager;
+import risk.event.IEvent;
 import risk.event.RiskGameEvent;
 import risk.event.TimeEvent;
-import risk.general.event.EventManager;
-import risk.general.event.IEvent;
-import risk.general.util.Delegate;
+import risk.util.Delegate;
 
 /**
  * TimerButton is the visual representation of a automatically clicking button that will click itself once the time runs out.

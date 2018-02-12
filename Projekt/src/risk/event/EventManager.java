@@ -1,10 +1,10 @@
-package risk.general.event;
+package risk.event;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import risk.general.util.Delegate;
-import risk.general.util.ErrorHandler;
+import risk.util.Delegate;
+import risk.util.ErrorHandler;
 
 /**
  * EventManager a allows for a simple way to handle events.
@@ -55,6 +55,7 @@ public class EventManager implements IEventManager {
 	}
 
 	@Override
+	@Deprecated // ERROR, i think. listener.remove(List<Deletage>) seems very wrong.
 	public void DetachListener(Delegate listener, int eventType) {
 		synchronized(listeners) {
 			List<Delegate> delegates = listeners.get(eventType);

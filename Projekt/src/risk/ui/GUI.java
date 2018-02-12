@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import risk.event.EventManager;
+import risk.event.IEvent;
 import risk.event.RiskGameEvent;
-import risk.general.event.EventManager;
-import risk.general.event.IEvent;
-import risk.general.util.Delegate;
 import risk.ui.CustomPanel;
+import risk.util.Delegate;
 
 /**
  * GUI manages ALL graphics.

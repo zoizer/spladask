@@ -1,6 +1,6 @@
-package risk.general.event;
+package risk.event;
 
-import risk.general.util.Delegate;
+import risk.util.Delegate;
 
 /**
  * IEventManager is the base for a event manager.

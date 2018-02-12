@@ -1,9 +1,9 @@
 package risk.game;
 
+import risk.event.EventManager;
+import risk.event.IEvent;
 import risk.event.RiskGameEvent;
 import risk.event.TimeEvent;
-import risk.general.event.EventManager;
-import risk.general.event.IEvent;
 
 /**
  * Timer is meant to manage a timer that automatically switches turns when the time runs out.

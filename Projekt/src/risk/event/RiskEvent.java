@@ -1,7 +1,5 @@
 package risk.event;
 
-import risk.general.event.Event;
-
 /**
  * RiskEvent is the base event, which may make Event and IEvent unnecessary.
  * 

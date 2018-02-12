@@ -1,9 +1,9 @@
-package risk.general.util;
+package risk.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import risk.general.event.IEvent;
+import risk.event.IEvent;
 
 /**
  * This is a C++ style delegate, whos purpose is to create a function pointer to a member function.
@@ -14,10 +14,10 @@ import risk.general.event.IEvent;
 public class Delegate extends Pair<Object, Method> {
 
 	public Delegate(Object left, String right) {
-			super(left, JavaIsWorseThanAIDS(left, right));
+			super(left, JavaWorkaround(left, right));
 	}
 	
-	private static final Method JavaIsWorseThanAIDS(Object o, String f) {
+	private static final Method JavaWorkaround(Object o, String f) {
 		try {
 			return  o.getClass().getMethod(f, new Class[] {IEvent.class});
 		} catch (NoSuchMethodException | SecurityException e) {

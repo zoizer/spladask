@@ -54,7 +54,7 @@ public class GUI extends JFrame {
     }
     
     @SuppressWarnings("unchecked")
-	public void StartMap(IEvent event) {
+	public void StartMap(IEvent event) { // should probably be moved to model. which sends an event contianing the loaded map.
     	BufferedImage bi;
     	CustomPanel cp;
 		try {

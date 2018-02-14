@@ -12,7 +12,7 @@ import risk.util.ErrorHandler;
  * @author 		Filip Törnqvist
  * @version 	20/2
  */
-public class EventManager implements IEventManager {
+public class EventManager {
 	protected static EventManager eventManager = null;
 	private Map<Integer, List<Delegate>> listeners; // Integer is EventType, ArrayList<Delegate> is listeners.
 	private EventQueue[] eventQueues; // REMEMBER THIS IS NOT SYNCHRONIZED LIKE BEFORE.
@@ -33,12 +33,11 @@ public class EventManager implements IEventManager {
 		eventManager = new EventManager();
 	}
 	
-	public static final IEventManager Get() {
+	public static final EventManager Get() {
 		ErrorHandler.ASSERT(eventManager != null);
 		return eventManager;
 	}
 	
-	@Override
 	public void AttachListener(Delegate listener, int eventType) {
 		synchronized(listeners) {
 			List<Delegate> delegates = listeners.get(eventType);
@@ -54,7 +53,6 @@ public class EventManager implements IEventManager {
 		}
 	}
 
-	@Override
 	@Deprecated // ERROR, i think. listener.remove(List<Deletage>) seems very wrong.
 	public void DetachListener(Delegate listener, int eventType) {
 		synchronized(listeners) {
@@ -66,7 +64,6 @@ public class EventManager implements IEventManager {
 		}
 	}
 
-	@Override
 	public void TriggerEvent(IEvent event) {
 		boolean wasHandled = false;
 		synchronized(listeners) {
@@ -82,14 +79,12 @@ public class EventManager implements IEventManager {
 		if(!wasHandled) ErrorHandler.WARNING("Forced event trigger wasnt handled. EventType: " + event.GetEventType());
 	}
 
-	@Override
 	public void QueueEvent(IEvent event) {
 		synchronized(eventQueues[writingQueue]) {
 			eventQueues[writingQueue].add(event);
 		}
 	}
 
-	@Override
 	public void AbortLastEventOfType(int eventType) {
 		synchronized(eventQueues[writingQueue]) {
 			ListIterator<IEvent> li = eventQueues[writingQueue].listIterator(eventQueues[writingQueue].size());
@@ -105,7 +100,6 @@ public class EventManager implements IEventManager {
 		ErrorHandler.WARNING("Tried to abort last event of type: " + eventType + " but none was found.");
 	}
 
-	@Override
 	public void AbortAllOfEvent(int eventType) {
 		synchronized(eventQueues[writingQueue]) {
 			ListIterator<IEvent> it = eventQueues[writingQueue].listIterator();
@@ -116,7 +110,6 @@ public class EventManager implements IEventManager {
 		}
 	}
 
-	@Override
 	public void Update() {
 		final int updateQueue = writingQueue;
 		if(writingQueue == (queueCount - 1)) writingQueue = 0;

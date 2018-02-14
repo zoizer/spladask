@@ -6,6 +6,8 @@ import risk.gameview.PlayerGameView;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
 
+// TODO DELETE THIS
+
 /**
  * This is the EventManager handling all direct input, like clicking zones etc.
  * 

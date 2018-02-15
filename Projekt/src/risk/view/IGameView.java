@@ -1,5 +1,7 @@
 package risk.view;
 
-public interface IGameView {
+import risk.event.IEventSystem;
 
+public interface IGameView extends IEventSystem {
+	public void Destroy();
 }

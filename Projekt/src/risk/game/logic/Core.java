@@ -25,7 +25,7 @@ import risk.game.*;
 public final class Core implements Serializable {
 	private static final long serialVersionUID = -3048794182105208641L;
 	private static Core core = new Core();
-	public static Core Get() { return core; }
+	public static Core get() { return core; }
 	private Core() {
 		views = new HashMap<Integer, GameView>();
 		zones = new HashMap<Integer, Zone>();
@@ -123,7 +123,7 @@ public final class Core implements Serializable {
 		try {
 			FileInputStream fileIn = new FileInputStream(event.ToString() + ".dat");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
-			Core.Get().InitZones(((HashMap<Integer, Zone>)in.readObject()));
+			Core.get().InitZones(((HashMap<Integer, Zone>)in.readObject()));
 			in.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -131,22 +131,22 @@ public final class Core implements Serializable {
 		}
 
 		// Player always exists
-		Core.Get().AttachGameView(new PlayerGameView(1));
-		Core.Get().AttachGameView(new PlayerGameView(2));
-		if(Core.Get().SetActiveView(1)) System.out.println("Could set active view.");
+		Core.get().AttachGameView(new PlayerGameView(1));
+		Core.get().AttachGameView(new PlayerGameView(2));
+		if(Core.get().SetActiveView(1)) System.out.println("Could set active view.");
 		else System.out.println("Could not set active view.");
 	}
 	
 	public void SelectZone(IEvent event) {
 		RiskZoneEvent e = ((RiskZoneEvent)event);
-		Core.Get().SelectZone(e.GetDst());
+		Core.get().SelectZone(e.GetDst());
 		System.out.println("Selected Zone: " + e.GetDst());
 	}
 	
 	
 	public void TryEndTurn(IEvent event) {
-		if(Core.Get().GetActiveView() instanceof PlayerGameView) { // it is the players turn!
-			EventManager.Get().QueueEvent(new RiskGameEvent(0.0f, RiskGameEvent.EVENT_NEW_TURN, "")); // IF OVER INTERNET, SEND NEW TURN MESSAGE HERE.
+		if(Core.get().GetActiveView() instanceof PlayerGameView) { // it is the players turn!
+			EventManager.get().queueEvent(new RiskGameEvent(0.0f, RiskGameEvent.EVENT_NEW_TURN, "")); // IF OVER INTERNET, SEND NEW TURN MESSAGE HERE.
 		}
 	}
 }

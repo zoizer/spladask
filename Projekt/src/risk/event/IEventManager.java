@@ -10,11 +10,11 @@ import risk.util.Delegate;
  * @version 	11/02
  */
 public interface IEventManager {
-	public abstract void AttachListener(Delegate eventdel, int eventType);
-	public abstract void DetachListener(Delegate eventdel, int eventType);
-	public abstract void TriggerEvent(IEvent event);
-	public abstract void QueueEvent(IEvent event); // remember thread safety.
-	public abstract void AbortLastEventOfType(int eventType);
-	public abstract void AbortAllOfEvent(int eventType);
-	public abstract void Update();
+	public void attachListener(Delegate eventdel, IEvent.EventType eventType);
+	public void detachListener(Delegate eventdel, IEvent.EventType eventType);
+//	public void triggerEvent(IEvent event);
+	public void queueEvent(IEvent event); // remember thread safety.
+//	public void abortLastEventOfType(IEvent.EventType eventType);
+//	public void abortAllOfEvent(IEvent.EventType eventType);
+	public void triggerQueue();
 }

@@ -46,11 +46,11 @@ public class GUI extends JFrame {
         setLocation(100, 100);
         pack();
         setVisible(true);
-        AttachListeners();
+        attachListeners();
     }
     
-    private void AttachListeners() {
-    	EventManager.Get().AttachListener(new Delegate(this, "StartMap"), RiskGameEvent.EVENT_NEW_GAME);
+    private void attachListeners() {
+    	EventManager.get().attachListener(new Delegate(this, "StartMap"), RiskGameEvent.EVENT_NEW_GAME);
     }
     
     @SuppressWarnings("unchecked")

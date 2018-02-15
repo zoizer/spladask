@@ -17,7 +17,7 @@ public class Zone implements Serializable {
 	private final int production;
 	ArrayList<Integer> neighbours;
 	
-	private int ownerid;
+	private int ownerid; // host should probably always be ID 0. o maybe this should be a string of the owner name.
 	
 	public Zone(int production) {
 		this.production = production;
@@ -45,7 +45,7 @@ public class Zone implements Serializable {
 	
 	public Zone GetNeighbour(int id) {
 		if(neighbours.contains(id)) {
-			return Core.Get().GetZone(id);
+			return Core.get().GetZone(id);
 		} else return null;
 	}
 	

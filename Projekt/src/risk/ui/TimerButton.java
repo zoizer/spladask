@@ -24,16 +24,16 @@ public class TimerButton extends JButton {
 	
 	public TimerButton() {
 		super(waiting);
-		EventManager.Get().AttachListener(new Delegate(this, "UpdateTime"), TimeEvent.EVENT_UPDATE_TIME); 
+		EventManager.get().attachListener(new Delegate(this, "triggerQueueTime"), TimeEvent.EVENT_UPDATE_TIME); 
 		this.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				EventManager.Get().QueueEvent(new RiskGameEvent(0.0f, RiskGameEvent.EVENT_TRY_SKIP_TURN, ""));
+				EventManager.get().queueEvent(new RiskGameEvent(0.0f, RiskGameEvent.EVENT_TRY_SKIP_TURN, ""));
 			}
 		});
 	}
 	
-	public void UpdateTime(IEvent event) {
+	public void triggerQueueTime(IEvent event) {
 		switch(((TimeEvent)event).GetStatus()) {
 		case UNTIL_TURN:
 			this.setText(preText + ((TimeEvent)event).GetTime());

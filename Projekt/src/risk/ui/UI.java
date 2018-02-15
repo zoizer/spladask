@@ -22,7 +22,7 @@ public class UI extends WindowAdapter implements ActionListener {
 		this.eventManager = eventManager;
 		
 		// Attach Listeners //
-		eventManager.AttachListener(new Delegate(this, "Quit"), InputEvent.INPUT_EVENT_QUIT);
+		eventManager.attachListener(new Delegate(this, "Quit"), InputEvent.INPUT_EVENT_QUIT);
 	}
 	
 	 @Override
@@ -30,21 +30,21 @@ public class UI extends WindowAdapter implements ActionListener {
 		 String cmd = e.getActionCommand();
 		 
 		 if(cmd.equals("Exit"))
-			 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_QUIT, 0));
+			 eventManager.queueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_QUIT, 0));
 		 else if(cmd.equals("New Game"))
-			 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_NEW_GAME, 0));
+			 eventManager.queueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_NEW_GAME, 0));
 		 else if(cmd.equals("Create and Store new Map"))
 			 Editor.CREATE_MAP("sistariskcolored");
 		 else;
-			// eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_ZONE_LEFT_CLICK, Integer.parseInt(cmd)));
+			// eventManager.queueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_ZONE_LEFT_CLICK, Integer.parseInt(cmd)));
      }
 	 
 	 public void ActivateLeftClickMap(int zoneid) {
-		 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_ZONE_LEFT_CLICK, zoneid));
+		 eventManager.queueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_ZONE_LEFT_CLICK, zoneid));
 	 }
 	 
 	 public void ActivateRightClickMap(int zoneid) {
-		 eventManager.QueueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_ZONE_RIGHT_CLICK, zoneid));
+		 eventManager.queueEvent(new InputEvent(0.0f, InputEvent.INPUT_EVENT_ZONE_RIGHT_CLICK, zoneid));
 	 }
      
      public void windowClosing(WindowEvent e) {

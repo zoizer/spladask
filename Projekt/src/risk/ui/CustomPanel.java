@@ -35,7 +35,7 @@ public class CustomPanel extends JPanel {
 		this.img = img;
 		this.addMouseListener(tml);
 		this.ui = ui;
-		EventManager.Get().AttachListener(new Delegate(this, "SelectZone"), RiskZoneEvent.EVENT_SELECT_ZONE);
+		EventManager.get().attachListener(new Delegate(this, "SelectZone"), RiskZoneEvent.EVENT_SELECT_ZONE);
 	}
 	
 	public void attachBtn(ZoneButton btn) {
@@ -72,7 +72,7 @@ public class CustomPanel extends JPanel {
 			}
 		}
 		
-		ArrayList<Integer> ar = Core.Get().GetZone(rze.GetDst()).GetNeighbours();
+		ArrayList<Integer> ar = Core.get().GetZone(rze.GetDst()).GetNeighbours();
 		for(Integer i : ar) {
 			for(ZoneButton btn : btns) {
 				if(btn.getID() == i) btn.Neighbour(true);

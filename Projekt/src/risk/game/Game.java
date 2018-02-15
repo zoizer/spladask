@@ -22,18 +22,18 @@ import risk.util.Delegate;
 public class Game {
 	@SuppressWarnings("unused")
 	public Game() { //
-		EventManager.CreateGlobalEventManager();
+		EventManager.create();
 		EventManager inputEventManager = new InputEventManager();
 
 		UI ui = new UI(inputEventManager);
 		GUI gui = new GUI(ui);
 		Timer t = new Timer(); // Threaded.
 		
-		AttachListeners();
+		attachListeners();
 		
 		while(true) {
-			inputEventManager.Update();
-			EventManager.Get().Update();
+			inputEventManager.triggerQueue();
+			EventManager.get().triggerQueue();
 		}
 	}
 	
@@ -46,19 +46,19 @@ public class Game {
 	 * 
 	 */
 	
-	private void AttachListeners() {
-		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME_PRE);
-		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskGameEvent.EVENT_NEW_GAME);
-		EventManager.Get().AttachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME_POST);
-		EventManager.Get().AttachListener(new Delegate(Core.Get(), "LoadMap"), RiskGameEvent.EVENT_NEW_GAME);
-		EventManager.Get().AttachListener(new Delegate(Core.Get(), "SelectZone"), RiskZoneEvent.EVENT_SELECT_ZONE);
+	private void attachListeners() {
+		EventManager.get().attachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME_PRE);
+		EventManager.get().attachListener(new Delegate(this, "RequestNewGame"), RiskGameEvent.EVENT_NEW_GAME);
+		EventManager.get().attachListener(new Delegate(this, "RequestNewGame"), RiskEvent.EVENT_NEW_GAME_POST);
+		EventManager.get().attachListener(new Delegate(Core.get(), "LoadMap"), RiskGameEvent.EVENT_NEW_GAME);
+		EventManager.get().attachListener(new Delegate(Core.get(), "SelectZone"), RiskZoneEvent.EVENT_SELECT_ZONE);
 	}
 	
 	public void RequestNewGame(IEvent event) {
 		if (event.GetEventType() == RiskEvent.EVENT_NEW_GAME_PRE) { // Queue the next event.
-			EventManager.Get().QueueEvent(new RiskGameEvent(0.0f, RiskGameEvent.EVENT_NEW_GAME, "sistariskcolored"));
+			EventManager.get().queueEvent(new RiskGameEvent(0.0f, RiskGameEvent.EVENT_NEW_GAME, "sistariskcolored"));
 		} else if (event.GetEventType() == RiskGameEvent.EVENT_NEW_GAME) {
-			EventManager.Get().QueueEvent(new RiskEvent(0.0f, RiskEvent.EVENT_NEW_GAME_POST));
+			EventManager.get().queueEvent(new RiskEvent(0.0f, RiskEvent.EVENT_NEW_GAME_POST));
 		} else if (event.GetEventType() == RiskEvent.EVENT_NEW_GAME_POST) {
 			// The new game have been created.
 		}

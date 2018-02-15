@@ -2,7 +2,7 @@ package risk.model;
 
 import risk.event.AEventSystem;
 
-public class PlayerModel extends AEventSystem {
+public class ClientGameModel extends AEventSystem implements IGameModel {
 
 	@Override
 	public void attachListeners() {

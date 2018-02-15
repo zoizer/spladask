@@ -1,5 +1,7 @@
 package risk.model;
 
-public interface IGameModel {
+import risk.event.IEventSystem;
+
+public interface IGameModel extends IEventSystem {
 
 }

@@ -1,5 +1,7 @@
 package risk.controller;
 
-public interface IPlayerController {
+import risk.event.IEventSystem;
+
+public interface IPlayerController extends IEventSystem {
 	
 }

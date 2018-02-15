@@ -20,7 +20,7 @@ public class Timer implements Runnable {
 	
 	public Timer() {
 		new Thread(this).start();
-		EventManager.Get().QueueEvent(new TimeEvent(0.0f, 0, TimeEvent.Status.WAIT));
+		EventManager.get().queueEvent(new TimeEvent(0.0f, 0, TimeEvent.Status.WAIT));
 	}
 	
 	public void StartTimer(IEvent event) {
@@ -38,8 +38,8 @@ public class Timer implements Runnable {
 		while(alive) {
 			try {
 				if(active) {
-					EventManager.Get().QueueEvent(new TimeEvent(0.0f, countDown, TimeEvent.Status.UNTIL_TURN));
-					if(--countDown == 0) EventManager.Get().QueueEvent(new RiskGameEvent(0.0f, RiskGameEvent.EVENT_NEW_TURN, ""));
+					EventManager.get().queueEvent(new TimeEvent(0.0f, countDown, TimeEvent.Status.UNTIL_TURN));
+					if(--countDown == 0) EventManager.get().queueEvent(new RiskGameEvent(0.0f, RiskGameEvent.EVENT_NEW_TURN, ""));
 					Thread.sleep(1000);
 				} else Thread.sleep(250);
 			} catch(InterruptedException e) {

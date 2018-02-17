@@ -3,27 +3,33 @@ package risk.controller;
 import java.awt.Point;
 
 import risk.event.AEventSystem;
-import risk.generic.Map;
-import risk.generic.Zone;
+import risk.general.Map;
+import risk.general.Zone;
 
 public class LocalPlayerController extends AEventSystem implements IPlayerController {
 	Map map;
 	
 	@Override
 	public void attachListeners() {
-		// should remain empty for Controllers
+
 	}
 
 	@Override
 	public void detachListeners() {
-		// should remain empty for Controllers
+
 	}
 	
 	public void leftClick(Point p) {
 		Zone z = map.getZone(p);
+		if (z != null) {
+			// send event
+		}
 	}
 	
 	public void rightClick(Point p) {
 		Zone z = map.getZone(p);
+		if (z != null) {
+			// send event
+		}
 	}
 }

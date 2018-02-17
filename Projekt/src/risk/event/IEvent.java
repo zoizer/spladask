@@ -18,10 +18,11 @@ public interface IEvent {
 		// IT BELONGS THERE.
 		RpcPreStartGameEvent,
 		SvrStartGameEvent,
-		LclClickEvent, // Local
-		LclSelectEvent, // Local
-		LclPreAttackEvent, // should have LOTS of events be local and have a GuiModel
-		RpcAttackEvent, // should have LOTS of events be local and have a GuiModel
+		LclTrySelectEvent, 
+		LclTryAttackEvent,
+		RpcAttackEvent,
+		SvrAttackEvent,
+		LclGenerateMap,
 	}
 	
 	public String toString();

@@ -23,6 +23,7 @@ public class EventManager implements IEventManager {
 	@SuppressWarnings("unchecked") // might be an error.
 	protected EventManager() {
 		listeners = new ConcurrentHashMap<IEvent.EventType, List<Delegate>>();
+		writingQueue = new AtomicInteger();
 		writingQueue.set(0);
 		eventQueues = new List[2];
 		eventQueues[0] = Collections.synchronizedList(new ArrayList<IEvent>()); 
@@ -79,7 +80,8 @@ public class EventManager implements IEventManager {
 			List<Delegate> delegates = listeners.get(event.getEventType());
 			if(delegates != null) {
 				synchronized(delegates) { // must synchronize due to iteration.
-					for(Delegate d : delegates) d.Execute(new Object[] {event});
+					for(Delegate d : delegates) 
+						d.Execute(new Object[] {event});
 				}
 			}
 

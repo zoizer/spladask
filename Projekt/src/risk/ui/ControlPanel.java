@@ -1,6 +1,5 @@
 package risk.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
@@ -43,7 +42,6 @@ public class ControlPanel extends JPanel {
 	}
 	
 	//////////////////////// TIMER
-	private TimerButton tbtn = null;
 	
 	public ControlPanel(LayoutManager bl) {
 		super(bl);
@@ -58,8 +56,6 @@ public class ControlPanel extends JPanel {
 		production.setHighlighter(null);
 		this.add(production);
 		
-		tbtn = new TimerButton();
-		this.add(tbtn,  BorderLayout.EAST);
 		
     	this.setBackground(Color.lightGray);
     	this.setBorder(BorderFactory.createLineBorder(Color.darkGray));

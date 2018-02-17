@@ -1,7 +1,7 @@
 package risk.model;
 
 import risk.event.AEventSystem;
-import risk.generic.Map;
+import risk.general.Map;
 
 public class ServerGameModel extends AEventSystem implements IGameModel {
 	private Map map;
@@ -21,5 +21,4 @@ public class ServerGameModel extends AEventSystem implements IGameModel {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

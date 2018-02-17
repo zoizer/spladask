@@ -4,23 +4,32 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-import risk.event.EventManager;
+import risk.event.AEventSystem;
 import risk.event.IEvent;
-import risk.event.IEventSystem;
+import risk.event.LclGenerateMap;
 import risk.event.RpcPreStartGameEvent;
 import risk.event.SvrStartGameEvent;
-import risk.testing.Editor;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
 
-public class InstanceController extends MouseAdapter implements ActionListener, IEventSystem {
+public class InstanceController extends AEventSystem {
 	LocalPlayerController playerCtrl;
 	RemotePlayerControllers remotePlayerCtrl;
+	MouseAdapterController mouseAdapter;
+	WindowAdapterController windowAdapter;
+	ActionListenerController actionListener;
+	
+	
 	
 	public InstanceController() {
 		playerCtrl = null;
 		remotePlayerCtrl = null;
+		mouseAdapter = new MouseAdapterController(this);
+		windowAdapter = new WindowAdapterController(this);
+		actionListener = new ActionListenerController(this);
 	}
 	
 	@Override
@@ -32,34 +41,21 @@ public class InstanceController extends MouseAdapter implements ActionListener, 
 	public void detachListeners() {
 		detachListener(new Delegate(this, "startGame"), IEvent.EventType.SvrStartGameEvent);
 	}
-
 	
-	
-	// handle all non-user related commands.
-	
-	
-	// All commands should just decorate or modify them, they should NOT 
-	
-	protected void queueEvent(IEvent e) {
-		EventManager.get().queueEvent(e);
+	private LocalPlayerController getLocalPlayer() {
+		return playerCtrl;
 	}
 	
-	protected void attachListener(Delegate d, IEvent.EventType eventType) {
-		EventManager.get().attachListener(d, eventType);
+	public MouseAdapter getMouseAdapter() {
+		return mouseAdapter;
 	}
 	
-	protected void detachListener(Delegate d, IEvent.EventType eventType) {
-		EventManager.get().attachListener(d, eventType);
+	public WindowAdapter getWindowAdapter() {
+		return windowAdapter;
 	}
 	
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		String cmd = e.getActionCommand();
-
-		      if(cmd.equals("New Game")) queueEvent(new RpcPreStartGameEvent("sistariskcolored"));
-		 else if(cmd.equals("Create Map")) Editor.CREATE_MAP("sistariskcolored"); // TEMPORARY
-		 else if(cmd.equals("Exit")) System.exit(0); // TEMPORARY
+	public ActionListener getActionListener() {
+		return actionListener;
 	}
 	
 	public void startGame(IEvent ev) {
@@ -70,13 +66,54 @@ public class InstanceController extends MouseAdapter implements ActionListener, 
 		if (e.multiplayer && e.host) remotePlayerCtrl = new RemotePlayerControllers(); // add paramters, like adress.
 	}
 	
-	public void mouseClicked(MouseEvent e) {
-		if (playerCtrl != null) {
-			if (e.getButton() == MouseEvent.BUTTON1) {
-				playerCtrl.leftClick(e.getPoint());
-			} else if (e.getButton() == MouseEvent.BUTTON3) {
-				playerCtrl.rightClick(e.getPoint());
+	// CLASSES
+	public class MouseAdapterController extends MouseAdapter {
+		private InstanceController parent;
+		
+		public MouseAdapterController(InstanceController ctrl) {
+			parent = ctrl;
+		}
+		
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			LocalPlayerController player = parent.getLocalPlayer();
+			if (player != null) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					player.leftClick(e.getPoint());
+				} else if (e.getButton() == MouseEvent.BUTTON3) {
+					player.rightClick(e.getPoint());
+				}
 			}
+		}
+	}
+	
+	public class WindowAdapterController extends WindowAdapter {
+		@SuppressWarnings("unused")
+		private InstanceController parent;
+		
+		public WindowAdapterController(InstanceController ctrl) {
+			parent = ctrl;
+		}
+		
+		public void windowClosing(WindowEvent e) {
+	     	System.exit(0); // TEMPORARY
+		}
+	}
+	
+	public class ActionListenerController implements ActionListener {
+		private InstanceController parent;
+		
+		public ActionListenerController(InstanceController ctrl) {
+			parent = ctrl;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String cmd = e.getActionCommand();
+
+			      if(cmd.equals("New Game")) parent.queueEvent(new RpcPreStartGameEvent("Default"));
+			 else if(cmd.equals("Create Map")) parent.queueEvent(new LclGenerateMap("Default"));
+			 else if(cmd.equals("Exit")) System.exit(0); // TEMPORARY
 		}
 	}
 }

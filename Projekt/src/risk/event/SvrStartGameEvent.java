@@ -2,7 +2,7 @@ package risk.event;
 
 import java.util.List;
 
-import risk.generic.Map;
+import risk.general.Map;
 
 public class SvrStartGameEvent extends AEvent {
 	public final Map map; 

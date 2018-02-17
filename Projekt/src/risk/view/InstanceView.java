@@ -2,6 +2,7 @@ package risk.view;
 
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.awt.event.WindowAdapter;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -16,8 +17,9 @@ import risk.util.Delegate;
 import risk.util.ErrorHandler;
 
 public class InstanceView extends AEventSystem {
-	private ActionListener actionListener;
 	private MouseAdapter mouseAdapter;
+	private WindowAdapter windowAdapter;
+	private ActionListener actionListener;
 	private JFrame jFrame;
 	private JMenuBar jMenuBar;
 	private JMenu jmFile;
@@ -26,12 +28,15 @@ public class InstanceView extends AEventSystem {
 	private JMenuItem jmiExit;
 	private IGameView localView;
 	private IGameView remoteViews;
-	private ControlPanel ctrlPanel; // kinda feel this belongs to the gameView 
 	
-	public InstanceView(ActionListener al, MouseAdapter ma) {
-		actionListener = al;
+	public InstanceView(MouseAdapter ma, WindowAdapter wa, ActionListener al) {
+		attachListeners();
+		
 		mouseAdapter = ma;
+		windowAdapter = wa;
+		actionListener = al;
 		jFrame = new JFrame();
+		jFrame.addWindowListener(windowAdapter);
 		jMenuBar = new JMenuBar();
 		jmFile = new JMenu("File");
 		jmiNewGame = new JMenuItem("New Game");
@@ -57,7 +62,7 @@ public class InstanceView extends AEventSystem {
 
 	@Override
 	public void detachListeners() {
-		attachListener(new Delegate(this, "startGame"), IEvent.EventType.SvrStartGameEvent);
+		detachListener(new Delegate(this, "startGame"), IEvent.EventType.SvrStartGameEvent);
 	}
 	
 	private void createMenu() {

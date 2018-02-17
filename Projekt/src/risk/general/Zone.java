@@ -1,24 +1,28 @@
-package risk.generic;
+package risk.general;
 
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Zone implements Serializable { // has no ID, the id is the location in the vector in map.
 	private static final long serialVersionUID = -6371719250707334678L;
 	private final String name;
 	private final Polygon area;
-	private final ArrayList<Zone> neighbours;
+	private final Rectangle outline;
+	private final List<Integer> neighbours;
 	private int production;
 	private String owner;
 	
-	public Zone(String name, Polygon area, ArrayList<Zone> neighbours, int production) {
+	public Zone(String name, Polygon area, List<Integer> neighbours, int production) {
 		this.name = name;
 		this.area = area;
 		this.neighbours = neighbours;
 		this.production = production;
 		owner = null;
+		outline = area.getBounds();
 	}
 	
 	public boolean equals(Object zone) {
@@ -28,7 +32,27 @@ public class Zone implements Serializable { // has no ID, the id is the location
 	}
 	
 	public boolean contains(Point point) {
-		return area.contains(point);
+		return outline.contains(point) && area.contains(point);
+	}
+	
+	public Rectangle getOutline() {
+		return outline;
+	}
+	
+	public Polygon getPolygon() {
+		return area;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String getOwner() {
+		return owner == null ? "Rebel" : owner;
+	}
+	
+	public int getProduction() {
+		return production;
 	}
 }
 

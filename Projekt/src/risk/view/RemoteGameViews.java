@@ -3,6 +3,10 @@ package risk.view;
 import risk.event.AEventSystem;
 
 public class RemoteGameViews extends AEventSystem implements IGameView {
+	
+	public RemoteGameViews() {
+		attachListeners();
+	}
 
 	@Override
 	public void attachListeners() {
@@ -17,7 +21,7 @@ public class RemoteGameViews extends AEventSystem implements IGameView {
 	}
 
 	@Override
-	public void Destroy() {
+	public void destroy() {
 		// TODO Auto-generated method stub
 		
 	}

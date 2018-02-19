@@ -3,7 +3,11 @@ package risk.controller;
 import risk.event.AEventSystem;
 
 public class RemotePlayerControllers extends AEventSystem implements IPlayerController {
-
+	
+	public RemotePlayerControllers() {
+		attachListeners();
+	}
+	
 	@Override
 	public void attachListeners() {
 		// should remain empty for Controllers

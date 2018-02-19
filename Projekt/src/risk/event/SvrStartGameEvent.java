@@ -1,22 +1,27 @@
 package risk.event;
 
+import java.io.Serializable;
 import java.util.List;
 
 import risk.general.Map;
+import risk.net.NetPlayer;
 
-public class SvrStartGameEvent extends AEvent {
+public class SvrStartGameEvent extends ANetEvent {
+	private static final long serialVersionUID = 9076965650139810351L;
 	public final Map map; 
-	public final boolean multiplayer;
-	public final boolean host;
-	public List<String> players;
+	public final List<NetPlayer> players;
 	
 	// should probably contain info about if multiplayer etc.
 
-	public SvrStartGameEvent(Map map, boolean multiplayer, boolean host, List<String> players) {
+	public SvrStartGameEvent(Map map, List<NetPlayer> players) {
 		super(IEvent.EventType.SvrStartGameEvent);
 		this.map = map;
-		this.multiplayer = multiplayer;
-		this.host = host;
 		this.players = players;
+		System.out.println("EVENT CREATED: " + toString());
+	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + " multiplayer: " + (players.size() != 1);
 	}
 }

@@ -3,6 +3,10 @@ package risk.model;
 import risk.event.AEventSystem;
 
 public class PlayerModel extends AEventSystem {
+	
+	public PlayerModel() {
+		attachListeners();
+	}
 
 	@Override
 	public void attachListeners() {

@@ -34,7 +34,7 @@ public final class Main {
 		m.attachListener(new Delegate(ma, "testC"), IEvent.EventType.LclGenerateMap);*/
 		
 		InstanceController 	c = new InstanceController();
-		InstanceView 		v = new InstanceView(c.getMouseAdapter(), c.getWindowAdapter(), c.getActionListener());
+		InstanceView 		v = new InstanceView(c.getMouseAdapter(), c.getWindowAdapter(), c.getActionListener(), c.getIResponse());
 		InstanceModel 		m = new InstanceModel();
 		//int a = 0;
 		while (true) {
@@ -91,3 +91,18 @@ public final class Main {
  * Min 1 unit in your zones.
  * 
  */
+
+
+
+
+
+/*
+
+
+ Current plan for multiplayer:
+ RpcHost -> creates a local Matchmaker object that listens for connections
+ RpcJoin -> Joins the matchmaker object
+
+	Make all Rpc and Svr derive of some INetEvent
+
+*/

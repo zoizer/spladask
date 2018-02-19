@@ -16,8 +16,7 @@ public abstract class AEvent implements IEvent {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null; // need static array of all events, bound to their int id. possibly a hashmap.
+		return  this.getClass().getSimpleName();
 	}
 	
 	@Override

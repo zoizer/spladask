@@ -14,14 +14,22 @@ public interface IEvent {
 		// Svr - Sent from server. THIS IS LAW. Svr = Server
 		// Lcl - Purely local. THIS IS LOCAL ONLY. Lcl = Local
 		
+		// NEVER LISTEN TO RPC! THEY CAN BE FROM OTHER PLAYERS AND YOURSELF.
+		
 		// UI DATA SHOULD BE KEPT IN MODEL.
 		// IT BELONGS THERE.
-		RpcPreStartGameEvent,
+		LclStartGameEvent,
+		LclStartGameSentEvent,
+		LclHostGameEvent,
+		RpcStartGameEvent,
 		SvrStartGameEvent,
-		LclTrySelectEvent, 
-		LclTryAttackEvent,
+		
+		LclSelectEvent, 
+		
+		LclActionEvent,
 		RpcAttackEvent,
 		SvrAttackEvent,
+		
 		LclGenerateMap,
 	}
 	

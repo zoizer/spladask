@@ -8,6 +8,7 @@ public class ServerGameModel extends AEventSystem implements IGameModel {
 	
 	public ServerGameModel(Map map) {
 		this.map = map;
+		attachListeners();
 	}
 	
 	@Override

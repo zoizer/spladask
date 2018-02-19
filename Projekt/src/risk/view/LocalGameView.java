@@ -28,21 +28,28 @@ public class LocalGameView extends AEventSystem implements IGameView {
 	private MouseAdapter mouseAdapter;
 	private MapView mapView;
 	private ControlPanel ctrlPanel; // TEMP
+	private String playerName;
 	
-	public LocalGameView(Map map, JFrame jFrame, MouseAdapter mouseAdapter) {
+	public LocalGameView(Map map, JFrame jFrame, MouseAdapter mouseAdapter, String name) {
 		this.map = map;
 		this.parent = jFrame;
 		this.mouseAdapter = mouseAdapter;
+		this.playerName = name;
 		mapView = new MapView(this); // should attach to jFrame
 		mapView.addMouseListener(this.mouseAdapter);
 		
 		ctrlPanel =  new ControlPanel(new BorderLayout()); // TEMP
+		ctrlPanel.setPlayer(this.playerName);
         parent.add(ctrlPanel, BorderLayout.SOUTH); // TEMP
         
 		parent.add(mapView, BorderLayout.NORTH);
-
+		
+		// mapView.setBorder(BorderFactory.createTitledBorder("Test")); // TEMPORARY, displays a border around the map, used to debug.
+		
     	parent.pack();				// Probably wanna do this here.
     	parent.setVisible(true);	// ^
+    	
+    	attachListeners();
 	}
 	
 	@Override
@@ -56,8 +63,10 @@ public class LocalGameView extends AEventSystem implements IGameView {
 	}
 
 	@Override
-	public void Destroy() {
-		// TODO remove all UI components.
+	public void destroy() {
+		detachListeners();
+		parent.remove(ctrlPanel);
+		parent.remove(mapView);
 	}
 	
 	private Dimension getMapDimensions() {
@@ -97,14 +106,13 @@ public class LocalGameView extends AEventSystem implements IGameView {
     		
     		//DrawOutline(g2d);
     		//DrawCenter(g2d);
-    		drawZoneText(g2d, z);
+    		drawZoneText(g2d, z, i);
     	
     		g2d.dispose();
         }
 	}
 	
-	private void drawZoneText(Graphics2D g, Zone z) { // TODO: CHANGE FUNCTION TO WRITE MULTIPLE LINES INSTEAD OF ONE MESS.
-		// TODO: ADD TRANSPARANT DARK (or bright) BOX BEHIND TEXT TO MAKE IT EASIER TO READ.
+	private void drawZoneText(Graphics2D g, Zone z, int id) {
 		g.setColor(new Color(0.0f, 0.0f, 0.0f, 1.0f));
 		Font oldfont = g.getFont();
 		Font font = oldfont.deriveFont(Font.BOLD);
@@ -115,6 +123,7 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		int count = 2; // count of lines of text.
 	    drawZoneTextLine(g, z.getName(), count--, z.getOutline(), metrics, font);
 	    drawZoneTextLine(g, z.getOwner(), count--, z.getOutline(), metrics, font);
+	    //drawZoneTextLine(g, "" + id, count--, z.getOutline(), metrics, font);
 		
 		g.setFont(oldfont);
 	}
@@ -145,7 +154,7 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		}
 		
 		@Override
-		protected void paintComponent(Graphics g) {
+		public void paintComponent(Graphics g) {
 	        super.paintComponent(g);
 	        parent.paintMap(g);
 	    }

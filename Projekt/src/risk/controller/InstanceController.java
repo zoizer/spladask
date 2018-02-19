@@ -6,12 +6,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 import risk.event.AEventSystem;
 import risk.event.IEvent;
 import risk.event.LclGenerateMap;
-import risk.event.RpcPreStartGameEvent;
+import risk.event.LclHostGameEvent;
+import risk.event.LclStartGameEvent;
+import risk.event.LclStartGameSentEvent;
+import risk.event.RpcStartGameEvent;
 import risk.event.SvrStartGameEvent;
+import risk.net.NetPlayer;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
 
@@ -21,8 +26,8 @@ public class InstanceController extends AEventSystem {
 	MouseAdapterController mouseAdapter;
 	WindowAdapterController windowAdapter;
 	ActionListenerController actionListener;
-	
-	
+	EventResponse response;
+	String player;
 	
 	public InstanceController() {
 		playerCtrl = null;
@@ -30,15 +35,20 @@ public class InstanceController extends AEventSystem {
 		mouseAdapter = new MouseAdapterController(this);
 		windowAdapter = new WindowAdapterController(this);
 		actionListener = new ActionListenerController(this);
+		response = new EventResponse(this);
+		player = null;
+		attachListeners();
 	}
 	
 	@Override
 	public void attachListeners() {
+		attachListener(new Delegate(this, "lclStartGameSentEvent"), IEvent.EventType.LclStartGameSentEvent);
 		attachListener(new Delegate(this, "startGame"), IEvent.EventType.SvrStartGameEvent);
 	}
 
 	@Override
 	public void detachListeners() {
+		detachListener(new Delegate(this, "lclStartGameSentEvent"), IEvent.EventType.LclStartGameSentEvent);
 		detachListener(new Delegate(this, "startGame"), IEvent.EventType.SvrStartGameEvent);
 	}
 	
@@ -58,16 +68,34 @@ public class InstanceController extends AEventSystem {
 		return actionListener;
 	}
 	
+	public IResponse getIResponse() {
+		return response;
+	}
+	
+	public void lclStartGameSentEvent(IEvent ev) {
+		ErrorHandler.ASSERT(ev instanceof LclStartGameSentEvent);
+		LclStartGameSentEvent e = (LclStartGameSentEvent) ev;
+		this.player = e.player;
+	}
+	
 	public void startGame(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof SvrStartGameEvent);
 		SvrStartGameEvent e = (SvrStartGameEvent) ev;
-		playerCtrl = new LocalPlayerController();
+		NetPlayer p = null;
+		for (int i = 0; i < e.players.size(); i++) {
+			if (e.players.get(i).name.equals(player)) {
+				p = e.players.get(i);
+			}
+		}
+		ErrorHandler.ASSERT(p != null);
 		
-		if (e.multiplayer && e.host) remotePlayerCtrl = new RemotePlayerControllers(); // add paramters, like adress.
+		playerCtrl = new LocalPlayerController(e.map, player);
+		
+		if (e.players.size() != 1 && p.host) remotePlayerCtrl = new RemotePlayerControllers(); // add paramters, like adress.
 	}
 	
 	// CLASSES
-	public class MouseAdapterController extends MouseAdapter {
+	public static class MouseAdapterController extends MouseAdapter {
 		private InstanceController parent;
 		
 		public MouseAdapterController(InstanceController ctrl) {
@@ -87,7 +115,7 @@ public class InstanceController extends AEventSystem {
 		}
 	}
 	
-	public class WindowAdapterController extends WindowAdapter {
+	public static class WindowAdapterController extends WindowAdapter {
 		@SuppressWarnings("unused")
 		private InstanceController parent;
 		
@@ -100,7 +128,7 @@ public class InstanceController extends AEventSystem {
 		}
 	}
 	
-	public class ActionListenerController implements ActionListener {
+	public static class ActionListenerController implements ActionListener {
 		private InstanceController parent;
 		
 		public ActionListenerController(InstanceController ctrl) {
@@ -111,9 +139,48 @@ public class InstanceController extends AEventSystem {
 		public void actionPerformed(ActionEvent e) {
 			String cmd = e.getActionCommand();
 
-			      if(cmd.equals("New Game")) parent.queueEvent(new RpcPreStartGameEvent("Default"));
+			      if(cmd.equals("New Game")) parent.queueEvent(new LclStartGameEvent("Default", true, false));
+			 else if(cmd.equals("Host Game")) parent.queueEvent(new LclStartGameEvent("Default", true, true));
+			 else if(cmd.equals("Join Game")) parent.queueEvent(new LclStartGameEvent("Default", false, true));
 			 else if(cmd.equals("Create Map")) parent.queueEvent(new LclGenerateMap("Default"));
 			 else if(cmd.equals("Exit")) System.exit(0); // TEMPORARY
+		}
+	}
+	
+	public static class EventResponse implements IResponse {
+		private InstanceController parent;
+		
+		public EventResponse(InstanceController ctrl) {
+			parent = ctrl;
+		}
+
+		@Override
+		public void respond(IEvent e, String s) {
+			if (e instanceof LclStartGameEvent) {
+				LclStartGameEvent ev = (LclStartGameEvent)e;
+				if (ev.host && ev.multiplayer) { // Multiplayer as host
+					parent.queueEvent(new LclStartGameSentEvent(ev.mapName, s, ev.host, ev.multiplayer));
+					parent.queueEvent(new RpcStartGameEvent(ev.mapName, s, "localhost", ev.host, ev.multiplayer)); // BEGIN LISTEN FOR CLIENTS
+				} else if (!ev.host && ev.multiplayer) { // Multiplayer as client
+					String player = null;
+					String hostAddr = null;
+					for (int i = 0; i < (s.length() - 1); i++) {
+
+						if (s.charAt(i) == 0) {
+							player = s.substring(0, i);
+							hostAddr = s.substring(i + 1, s.length());
+						}
+					}
+
+					ErrorHandler.ASSERT(player != null || hostAddr != null); // String format is wrong!
+					
+					parent.queueEvent(new LclStartGameSentEvent(ev.mapName, player, ev.host, ev.multiplayer));
+					parent.queueEvent(new RpcStartGameEvent(ev.mapName, player, hostAddr, ev.host, ev.multiplayer)); // TRY JOIN SERVER
+				} else if (ev.host && !ev.multiplayer) { // Singleplayer
+					parent.queueEvent(new LclStartGameSentEvent(ev.mapName, s, ev.host, ev.multiplayer));
+					parent.queueEvent(new RpcStartGameEvent(ev.mapName, s, "localhost", ev.host, ev.multiplayer)); // START GAME
+				}
+			}
 		}
 	}
 }

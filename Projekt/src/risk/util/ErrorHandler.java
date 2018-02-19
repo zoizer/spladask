@@ -19,6 +19,8 @@ public final class ErrorHandler {
 	public static void ASSERT(boolean val) { 
 		if(!val) {
 			System.out.println("Assertion Failiure!");
+			StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+			System.out.println("CLASS: " + stackTraceElements[2].getClassName() + ", METHOD: " + stackTraceElements[2].getMethodName() + ", LINE: " + stackTraceElements[2].getLineNumber());
 			System.exit(0); // meant to be non-zero for error.
 		}
 	}

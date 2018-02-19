@@ -68,7 +68,7 @@ public class Map implements Serializable {
         nw.addPoint(287,113);
         nw.addPoint(312, 127);
         nw.addPoint(96,128);
-		zones.add(new Zone("Northwest", nw, Arrays.asList(1,4,5), 3));
+		zones.add(new Zone("NW Territory", nw, Arrays.asList(1,4,5), 3));
         
         Polygon greenland = new Polygon();
         greenland.addPoint(500, 2);
@@ -89,7 +89,7 @@ public class Map implements Serializable {
         n1.addPoint(197,128);  
         n1.addPoint(202,203);
         n1.addPoint(110,224);
-		zones.add(new Zone("n1", n1, Arrays.asList(1,2,5,7), 3));
+		zones.add(new Zone("Alberta", n1, Arrays.asList(1,2,5,7), 3));
     
         Polygon n2 = new Polygon();
         n2.addPoint(197,128);
@@ -97,7 +97,7 @@ public class Map implements Serializable {
         n2.addPoint(261,162);
         n2.addPoint(243,193);
         n2.addPoint(202,203);
-		zones.add(new Zone("n2", n2, Arrays.asList(2,4,8), 3));
+		zones.add(new Zone("Ontario", n2, Arrays.asList(2,4,8), 3));
         
         Polygon quebec = new Polygon();
         quebec.addPoint(310,173);
@@ -132,7 +132,7 @@ public class Map implements Serializable {
         sa1.addPoint(378,451);
         sa1.addPoint(313,469);
         sa1.addPoint(272,434);
-		zones.add(new Zone("sa1", sa1, Arrays.asList(0,11,10), 3));
+		zones.add(new Zone("Venezuela", sa1, Arrays.asList(0,11,10), 3));
         
         Polygon brazil = new Polygon();
         brazil.addPoint(378,451);
@@ -149,7 +149,7 @@ public class Map implements Serializable {
         sa3.addPoint(354,523);
         sa3.addPoint(296,523);
         sa3.addPoint(249,487);
-		zones.add(new Zone("sa3", sa3, Arrays.asList(9,10,12), 3));
+		zones.add(new Zone("Peru", sa3, Arrays.asList(9,10,12), 3));
         
         Polygon argentina = new Polygon();
         argentina.addPoint(330,693);
@@ -175,7 +175,7 @@ public class Map implements Serializable {
         af2.addPoint(683,337);
         af2.addPoint(742,419);
         af2.addPoint(672,421);
-		zones.add(new Zone("af2", af2, Arrays.asList(13,15,32), 3));
+		zones.add(new Zone("NE Africa", af2, Arrays.asList(13,15,32), 3));
         
         Polygon af3 = new Polygon();
         af3.addPoint(742,419);
@@ -184,7 +184,7 @@ public class Map implements Serializable {
         af3.addPoint(728,509);
         af3.addPoint(675,505);
         af3.addPoint(672,421);
-		zones.add(new Zone("af3", af3, Arrays.asList(16,14,17,18), 3));
+		zones.add(new Zone("SE Africa", af3, Arrays.asList(16,14,17,18), 3));
         
         Polygon af4 = new Polygon();
         af4.addPoint(672,422);
@@ -192,7 +192,7 @@ public class Map implements Serializable {
         af4.addPoint(626,503);
         af4.addPoint(606,441);
         af4.addPoint(579,430);
-		zones.add(new Zone("af4", af4, Arrays.asList(13,15,17), 3));
+		zones.add(new Zone("Congo", af4, Arrays.asList(13,15,17), 3));
         
         Polygon southAF = new Polygon();
         southAF.addPoint(626,503);
@@ -287,7 +287,7 @@ public class Map implements Serializable {
         ural.addPoint(796,153);
         ural.addPoint(880,169);
         ural.addPoint(874,234);
-		zones.add(new Zone("Ural", ural, Arrays.asList(), 3));
+		zones.add(new Zone("Ural", ural, Arrays.asList(25,27,30,31), 3));
         
         Polygon siberia = new Polygon();
         siberia.addPoint(880,168);
@@ -297,14 +297,14 @@ public class Map implements Serializable {
         siberia.addPoint(842,37);
         siberia.addPoint(888,44);
         siberia.addPoint(880,75);
-		zones.add(new Zone("Siberia", siberia, Arrays.asList(), 3));
+		zones.add(new Zone("Siberia", siberia, Arrays.asList(26,28), 3));
         
         Polygon yakutsk = new Polygon();
         yakutsk.addPoint(880,168);
         yakutsk.addPoint(880,75);
         yakutsk.addPoint(985,65);
         yakutsk.addPoint(1056,162);
-		zones.add(new Zone("Yakutsk", yakutsk, Arrays.asList(), 3));
+		zones.add(new Zone("Yakutsk", yakutsk, Arrays.asList(27,29,30), 3));
         
         Polygon kamchatka = new Polygon();
         kamchatka.addPoint(986,65);
@@ -320,7 +320,7 @@ public class Map implements Serializable {
         kamchatka.addPoint(1116,180);
         kamchatka.addPoint(1121,159);
         kamchatka.addPoint(1056,161);
-		zones.add(new Zone("Kamchatka", kamchatka, Arrays.asList(), 3));
+		zones.add(new Zone("Kamchatka", kamchatka, Arrays.asList(1,28), 3));
         
         Polygon jakutsk = new Polygon();
         jakutsk.addPoint(1056,162);
@@ -331,7 +331,7 @@ public class Map implements Serializable {
         jakutsk.addPoint(1060,268);
         jakutsk.addPoint(875,234);
         jakutsk.addPoint(880,169);
-		zones.add(new Zone("Jakutsk", jakutsk, Arrays.asList(), 3));
+		zones.add(new Zone("Manchuria", jakutsk, Arrays.asList(26,28,36,37), 3));
         
         Polygon afghanistan = new Polygon();
         afghanistan.addPoint(874,235);
@@ -344,7 +344,7 @@ public class Map implements Serializable {
         afghanistan.addPoint(689,270);
         afghanistan.addPoint(672,286);
         afghanistan.addPoint(672,200);
-		zones.add(new Zone("Afghanistan", afghanistan, Arrays.asList(), 3));
+		zones.add(new Zone("Kazakhstan", afghanistan, Arrays.asList(24,26,36,32), 3));
         
         Polygon middleEast = new Polygon();
         middleEast.addPoint(673,294);
@@ -360,14 +360,14 @@ public class Map implements Serializable {
         middleEast.addPoint(688,334);
         middleEast.addPoint(705,314);
         middleEast.addPoint(669,312);
-		zones.add(new Zone("Middle East", middleEast, Arrays.asList(), 3));
+		zones.add(new Zone("Middle East", middleEast, Arrays.asList(24,31,33,14), 3));
         
         Polygon india = new Polygon();
         india.addPoint(852,324);
         india.addPoint(933,360);
         india.addPoint(879,423);
         india.addPoint(839,366);
-		zones.add(new Zone("India", india, Arrays.asList(), 3));
+		zones.add(new Zone("India", india, Arrays.asList(32,34,35), 3));
         
         Polygon siam = new Polygon();
         siam.addPoint(934,361);
@@ -376,7 +376,7 @@ public class Map implements Serializable {
         siam.addPoint(1003,407);
         siam.addPoint(990,421);
         siam.addPoint(965,406);
-		zones.add(new Zone("Siam", siam, Arrays.asList(), 3));
+		zones.add(new Zone("Siam", siam, Arrays.asList(33,35,38,39), 3));
         
         Polygon china = new Polygon();
         china.addPoint(852,324);
@@ -385,7 +385,7 @@ public class Map implements Serializable {
         china.addPoint(1042,334);
         china.addPoint(1030,359);
         china.addPoint(933,360);
-		zones.add(new Zone("China", china, Arrays.asList(), 3));
+		zones.add(new Zone("China", china, Arrays.asList(33,34,36,37), 3));
         
         Polygon mongolia = new Polygon();
         mongolia.addPoint(1060,268);
@@ -393,13 +393,13 @@ public class Map implements Serializable {
         mongolia.addPoint(1024,282);
         mongolia.addPoint(852,324);
         mongolia.addPoint(875,234);
-		zones.add(new Zone("Mongolia", mongolia, Arrays.asList(), 3));
+		zones.add(new Zone("Mongolia", mongolia, Arrays.asList(30,31,35,37), 3));
         
         Polygon japan = new Polygon();
         japan.addPoint(1094,245);
         japan.addPoint(1125,259);
         japan.addPoint(1080,313);
-		zones.add(new Zone("Japan", japan, Arrays.asList(), 3));
+		zones.add(new Zone("Japan", japan, Arrays.asList(30,35,36), 3));
         
         //OCEANIA
         
@@ -407,14 +407,14 @@ public class Map implements Serializable {
         indonesia.addPoint(1070,484);
         indonesia.addPoint(1053,498);
         indonesia.addPoint(991,482);
-		zones.add(new Zone("Indonesia", indonesia, Arrays.asList(), 3));
+		zones.add(new Zone("Indonesia", indonesia, Arrays.asList(34,39,40), 3));
         
         Polygon newGuinea = new Polygon();
         newGuinea.addPoint(1088,457);
         newGuinea.addPoint(1147,473);
         newGuinea.addPoint(1161,492);
         newGuinea.addPoint(1132,492);
-		zones.add(new Zone("New Guinea", newGuinea, Arrays.asList(), 3));
+		zones.add(new Zone("New Guinea", newGuinea, Arrays.asList(34,38,41), 3));
         
         Polygon westAUS = new Polygon();
         westAUS.addPoint(1094,500);
@@ -424,7 +424,7 @@ public class Map implements Serializable {
         westAUS.addPoint(1017,540);
         westAUS.addPoint(1072,512);
         westAUS.addPoint(1079,514);
-		zones.add(new Zone("West Australia", westAUS, Arrays.asList(), 3));
+		zones.add(new Zone("West Australia", westAUS, Arrays.asList(38,41), 3));
         
         Polygon eastAUS = new Polygon();
         eastAUS.addPoint(1094,500);
@@ -436,7 +436,7 @@ public class Map implements Serializable {
         eastAUS.addPoint(1140,625);
         eastAUS.addPoint(1114,625);
         eastAUS.addPoint(1094,602); 
-		zones.add(new Zone("East Australia", eastAUS, Arrays.asList(), 3));
+		zones.add(new Zone("East Australia", eastAUS, Arrays.asList(39,40), 3));
 		
 		try {
 			BufferedImage bi;

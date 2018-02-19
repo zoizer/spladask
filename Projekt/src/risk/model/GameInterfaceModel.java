@@ -8,5 +8,11 @@ public class GameInterfaceModel {
 	// 3 Units selected,
 	// etc.
 	private Zone selectedZone;
+	private String player;
+	
+	public GameInterfaceModel(String player) {
+		selectedZone = null;
+		this.player = player;
+	}
 	
 }

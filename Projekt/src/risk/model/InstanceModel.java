@@ -9,11 +9,13 @@ import risk.event.AEventSystem;
 import risk.event.IEvent;
 import risk.event.LclGenerateMap;
 import risk.event.LclHostGameEvent;
+import risk.event.LclKillNetEvent;
 import risk.event.LclStartGameSentEvent;
 import risk.event.RpcStartGameEvent;
 import risk.event.SvrStartGameEvent;
 import risk.general.Map;
 import risk.net.NetPlayer;
+import risk.net.Server;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
 
@@ -23,13 +25,15 @@ public class InstanceModel extends AEventSystem {
 	GameInterfaceModel ui;
 	String player;
 	List<NetPlayer> players;
+	Server server;
 	
 	public InstanceModel() {
 		gameModel = null;
 		ui = null;
 		player = null;
 		players = null;
-
+		server = null;
+		
 		attachListeners();
 	}
 	
@@ -68,6 +72,13 @@ public class InstanceModel extends AEventSystem {
 		ErrorHandler.ASSERT(ev instanceof RpcStartGameEvent);
 		RpcStartGameEvent e = (RpcStartGameEvent) ev;
 		
+		if (server != null) {
+			IEvent eve = new LclKillNetEvent();
+			server.lclKillNet(eve);
+			queueEvent(eve); // MIGHT NOT WORK AS SAME PORT MAY BE OCCUPIED.
+			server = null;
+		}
+		
 		if (!e.multiplayer) { // SINGLEPLAYER
 			ErrorHandler.ASSERT(e.player.equals(player));
 			players = new ArrayList<NetPlayer>();
@@ -76,12 +87,13 @@ public class InstanceModel extends AEventSystem {
 			queueEvent(new SvrStartGameEvent(m, players)); // OK, start game.
 		} else if (e.host) { // HOST
 			ErrorHandler.ASSERT(e.player.equals(player));
-			players = new ArrayList<NetPlayer>();
-			players.add(new NetPlayer(e.player, e.host));
-			
-			queueEvent(new LclHostGameEvent(players)); // BEGIN LISTEN FOR CLIENTS
+			Map m = Map.loadMap(e.mapName);
+			server = new Server(9559, m, new NetPlayer(e.player, e.host));
+			(new Thread(server)).start();
+			queueEvent(new LclHostGameEvent(new NetPlayer(e.player, e.host))); // BEGIN LISTEN FOR CLIENTS
 		} else if (!e.host) { // CLIENT
 			// TRY TO CONNECT TO HOST
+			// IF SUCCESS SEND LclJoinGameEvent
 		} // THIS MAY BE WRONG. THIS IS PROBABLY NOT WHERE I SHOULD DO THIS AS THE SERVER WILL GET THIS MESSAGE FROM ALL PLAYERS
 		
 	}

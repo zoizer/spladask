@@ -1,10 +1,19 @@
 package risk.view;
 
+import java.util.List;
+
 import risk.event.AEventSystem;
+import risk.net.ServerClient;
 
 public class RemoteGameViews extends AEventSystem implements IGameView {
+	private List<ServerClient> remoteViews;
 	
-	public RemoteGameViews() {
+	public RemoteGameViews(List<ServerClient> remoteViews) {
+		this.remoteViews = remoteViews;
+		
+		for (ServerClient e : remoteViews) {
+			e.remoteView(true);
+		}
 		attachListeners();
 	}
 
@@ -22,8 +31,10 @@ public class RemoteGameViews extends AEventSystem implements IGameView {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-		
+		detachListeners();
+		for (ServerClient e : remoteViews) {
+			e.remoteView(false);
+		}
 	}
 
 }

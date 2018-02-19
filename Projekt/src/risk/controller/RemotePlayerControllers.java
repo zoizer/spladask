@@ -1,24 +1,37 @@
 package risk.controller;
 
+import java.util.List;
+
 import risk.event.AEventSystem;
+import risk.net.ServerClient;
 
 public class RemotePlayerControllers extends AEventSystem implements IPlayerController {
+	List<ServerClient> remotePlayers;
 	
-	public RemotePlayerControllers() {
+	public RemotePlayerControllers(List<ServerClient> remotePlayers) {
+		this.remotePlayers = remotePlayers;
+		
+		for (ServerClient c : remotePlayers) {
+			c.setController(this);
+		}
+		
 		attachListeners();
 	}
 	
 	@Override
 	public void attachListeners() {
-		// should remain empty for Controllers
+		
 	}
 
 	@Override
 	public void detachListeners() {
-		// should remain empty for Controllers
+		
 	}
 	
-	
-	// BOTH PLAYERS WILL PLAY AT THE SAME TIME, HENCE MULTITHREADED. TURN ENDS WHEN BOTH STOP.
-	// Probably a bad idea.
+	public void shutdown() {
+		detachListeners();
+		for (ServerClient c : remotePlayers) {
+			c.setController(null);
+		}
+	}
 }

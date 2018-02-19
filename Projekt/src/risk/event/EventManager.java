@@ -80,8 +80,10 @@ public class EventManager implements IEventManager {
 			List<Delegate> delegates = listeners.get(event.getEventType());
 			if(delegates != null) {
 				synchronized(delegates) { // must synchronize due to iteration.
-					for(Delegate d : delegates) 
-						d.Execute(new Object[] {event});
+					//for(Delegate d : delegates) 
+					//	d.Execute(new Object[] {event});
+					for (int i = 0; i < delegates.size(); i++)
+						delegates.get(i).Execute(new Object[] {event});
 				}
 			}
 

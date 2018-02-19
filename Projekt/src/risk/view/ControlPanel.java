@@ -1,4 +1,4 @@
-package risk.ui;
+package risk.view;
 
 import java.awt.Color;
 import java.awt.GridLayout;

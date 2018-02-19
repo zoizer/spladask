@@ -3,7 +3,7 @@ package risk.event;
 import risk.util.Delegate;
 
 public abstract class AEventSystem implements IEventSystem {
-	protected void queueEvent(IEvent e) {
+	public void queueEvent(IEvent e) {
 		EventManager.get().queueEvent(e);
 	}
 	
@@ -12,6 +12,6 @@ public abstract class AEventSystem implements IEventSystem {
 	}
 	
 	protected void detachListener(Delegate d, IEvent.EventType eventType) {
-		EventManager.get().attachListener(d, eventType);
+		EventManager.get().detachListener(d, eventType);
 	}
 }

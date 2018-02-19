@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 import risk.event.AEventSystem;
 import risk.general.Map;
 import risk.general.Zone;
-import risk.ui.ControlPanel;
 
 public class LocalGameView extends AEventSystem implements IGameView {
 	private Map map;

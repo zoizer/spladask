@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 import risk.event.AEventSystem;
 import risk.event.IEvent;
 import risk.event.LclGenerateMap;
+import risk.event.LclServerHostStartGameEvent;
 import risk.event.LclStartGameEvent;
 import risk.event.LclStartGameSentEvent;
 import risk.event.RpcStartGameEvent;
@@ -40,12 +41,14 @@ public class InstanceController extends AEventSystem {
 	
 	@Override
 	public void attachListeners() {
+		attachListener(new Delegate(this, "lclServerHostStartGame"), IEvent.EventType.LclServerHostStartGameEvent);
 		attachListener(new Delegate(this, "lclStartGameSentEvent"), IEvent.EventType.LclStartGameSentEvent);
 		attachListener(new Delegate(this, "startGame"), IEvent.EventType.SvrStartGameEvent);
 	}
 
 	@Override
 	public void detachListeners() {
+		detachListener(new Delegate(this, "lclServerHostStartGame"), IEvent.EventType.LclServerHostStartGameEvent);
 		detachListener(new Delegate(this, "lclStartGameSentEvent"), IEvent.EventType.LclStartGameSentEvent);
 		detachListener(new Delegate(this, "startGame"), IEvent.EventType.SvrStartGameEvent);
 	}
@@ -70,6 +73,12 @@ public class InstanceController extends AEventSystem {
 		return response;
 	}
 	
+	public void lclServerHostStartGame(IEvent ev) {
+		ErrorHandler.ASSERT(ev instanceof LclServerHostStartGameEvent);
+		LclServerHostStartGameEvent e = (LclServerHostStartGameEvent) ev;
+		remotePlayerCtrl = new RemotePlayerControllers(e.remotePlayers);
+	}
+	
 	public void lclStartGameSentEvent(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclStartGameSentEvent);
 		LclStartGameSentEvent e = (LclStartGameSentEvent) ev;
@@ -89,7 +98,7 @@ public class InstanceController extends AEventSystem {
 		
 		playerCtrl = new LocalPlayerController(e.map, player);
 		
-		if (e.players.size() != 1 && p.host) remotePlayerCtrl = new RemotePlayerControllers(); // add paramters, like adress.
+		if (e.players.size() != 1 && p.host)/* remotePlayerCtrl = new RemotePlayerControllers()*/; // add paramters, like adress.
 	}
 	
 	// CLASSES

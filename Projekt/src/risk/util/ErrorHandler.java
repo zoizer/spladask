@@ -31,5 +31,8 @@ public final class ErrorHandler {
 	 */
 	public static void WARNING(String msg) {
 		System.out.println("Warning " + ++warningCount + ": " + msg);
+		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+		System.out.println("CLASS: " + stackTraceElements[4].getClassName() + ", METHOD: " + stackTraceElements[4].getMethodName() + ", LINE: " + stackTraceElements[4].getLineNumber());
+		
 	}
 }

@@ -20,12 +20,17 @@ public interface IEvent {
 		// IT BELONGS THERE.
 		LclStartGameEvent,				// 
 		LclStartGameSentEvent,			// 
-		LclHostGameEvent,				// 
+		LclHostGameEvent,				// Sent by Model to server to start listening for clients.
+		LclJoinGameEvent,				// Sent to server in order to join.
 		RpcStartGameEvent,				// 
 		SvrStartGameEvent,				// 
 		LclKillNetEvent,				// Used to kill all net classes.
-		LclStartGameHostEvent,			// 
+		LclStartGameHostEvent,			// Used to tell hosting server to stop searching for players and start.
 		LclServerHostStartGameEvent,	// Sent by Host Server before SvrStartGameEvent is sent, used to initialize some server specific objects.
+		
+		RpcConnectEvent,				// Sent by client player to join.
+		RpcDisconnectEvent,				// Sent by client player to leave.
+		
 		
 		LclSelectEvent, 
 		

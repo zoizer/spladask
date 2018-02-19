@@ -13,6 +13,8 @@ import javax.swing.JOptionPane;
 import risk.controller.IResponse;
 import risk.event.AEventSystem;
 import risk.event.IEvent;
+import risk.event.LclHostGameEvent;
+import risk.event.LclServerHostStartGameEvent;
 //import risk.event.LclNameRequest;
 import risk.event.LclStartGameEvent;
 import risk.event.LclStartGameSentEvent;
@@ -37,6 +39,7 @@ public class InstanceView extends AEventSystem {
 	private IGameView localView;
 	private IGameView remoteViews;
 	private String requestedName;
+	private HostPanelView hostPanel;
 	
 	public InstanceView(MouseAdapter ma, WindowAdapter wa, ActionListener al, IResponse res) {
 		mouseAdapter = ma;
@@ -55,6 +58,7 @@ public class InstanceView extends AEventSystem {
 		localView = null;
 		remoteViews = null;
 		requestedName = null;
+		hostPanel = null;
 		//ctrlPanel = new ControlPanel(new BorderLayout());
 		
 		createMenu();
@@ -70,13 +74,17 @@ public class InstanceView extends AEventSystem {
 
 	@Override
 	public void attachListeners() {
+		attachListener(new Delegate(this, "lclHostGame"), IEvent.EventType.LclHostGameEvent);
+		attachListener(new Delegate(this, "lclServerHostStartGame"), IEvent.EventType.LclServerHostStartGameEvent);
 		attachListener(new Delegate(this, "lclStartGame"), IEvent.EventType.LclStartGameEvent);
-		detachListener(new Delegate(this, "lclStartGameSent"), IEvent.EventType.LclStartGameSentEvent);
+		attachListener(new Delegate(this, "lclStartGameSent"), IEvent.EventType.LclStartGameSentEvent);
 		attachListener(new Delegate(this, "startGame"), IEvent.EventType.SvrStartGameEvent);
 	}
 
 	@Override
 	public void detachListeners() {
+		detachListener(new Delegate(this, "lclHostGame"), IEvent.EventType.LclHostGameEvent);
+		detachListener(new Delegate(this, "lclServerHostStartGame"), IEvent.EventType.LclServerHostStartGameEvent);
 		detachListener(new Delegate(this, "lclStartGame"), IEvent.EventType.LclStartGameEvent);
 		detachListener(new Delegate(this, "lclStartGameSent"), IEvent.EventType.LclStartGameSentEvent);
 		detachListener(new Delegate(this, "startGame"), IEvent.EventType.SvrStartGameEvent);
@@ -95,6 +103,35 @@ public class InstanceView extends AEventSystem {
         jmFile.add(jmiExit);
         jMenuBar.add(jmFile);
         jFrame.setJMenuBar(jMenuBar);
+	}
+	
+	public void lclHostGame(IEvent ev) {
+		ErrorHandler.ASSERT(ev instanceof LclHostGameEvent);
+		LclHostGameEvent e = (LclHostGameEvent) ev;
+		
+		if (hostPanel != null) {
+			hostPanel.destroy();
+			hostPanel = null;
+		}
+		
+		if (localView != null) {
+			localView.destroy();
+			localView = null;
+		}
+		
+		hostPanel = new HostPanelView(jFrame, actionListener, e.host);
+	}
+	
+	public void lclServerHostStartGame(IEvent ev) {
+		ErrorHandler.ASSERT(ev instanceof LclServerHostStartGameEvent);
+		LclServerHostStartGameEvent e = (LclServerHostStartGameEvent) ev;
+		
+		if (remoteViews != null) {
+			remoteViews.destroy();
+			remoteViews = null;
+		}
+		
+		remoteViews = new RemoteGameViews(e.remotePlayers);
 	}
 	
 	public void lclStartGame(IEvent ev) {
@@ -139,10 +176,15 @@ public class InstanceView extends AEventSystem {
 			remoteViews = null;
 		}
 		
+		if (hostPanel != null) {
+			hostPanel.destroy();
+			hostPanel = null;
+		}
+		
 		localView = new LocalGameView(e.map, jFrame, mouseAdapter, name);
 		
 		if (e.players.size() != 1 && p.host) {
-			remoteViews = new RemoteGameViews(); // need to pass some more parameters, like addresses etc.
+			// activate remote game views maybe? or should they already be active? probably.
 		}
 	}
 	

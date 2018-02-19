@@ -19,7 +19,6 @@ import risk.util.ErrorHandler;
 public class Server extends AEventSystem implements Runnable {
 	private ServerSocket serverSocket;
 	private AtomicBoolean run;
-	private AtomicBoolean clientsRun;
 	private AtomicBoolean clientsLive;
 	private List<NetPlayer> validatedPlayers;
 	private List<ServerClient> remotePlayers;
@@ -34,7 +33,6 @@ public class Server extends AEventSystem implements Runnable {
 		this.host = host;
 		this.port = port;
 		run = new AtomicBoolean(true);
-		clientsRun = new AtomicBoolean(false);
 		clientsLive = new AtomicBoolean(true);
 		validatedPlayers = new ArrayList<NetPlayer>();
 		remotePlayers = new ArrayList<ServerClient>();
@@ -51,9 +49,20 @@ public class Server extends AEventSystem implements Runnable {
 	
 	public boolean addValidatedPlayer(ServerClient c, NetPlayer p) {
 		synchronized (lock) {
-			if (clientsRun.get()) {
-				remotePlayers.add(c);
-				return validatedPlayers.add(p);
+			if (run.get()) { // is the server actually allowing new players?
+				boolean ok = true;
+				for (NetPlayer player : validatedPlayers) {
+					if (player.name.equals(p.name)) {
+						ok = false;
+						break;
+					}
+				}
+				
+				
+				if (ok && !p.name.equals(host.name)) {
+					remotePlayers.add(c);
+					return validatedPlayers.add(p);
+				}
 			}
 		}
 		
@@ -84,10 +93,10 @@ public class Server extends AEventSystem implements Runnable {
 	@Override
 	public void run() {
 		try {
-			while(run.get()) (new Thread(new ServerClient(this, serverSocket.accept(), clientsRun, clientsLive))).start(); // TODO replace with new ServerClient(serverSocket.accept()) etc.
+			while(run.get()) (new Thread(new ServerClient(this, serverSocket.accept(), clientsLive))).start(); // TODO replace with new ServerClient(serverSocket.accept()) etc.
 		} catch(IOException e) {
-			e.printStackTrace();
-			ErrorHandler.ASSERT(false);
+		//	e.printStackTrace();
+		//	ErrorHandler.ASSERT(false);
 		} finally {
 			stopServerListen();
 			detachListeners();
@@ -98,7 +107,6 @@ public class Server extends AEventSystem implements Runnable {
 		ErrorHandler.ASSERT(e instanceof LclKillNetEvent);
 		stopServerListen();
 		detachListener(new Delegate(this, "lclKillNet"), IEvent.EventType.LclKillNetEvent);
-		clientsRun.set(false);
 		clientsLive.set(false);
 	}
 	
@@ -107,8 +115,6 @@ public class Server extends AEventSystem implements Runnable {
 		stopServerListen();
 		List<NetPlayer> players;
 		List<ServerClient> clients;
-		clientsRun.set(true);
-		clientsLive.set(true); // should already be true, added for clarity.
 		synchronized (lock) {
 			players = validatedPlayers;
 			validatedPlayers = new ArrayList<NetPlayer>();

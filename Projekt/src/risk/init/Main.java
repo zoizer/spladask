@@ -58,6 +58,7 @@ public final class Main {
 	}*/
 }
 
+// TODO MAKE GOOD CLEANUP FOR SERVER AND CLIENT TO PREVENT CASCADING ERRORS.
 
 /*
  * When singleplayer

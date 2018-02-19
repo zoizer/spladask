@@ -30,9 +30,12 @@ public class Delegate extends Pair<Object, Method> {
 	public void Execute(Object[] p) {
 		try {
 			right.invoke(left, p);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (IllegalAccessException | IllegalArgumentException e) {
 			e.printStackTrace(); // Reached this point? Well that's a fatal error. Only way to prevent it is by changing your code.
-			ErrorHandler.ASSERT(true);
+			ErrorHandler.ASSERT(false);
+		} catch (InvocationTargetException e) {
+			e.getTargetException().printStackTrace();;
+			ErrorHandler.ASSERT(false);
 		}
 	}
 }

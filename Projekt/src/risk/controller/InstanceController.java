@@ -12,6 +12,7 @@ import risk.event.IEvent;
 import risk.event.LclGenerateMap;
 import risk.event.LclServerHostStartGameEvent;
 import risk.event.LclStartGameEvent;
+import risk.event.LclStartGameHostEvent;
 import risk.event.LclStartGameSentEvent;
 import risk.event.RpcStartGameEvent;
 import risk.event.SvrStartGameEvent;
@@ -151,6 +152,7 @@ public class InstanceController extends AEventSystem {
 			 else if(cmd.equals("Join Game")) parent.queueEvent(new LclStartGameEvent("Default", false, true));
 			 else if(cmd.equals("Create Map")) parent.queueEvent(new LclGenerateMap("Default"));
 			 else if(cmd.equals("Exit")) System.exit(0); // TEMPORARY
+			 else if(cmd.equals("Start Multiplayer Game")) parent.queueEvent(new LclStartGameHostEvent());
 		}
 	}
 	

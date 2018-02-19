@@ -82,7 +82,7 @@ public class HostPanelView extends AEventSystem {
 		synchronized (lock) {
 			if (!clients.isEmpty()) jButton.setEnabled(true);
 			for (int i = 0; i < clients.size();) {
-				str += " " + clients.get(i);
+				str += " " + clients.get(i).name;
 				if (++i < clients.size()) str += ",";
 			}
 			jTextField.setText(str);

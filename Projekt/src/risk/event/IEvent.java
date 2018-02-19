@@ -18,6 +18,7 @@ public interface IEvent {
 		
 		// UI DATA SHOULD BE KEPT IN MODEL.
 		// IT BELONGS THERE.
+		ERROR_DO_NOT_USE,
 		LclStartGameEvent,				// 
 		LclStartGameSentEvent,			// 
 		LclHostGameEvent,				// Sent by Model to server to start listening for clients.

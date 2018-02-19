@@ -14,6 +14,7 @@ import risk.event.LclStartGameSentEvent;
 import risk.event.RpcStartGameEvent;
 import risk.event.SvrStartGameEvent;
 import risk.general.Map;
+import risk.net.Client;
 import risk.net.NetPlayer;
 import risk.net.Server;
 import risk.util.Delegate;
@@ -26,6 +27,7 @@ public class InstanceModel extends AEventSystem {
 	String player;
 	List<NetPlayer> players;
 	Server server;
+	Client client;
 	
 	public InstanceModel() {
 		gameModel = null;
@@ -33,6 +35,7 @@ public class InstanceModel extends AEventSystem {
 		player = null;
 		players = null;
 		server = null;
+		client = null;
 		
 		attachListeners();
 	}
@@ -75,25 +78,38 @@ public class InstanceModel extends AEventSystem {
 		if (server != null) {
 			IEvent eve = new LclKillNetEvent();
 			server.lclKillNet(eve);
-			queueEvent(eve); // MIGHT NOT WORK AS SAME PORT MAY BE OCCUPIED.
+			queueEvent(eve); // MIGHT NOT WORK AS SAME PORT MAY BE OCCUPIED. // TODO  REMOVE THIS IS IDIOTIC, WILL DESTROY NEXT SERVER !
 			server = null;
 		}
 		
+		if (client != null) {
+			client.destroy();
+			client = null;
+		}
+		
+		ErrorHandler.ASSERT(e.player.equals(player));
+		
 		if (!e.multiplayer) { // SINGLEPLAYER
-			ErrorHandler.ASSERT(e.player.equals(player));
 			players = new ArrayList<NetPlayer>();
 			players.add(new NetPlayer(e.player, true));
 			Map m = Map.loadMap(e.mapName);
 			queueEvent(new SvrStartGameEvent(m, players)); // OK, start game.
 		} else if (e.host) { // HOST
-			ErrorHandler.ASSERT(e.player.equals(player));
 			Map m = Map.loadMap(e.mapName);
-			server = new Server(9559, m, new NetPlayer(e.player, e.host));
+			server = new Server(RpcStartGameEvent.hostPort, m, new NetPlayer(e.player, e.host));
 			(new Thread(server)).start();
 			queueEvent(new LclHostGameEvent(new NetPlayer(e.player, e.host))); // BEGIN LISTEN FOR CLIENTS
 		} else if (!e.host) { // CLIENT
 			// TRY TO CONNECT TO HOST
 			// IF SUCCESS SEND LclJoinGameEvent
+			client = new Client(e.hostAddr, RpcStartGameEvent.hostPort, e.player);
+			if (client.initialize()) {
+				(new Thread(client)).start(); // server will send SvrStartGameEvent
+			} else {
+				client.stopConnection(); // destroy does too much, stopConnection is just perfect.
+				client = null;
+			}
+			
 		} // THIS MAY BE WRONG. THIS IS PROBABLY NOT WHERE I SHOULD DO THIS AS THE SERVER WILL GET THIS MESSAGE FROM ALL PLAYERS
 		
 	}

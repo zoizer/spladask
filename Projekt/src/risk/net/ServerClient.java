@@ -55,7 +55,7 @@ public class ServerClient extends AEventSystem implements Runnable {
 		try {
             IEvent input;
             
-            while ((input = (ANetEvent)in.readObject()) != null) {
+            while ((input = (IEvent)in.readObject()) != null) {
                 if (input instanceof RpcDisconnectEvent) {
                     ErrorHandler.ASSERT(false); // CRASH ON DISCONNECT FOR NOW.
                     break;

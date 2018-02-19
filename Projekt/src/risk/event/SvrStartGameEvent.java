@@ -11,7 +11,7 @@ public class SvrStartGameEvent extends ANetEvent {
 	public final List<NetPlayer> players;
 	
 	// should probably contain info about if multiplayer etc.
-
+	
 	public SvrStartGameEvent(Map map, List<NetPlayer> players) {
 		super(IEvent.EventType.SvrStartGameEvent);
 		this.map = map;

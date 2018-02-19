@@ -6,12 +6,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 
 import risk.event.AEventSystem;
 import risk.event.IEvent;
 import risk.event.LclGenerateMap;
-import risk.event.LclHostGameEvent;
 import risk.event.LclStartGameEvent;
 import risk.event.LclStartGameSentEvent;
 import risk.event.RpcStartGameEvent;

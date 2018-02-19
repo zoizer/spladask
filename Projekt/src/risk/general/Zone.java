@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Zone implements Serializable { // has no ID, the id is the location in the vector in map.

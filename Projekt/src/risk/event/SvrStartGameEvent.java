@@ -1,6 +1,5 @@
 package risk.event;
 
-import java.io.Serializable;
 import java.util.List;
 
 import risk.general.Map;

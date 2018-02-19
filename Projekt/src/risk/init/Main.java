@@ -9,12 +9,9 @@ package risk.init;
  */
 
 import risk.model.InstanceModel;
-import risk.util.Delegate;
 import risk.view.InstanceView;
 import risk.controller.InstanceController;
 import risk.event.EventManager;
-import risk.event.IEvent;
-import risk.event.LclGenerateMap;
 
 public final class Main {
 	

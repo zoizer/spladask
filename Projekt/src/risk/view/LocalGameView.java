@@ -106,13 +106,13 @@ public class LocalGameView extends AEventSystem implements IGameView {
     		
     		//DrawOutline(g2d);
     		//DrawCenter(g2d);
-    		drawZoneText(g2d, z, i);
+    		drawZoneText(g2d, z);
     	
     		g2d.dispose();
         }
 	}
 	
-	private void drawZoneText(Graphics2D g, Zone z, int id) {
+	private void drawZoneText(Graphics2D g, Zone z) {
 		g.setColor(new Color(0.0f, 0.0f, 0.0f, 1.0f));
 		Font oldfont = g.getFont();
 		Font font = oldfont.deriveFont(Font.BOLD);

@@ -18,11 +18,14 @@ public interface IEvent {
 		
 		// UI DATA SHOULD BE KEPT IN MODEL.
 		// IT BELONGS THERE.
-		LclStartGameEvent,
-		LclStartGameSentEvent,
-		LclHostGameEvent,
-		RpcStartGameEvent,
-		SvrStartGameEvent,
+		LclStartGameEvent,				// 
+		LclStartGameSentEvent,			// 
+		LclHostGameEvent,				// 
+		RpcStartGameEvent,				// 
+		SvrStartGameEvent,				// 
+		LclKillNetEvent,				// Used to kill all net classes.
+		LclStartGameHostEvent,			// 
+		LclServerHostStartGameEvent,	// Sent by Host Server before SvrStartGameEvent is sent, used to initialize some server specific objects.
 		
 		LclSelectEvent, 
 		

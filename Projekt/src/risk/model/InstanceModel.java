@@ -70,11 +70,15 @@ public class InstanceModel extends AEventSystem {
 		
 		if (!e.multiplayer) { // SINGLEPLAYER
 			ErrorHandler.ASSERT(e.player.equals(player));
-			Map m = Map.loadMap(e.mapName);
-			queueEvent(new SvrStartGameEvent(m, Arrays.asList(new NetPlayer(e.player, true)))); // OK, start game.
-		} else if (e.host) { // HOST
-		//	players = new 
 			players = new ArrayList<NetPlayer>();
+			players.add(new NetPlayer(e.player, true));
+			Map m = Map.loadMap(e.mapName);
+			queueEvent(new SvrStartGameEvent(m, players)); // OK, start game.
+		} else if (e.host) { // HOST
+			ErrorHandler.ASSERT(e.player.equals(player));
+			players = new ArrayList<NetPlayer>();
+			players.add(new NetPlayer(e.player, e.host));
+			
 			queueEvent(new LclHostGameEvent(players)); // BEGIN LISTEN FOR CLIENTS
 		} else if (!e.host) { // CLIENT
 			// TRY TO CONNECT TO HOST

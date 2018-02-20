@@ -171,10 +171,13 @@ public class InstanceView extends AEventSystem {
 			localView = null;
 		}
 		
-		if (remoteViews != null) {
+		if (e.players.size() != 1 && p.host) {
+			// activate remote game views maybe? or should they already be active? probably.
+		} else if (remoteViews != null) {
 			remoteViews.destroy();
 			remoteViews = null;
 		}
+		
 		
 		if (hostPanel != null) {
 			hostPanel.destroy();
@@ -183,9 +186,7 @@ public class InstanceView extends AEventSystem {
 		
 		localView = new LocalGameView(e.map, jFrame, mouseAdapter, name);
 		
-		if (e.players.size() != 1 && p.host) {
-			// activate remote game views maybe? or should they already be active? probably.
-		}
+		
 	}
 	
 	

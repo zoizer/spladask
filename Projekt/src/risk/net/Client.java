@@ -22,7 +22,7 @@ public class Client extends AEventSystem implements Runnable {
     private String name;
     
     public Client(String ip, int port, String name) {
-    	run = new AtomicBoolean(true);
+    	run = new AtomicBoolean(false);
     	this.name = name;
     	clientSocket = null;
     	out = null;
@@ -43,6 +43,7 @@ public class Client extends AEventSystem implements Runnable {
 			e = (IEvent)in.readObject();
 			if (e != null && e instanceof RpcConnectEvent) {
 				if (((RpcConnectEvent)e).player.name.equals(name)) {
+					run.set(true);
 					attachListeners();
 					return true;
 				}
@@ -106,6 +107,7 @@ public class Client extends AEventSystem implements Runnable {
 			while (run.get()) {
 				e = (IEvent)in.readObject();
 				if (e != null) {
+					System.out.println("FROM SERVER: " + in.toString());
 					queueEvent(e);
 				}
 			}

@@ -62,7 +62,10 @@ public class ServerClient extends AEventSystem implements Runnable {
                 }
                 
                 if (input instanceof RpcConnectEvent) { // should only happen once. 
-                	if (parent.addValidatedPlayer(this,  ((RpcConnectEvent)input).player)) queueEvent(input);	// auto post all 
+                	if (parent.addValidatedPlayer(this,  ((RpcConnectEvent)input).player)) {
+                		out.writeObject(input);	// echo back for success
+                		queueEvent(input);	// auto post all 
+                	}
                 	else break; // Player Rejected! Didnt join fast enough or has wrong name.
                 }
                 

@@ -104,7 +104,8 @@ public class InstanceModel extends AEventSystem {
 			// IF SUCCESS SEND LclJoinGameEvent
 			client = new Client(e.hostAddr, RpcStartGameEvent.hostPort, e.player);
 			if (client.initialize()) {
-				(new Thread(client)).start(); // server will send SvrStartGameEvent
+				Thread t = new Thread(client);
+				t.start();
 			} else {
 				client.stopConnection(); // destroy does too much, stopConnection is just perfect.
 				client = null;

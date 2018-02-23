@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import risk.event.AEventSystem;
+import risk.event.EventType;
 import risk.event.IEvent;
 import risk.event.LclServerHostStartGameEvent;
 import risk.event.LclStartGameHostEvent;
@@ -86,12 +87,12 @@ public class Server extends AEventSystem implements Runnable {
 	
 	@Override
 	public void attachListeners() {
-		attachListener(new Delegate(this, "lclStartGameHost"), IEvent.EventType.LclStartGameHostEvent);
+		attachListener(new Delegate(this, "lclStartGameHost"), EventType.LclStartGameHostEvent);
 	}
 
 	@Override
 	public void detachListeners() {
-		detachListener(new Delegate(this, "lclStartGameHost"), IEvent.EventType.LclStartGameHostEvent);
+		detachListener(new Delegate(this, "lclStartGameHost"), EventType.LclStartGameHostEvent);
 	}
 
 	@Override

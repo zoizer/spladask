@@ -15,14 +15,14 @@ import risk.util.ErrorHandler;
  */
 public class EventManager implements IEventManager {
 	protected static EventManager eventManager = null;
-	private Map<IEvent.EventType, List<Delegate>> listeners;
+	private Map<EventType, List<Delegate>> listeners;
 	private List<IEvent>[] eventQueues;
 	private AtomicInteger writingQueue;
 	private Object writeLock;
 	
 	@SuppressWarnings("unchecked") // might be an error.
 	protected EventManager() {
-		listeners = new ConcurrentHashMap<IEvent.EventType, List<Delegate>>();
+		listeners = new ConcurrentHashMap<EventType, List<Delegate>>();
 		writingQueue = new AtomicInteger();
 		writingQueue.set(0);
 		eventQueues = new List[2];
@@ -41,7 +41,7 @@ public class EventManager implements IEventManager {
 		return eventManager;
 	}
 	
-	public void attachListener(Delegate listener, IEvent.EventType eventType) {
+	public void attachListener(Delegate listener, EventType eventType) {
 		List<Delegate> delegates = listeners.get(eventType);
 		if(delegates == null) { // list of listeners not found
 			delegates = Collections.synchronizedList(new ArrayList<Delegate>());
@@ -54,7 +54,7 @@ public class EventManager implements IEventManager {
 		delegates.add(listener); // listener is now added.
 	}
 
-	public void detachListener(Delegate listener, IEvent.EventType eventType) {
+	public void detachListener(Delegate listener, EventType eventType) {
 		List<Delegate> delegates = listeners.get(eventType);
 		if (delegates != null && delegates.remove(listener)) {
 			listeners.replace(eventType, delegates);

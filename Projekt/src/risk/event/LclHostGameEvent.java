@@ -7,7 +7,8 @@ public class LclHostGameEvent extends AEvent {
 	public final NetPlayer host;
 	
 	public LclHostGameEvent(NetPlayer host) {
-		super(IEvent.EventType.LclHostGameEvent);
+		super(EventType.LclHostGameEvent);
 		this.host = host;
+		System.out.println("EVENT CREATED: " + toString());
 	}
 }

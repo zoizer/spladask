@@ -9,10 +9,11 @@ public class LclJoinGameEvent extends AEvent {
 	public final int port;
 	
 	public LclJoinGameEvent(NetPlayer player, String hostAddr, int port) {
-		super(IEvent.EventType.LclJoinGameEvent);
+		super(EventType.LclJoinGameEvent);
 		this.player = player;
 		this.hostAddr = hostAddr;
 		this.port = port;
+		System.out.println("EVENT CREATED: " + toString());
 	}
 
 }

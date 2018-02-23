@@ -9,7 +9,7 @@ public class LclPreStartGameEvent extends AEvent {
 //	public final int hostPort;
 	
 	public LclPreStartGameEvent(String mapName, boolean host, boolean multiplayer) {
-		super(IEvent.EventType.LclPreStartGameEvent);
+		super(EventType.LclPreStartGameEvent);
 		this.mapName = mapName;
 		this.host = host;
 		this.multiplayer = multiplayer;

@@ -13,7 +13,7 @@ public class SvrStartGameEvent extends ANetEvent {
 	// should probably contain info about if multiplayer etc.
 	
 	public SvrStartGameEvent(Map map, List<NetPlayer> players) {
-		super(IEvent.EventType.SvrStartGameEvent);
+		super(EventType.SvrStartGameEvent);
 		this.map = map;
 		this.players = players;
 		System.out.println("EVENT CREATED: " + toString());

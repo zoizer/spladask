@@ -7,8 +7,9 @@ public class RpcDisconnectEvent extends ANetEvent {
 	public final NetPlayer player;
 	
 	public RpcDisconnectEvent(NetPlayer p) {
-		super(IEvent.EventType.RpcDisconnectEvent);
+		super(EventType.RpcDisconnectEvent);
 		this.player = p;
+		System.out.println("EVENT CREATED: " + toString());
 	}
 
 }

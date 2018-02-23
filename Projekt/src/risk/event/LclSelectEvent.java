@@ -6,7 +6,7 @@ public class LclSelectEvent extends AEvent {
 	private static final long serialVersionUID = 8934274030487786176L;
 	public Zone zone;
 	public LclSelectEvent(Zone z) {
-		super(IEvent.EventType.LclSelectEvent);
+		super(EventType.LclSelectEvent);
 		this.zone = z;
 		System.out.println("EVENT CREATED: " + toString());
 	}

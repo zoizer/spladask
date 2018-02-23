@@ -7,11 +7,11 @@ public abstract class AEventSystem implements IEventSystem {
 		EventManager.get().queueEvent(e);
 	}
 	
-	protected void attachListener(Delegate d, IEvent.EventType eventType) {
+	protected void attachListener(Delegate d, EventType eventType) {
 		EventManager.get().attachListener(d, eventType);
 	}
 	
-	protected void detachListener(Delegate d, IEvent.EventType eventType) {
+	protected void detachListener(Delegate d, EventType eventType) {
 		EventManager.get().detachListener(d, eventType);
 	}
 }

@@ -6,7 +6,9 @@ import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.List;
 
-public class Zone implements Serializable { // has no ID, the id is the location in the vector in map.
+import risk.util.ErrorHandler;
+
+public class Zone implements Serializable, Cloneable { // has no ID, the id is the location in the vector in map.
 	private static final long serialVersionUID = -6371719250707334678L;
 	private final String name;
 	private final Polygon area;
@@ -14,14 +16,27 @@ public class Zone implements Serializable { // has no ID, the id is the location
 	private final List<Integer> neighbours;
 	private int production;
 	private String owner;
+	private int army;
 	
 	public Zone(String name, Polygon area, List<Integer> neighbours, int production) {
 		this.name = name;
 		this.area = area;
 		this.neighbours = neighbours;
 		this.production = production;
+		this.army = 0;
 		owner = null;
 		outline = area.getBounds();
+	}
+	
+	@Override
+	public Zone clone() {
+		try {
+			return (Zone)super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			ErrorHandler.ASSERT(false);
+			return null;
+		}
 	}
 	
 	public boolean equals(Object zone) {
@@ -48,6 +63,22 @@ public class Zone implements Serializable { // has no ID, the id is the location
 	
 	public String getOwner() {
 		return owner == null ? "Rebel" : owner;
+	}
+	
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+	
+	public int getArmy() {
+		return army;
+	}
+	
+	public void setArmy(int army) {
+		this.army = army;
+	}
+	
+	public boolean hasOwner() {
+		return owner != null;
 	}
 	
 	public int getProduction() {

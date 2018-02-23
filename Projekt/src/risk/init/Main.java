@@ -23,12 +23,12 @@ public final class Main {
 		Main ma = new Main();
 		
 		m.queueEvent(new LclGenerateMap("Test"));
-		m.attachListener(new Delegate(ma, "testF"), IEvent.EventType.LclGenerateMap);
-		m.attachListener(new Delegate(ma, "testF"), IEvent.EventType.LclGenerateMap);
+		m.attachListener(new Delegate(ma, "testF"), EventType.LclGenerateMap);
+		m.attachListener(new Delegate(ma, "testF"), EventType.LclGenerateMap);
 		m.queueEvent(new LclGenerateMap("Test"));
-		m.attachListener(new Delegate(ma, "testA"), IEvent.EventType.LclGenerateMap);
-		m.attachListener(new Delegate(ma, "testB"), IEvent.EventType.LclGenerateMap);
-		m.attachListener(new Delegate(ma, "testC"), IEvent.EventType.LclGenerateMap);*/
+		m.attachListener(new Delegate(ma, "testA"), EventType.LclGenerateMap);
+		m.attachListener(new Delegate(ma, "testB"), EventType.LclGenerateMap);
+		m.attachListener(new Delegate(ma, "testC"), EventType.LclGenerateMap);*/
 		
 		InstanceController 	c = new InstanceController();
 		InstanceView 		v = new InstanceView(c.getMouseAdapter(), c.getWindowAdapter(), c.getActionListener(), c.getIResponse());

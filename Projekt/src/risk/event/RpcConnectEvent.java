@@ -7,8 +7,9 @@ public class RpcConnectEvent extends ANetEvent {
 	public final NetPlayer player;
 	
 	public RpcConnectEvent(NetPlayer p) {
-		super(IEvent.EventType.RpcConnectEvent);
+		super(EventType.RpcConnectEvent);
 		this.player = p;
+		System.out.println("EVENT CREATED: " + toString());
 	}
 	
 	

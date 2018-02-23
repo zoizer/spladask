@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import risk.event.AEventSystem;
+import risk.event.EventType;
 import risk.event.IEvent;
 import risk.event.LclGenerateMap;
 import risk.event.LclServerHostStartGameEvent;
@@ -42,16 +43,16 @@ public class InstanceController extends AEventSystem {
 	
 	@Override
 	public void attachListeners() {
-		attachListener(new Delegate(this, "lclServerHostStartGame"), IEvent.EventType.LclServerHostStartGameEvent);
-		attachListener(new Delegate(this, "lclStartGameSentEvent"), IEvent.EventType.LclStartGameSentEvent);
-		attachListener(new Delegate(this, "startGame"), IEvent.EventType.SvrStartGameEvent);
+		attachListener(new Delegate(this, "lclServerHostStartGame"), EventType.LclServerHostStartGameEvent);
+		attachListener(new Delegate(this, "lclStartGameSentEvent"), EventType.LclStartGameSentEvent);
+		attachListener(new Delegate(this, "startGame"), EventType.SvrStartGameEvent);
 	}
 
 	@Override
 	public void detachListeners() {
-		detachListener(new Delegate(this, "lclServerHostStartGame"), IEvent.EventType.LclServerHostStartGameEvent);
-		detachListener(new Delegate(this, "lclStartGameSentEvent"), IEvent.EventType.LclStartGameSentEvent);
-		detachListener(new Delegate(this, "startGame"), IEvent.EventType.SvrStartGameEvent);
+		detachListener(new Delegate(this, "lclServerHostStartGame"), EventType.LclServerHostStartGameEvent);
+		detachListener(new Delegate(this, "lclStartGameSentEvent"), EventType.LclStartGameSentEvent);
+		detachListener(new Delegate(this, "startGame"), EventType.SvrStartGameEvent);
 	}
 	
 	private LocalPlayerController getLocalPlayer() {

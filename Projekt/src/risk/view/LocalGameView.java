@@ -18,8 +18,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import risk.event.AEventSystem;
+import risk.event.EventType;
+import risk.event.IEvent;
+import risk.event.SvrTrainEvent;
 import risk.general.Map;
 import risk.general.Zone;
+import risk.util.Delegate;
+import risk.util.ErrorHandler;
 
 public class LocalGameView extends AEventSystem implements IGameView {
 	private Map map;
@@ -53,12 +58,12 @@ public class LocalGameView extends AEventSystem implements IGameView {
 	
 	@Override
 	public void attachListeners() {
-		
+		attachListener(new Delegate(this, "svrTrain"), EventType.SvrTrainEvent);
 	}
 
 	@Override
 	public void detachListeners() {
-		
+		detachListener(new Delegate(this, "svrTrain"), EventType.SvrTrainEvent);
 	}
 
 	@Override
@@ -66,6 +71,14 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		detachListeners();
 		parent.remove(ctrlPanel);
 		parent.remove(mapView);
+	}
+	
+	public void svrTrain(IEvent ev) {
+		ErrorHandler.ASSERT(ev instanceof SvrTrainEvent);
+		SvrTrainEvent e = (SvrTrainEvent) ev;
+		
+		map.setZone(e.zone, e.zoneid);
+		mapView.repaint();
 	}
 	
 	private Dimension getMapDimensions() {
@@ -119,9 +132,10 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		FontMetrics metrics = g.getFontMetrics(font);
 		
 		//int j = (metrics.getHeight() - 2 * metrics.getAscent());
-		int count = 2; // count of lines of text.
+		int count = 3; // count of lines of text.
 	    drawZoneTextLine(g, z.getName(), count--, z.getOutline(), metrics, font);
 	    drawZoneTextLine(g, z.getOwner(), count--, z.getOutline(), metrics, font);
+	    drawZoneTextLine(g, "Army: " + z.getArmy(), count--, z.getOutline(), metrics, font);
 	    //drawZoneTextLine(g, "" + id, count--, z.getOutline(), metrics, font);
 		
 		g.setFont(oldfont);

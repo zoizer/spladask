@@ -5,13 +5,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import risk.event.AEventSystem;
+import risk.event.EventType;
 import risk.event.IEvent;
 import risk.event.RpcConnectEvent;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
+import risk.util.Utility;
 
 
 public class Client extends AEventSystem implements Runnable {
@@ -85,18 +88,14 @@ public class Client extends AEventSystem implements Runnable {
 
 	@Override
 	public void attachListeners() {
-		attachListener(new Delegate(this, "sendMessage"), IEvent.EventType.RpcAttackEvent);
-		attachListener(new Delegate(this, "sendMessage"), IEvent.EventType.RpcConnectEvent);
-		attachListener(new Delegate(this, "sendMessage"), IEvent.EventType.RpcDisconnectEvent);
-		attachListener(new Delegate(this, "sendMessage"), IEvent.EventType.LclStartGameEvent);
+		List<EventType> e = Utility.getEventsOfType("Rpc");
+		for (EventType ev : e) attachListener(new Delegate(this, "sendMessage"), ev);
 	}
 
 	@Override
 	public void detachListeners() {
-		detachListener(new Delegate(this, "sendMessage"), IEvent.EventType.RpcAttackEvent);
-		detachListener(new Delegate(this, "sendMessage"), IEvent.EventType.RpcConnectEvent);
-		detachListener(new Delegate(this, "sendMessage"), IEvent.EventType.RpcDisconnectEvent);
-		detachListener(new Delegate(this, "sendMessage"), IEvent.EventType.LclStartGameEvent);
+		List<EventType> e = Utility.getEventsOfType("Rpc");
+		for (EventType ev : e) detachListener(new Delegate(this, "sendMessage"), ev);
 	}
 
 	@Override
@@ -107,7 +106,7 @@ public class Client extends AEventSystem implements Runnable {
 			while (run.get()) {
 				e = (IEvent)in.readObject();
 				if (e != null) {
-					System.out.println("FROM SERVER: " + in.toString());
+					System.out.println("FROM SERVER: " + e.toString());
 					queueEvent(e);
 				}
 			}

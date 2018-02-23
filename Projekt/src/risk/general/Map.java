@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -16,10 +17,10 @@ import javax.imageio.ImageIO;
 
 public class Map implements Serializable {
 	private static final long serialVersionUID = 3553692940163187630L;
-	private Vector<Zone> zones;
+	private ArrayList<Zone> zones;
 	private Image img;
 	
-	private Map(Vector<Zone> zones, Image img) {
+	private Map(ArrayList<Zone> zones, Image img) {
 		this.zones = zones;
 		this.img = img;
 	}
@@ -40,7 +41,7 @@ public class Map implements Serializable {
 	}
 	
 	public static void createMap(String name) {
-		Vector<Zone> zones = new Vector<Zone>();
+		ArrayList<Zone> zones = new ArrayList<Zone>();
 		
         Polygon central = new Polygon();
         central.addPoint(267,418);
@@ -471,7 +472,11 @@ public class Map implements Serializable {
         }
 	}
 	
-	
+	public void setZone(Zone z, int i) {
+		synchronized (zones) {
+			zones.set(i, z);
+		}
+	}
 	
 	public Zone getZone(int index) {
 		return zones.get(index);
@@ -485,6 +490,16 @@ public class Map implements Serializable {
 		}
 		
 		return null;
+	}
+	
+	public int getZoneId(Point p) {
+		synchronized (zones) {
+			for (int i = 0; i < zones.size(); i++) {
+				if (zones.get(i).contains(p)) return i;
+			}
+		}
+		
+		return -1;
 	}
 	
 	public int getZoneCount() {

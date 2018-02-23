@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 
 import risk.controller.IResponse;
 import risk.event.AEventSystem;
+import risk.event.EventType;
 import risk.event.IEvent;
 import risk.event.LclHostGameEvent;
 import risk.event.LclServerHostStartGameEvent;
@@ -74,22 +75,22 @@ public class InstanceView extends AEventSystem {
 
 	@Override
 	public void attachListeners() {
-		attachListener(new Delegate(this, "lclStartGame"), IEvent.EventType.LclStartGameEvent);
-		attachListener(new Delegate(this, "lclHostGame"), IEvent.EventType.LclHostGameEvent);
-		attachListener(new Delegate(this, "lclServerHostStartGame"), IEvent.EventType.LclServerHostStartGameEvent);
-		attachListener(new Delegate(this, "lclPreStartGame"), IEvent.EventType.LclPreStartGameEvent);
-		attachListener(new Delegate(this, "lclStartGameSent"), IEvent.EventType.LclStartGameSentEvent);
-		attachListener(new Delegate(this, "svrStartGame"), IEvent.EventType.SvrStartGameEvent);
+		attachListener(new Delegate(this, "lclStartGame"), EventType.LclStartGameEvent);
+		attachListener(new Delegate(this, "lclHostGame"), EventType.LclHostGameEvent);
+		attachListener(new Delegate(this, "lclServerHostStartGame"), EventType.LclServerHostStartGameEvent);
+		attachListener(new Delegate(this, "lclPreStartGame"), EventType.LclPreStartGameEvent);
+		attachListener(new Delegate(this, "lclStartGameSent"), EventType.LclStartGameSentEvent);
+		attachListener(new Delegate(this, "svrStartGame"), EventType.SvrStartGameEvent);
 	}
 
 	@Override
 	public void detachListeners() {
-		detachListener(new Delegate(this, "lclStartGame"), IEvent.EventType.LclStartGameEvent);
-		detachListener(new Delegate(this, "lclHostGame"), IEvent.EventType.LclHostGameEvent);
-		detachListener(new Delegate(this, "lclServerHostStartGame"), IEvent.EventType.LclServerHostStartGameEvent);
-		detachListener(new Delegate(this, "lclPreStartGame"), IEvent.EventType.LclPreStartGameEvent);
-		detachListener(new Delegate(this, "lclStartGameSent"), IEvent.EventType.LclStartGameSentEvent);
-		detachListener(new Delegate(this, "svrStartGame"), IEvent.EventType.SvrStartGameEvent);
+		detachListener(new Delegate(this, "lclStartGame"), EventType.LclStartGameEvent);
+		detachListener(new Delegate(this, "lclHostGame"), EventType.LclHostGameEvent);
+		detachListener(new Delegate(this, "lclServerHostStartGame"), EventType.LclServerHostStartGameEvent);
+		detachListener(new Delegate(this, "lclPreStartGame"), EventType.LclPreStartGameEvent);
+		detachListener(new Delegate(this, "lclStartGameSent"), EventType.LclStartGameSentEvent);
+		detachListener(new Delegate(this, "svrStartGame"), EventType.SvrStartGameEvent);
 	}
 	
 	private void createMenu() {

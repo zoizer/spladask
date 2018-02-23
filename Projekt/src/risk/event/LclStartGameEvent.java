@@ -10,7 +10,7 @@ public class LclStartGameEvent extends AEvent {
 	public static final int hostPort = 24446;
 	
 	public LclStartGameEvent(String mapName, String player, String hostAddr, boolean host, boolean multiplayer) {
-		super(IEvent.EventType.LclStartGameEvent);
+		super(EventType.LclStartGameEvent);
 		this.mapName = mapName;
 		this.player = player;
 		this.hostAddr = hostAddr;

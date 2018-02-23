@@ -2,10 +2,10 @@ package risk.model;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import risk.event.AEventSystem;
+import risk.event.EventType;
 import risk.event.IEvent;
 import risk.event.LclGenerateMap;
 import risk.event.LclHostGameEvent;
@@ -41,18 +41,18 @@ public class InstanceModel extends AEventSystem {
 	
 	@Override
 	public void attachListeners() {
-		attachListener(new Delegate(this, "lclStartGameSent"), IEvent.EventType.LclStartGameSentEvent);
-		attachListener(new Delegate(this, "lclStartGame"), IEvent.EventType.LclStartGameEvent);
-		attachListener(new Delegate(this, "svrStartGame"), IEvent.EventType.SvrStartGameEvent);
-		attachListener(new Delegate(this, "generateMap"), IEvent.EventType.LclGenerateMap);
+		attachListener(new Delegate(this, "lclStartGameSent"), EventType.LclStartGameSentEvent);
+		attachListener(new Delegate(this, "lclStartGame"), EventType.LclStartGameEvent);
+		attachListener(new Delegate(this, "svrStartGame"), EventType.SvrStartGameEvent);
+		attachListener(new Delegate(this, "generateMap"), EventType.LclGenerateMap);
 	}
 
 	@Override
 	public void detachListeners() {
-		detachListener(new Delegate(this, "lclStartGameSent"), IEvent.EventType.LclStartGameSentEvent);
-		detachListener(new Delegate(this, "lclStartGame"), IEvent.EventType.LclStartGameEvent);
-		detachListener(new Delegate(this, "svrStartGame"), IEvent.EventType.SvrStartGameEvent);
-		detachListener(new Delegate(this, "generateMap"), IEvent.EventType.LclGenerateMap);
+		detachListener(new Delegate(this, "lclStartGameSent"), EventType.LclStartGameSentEvent);
+		detachListener(new Delegate(this, "lclStartGame"), EventType.LclStartGameEvent);
+		detachListener(new Delegate(this, "svrStartGame"), EventType.SvrStartGameEvent);
+		detachListener(new Delegate(this, "generateMap"), EventType.LclGenerateMap);
 	}
 	
 	public void generateMap(IEvent ev) {
@@ -136,7 +136,7 @@ public class InstanceModel extends AEventSystem {
 		
 		ui = new GameInterfaceModel(player.name);
 		if (player.host) {
-			gameModel = new ServerGameModel(e.map);
+			gameModel = new ServerGameModel(e.map, e.players);
 		} else {
 			gameModel = new ClientGameModel(); // dummy class as there should be no model for remote games.
 		}

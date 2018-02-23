@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import risk.event.AEventSystem;
+import risk.event.EventType;
 import risk.event.IEvent;
 import risk.event.LclHostGameEvent;
 import risk.event.RpcConnectEvent;
@@ -92,11 +93,11 @@ public class HostPanelView extends AEventSystem {
 
 	@Override
 	public void attachListeners() {
-		attachListener(new Delegate(this, "addPlayer"), IEvent.EventType.RpcConnectEvent);
+		attachListener(new Delegate(this, "addPlayer"), EventType.RpcConnectEvent);
 	}
 
 	@Override
 	public void detachListeners() {
-		detachListener(new Delegate(this, "addPlayer"), IEvent.EventType.RpcConnectEvent);
+		detachListener(new Delegate(this, "addPlayer"), EventType.RpcConnectEvent);
 	}
 }

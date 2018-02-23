@@ -4,16 +4,19 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import risk.event.AEventSystem;
 import risk.event.ANetEvent;
+import risk.event.EventType;
 import risk.event.IEvent;
 import risk.event.RpcConnectEvent;
 import risk.event.RpcDisconnectEvent;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
+import risk.util.Utility;
 
 public class ServerClient extends AEventSystem implements Runnable {
 	Server parent;
@@ -90,14 +93,14 @@ public class ServerClient extends AEventSystem implements Runnable {
 
 	@Override
 	public void attachListeners() {
-		attachListener(new Delegate(this, "forwardEvent"), IEvent.EventType.SvrAttackEvent);
-		attachListener(new Delegate(this, "forwardEvent"), IEvent.EventType.SvrStartGameEvent);
+		List<EventType> e = Utility.getEventsOfType("Svr");
+		for (EventType ev : e) attachListener(new Delegate(this, "forwardEvent"), ev);
 	}
 
 	@Override
 	public void detachListeners() {
-		detachListener(new Delegate(this, "forwardEvent"), IEvent.EventType.SvrAttackEvent);
-		detachListener(new Delegate(this, "forwardEvent"), IEvent.EventType.SvrStartGameEvent);
+		List<EventType> e = Utility.getEventsOfType("Svr");
+		for (EventType ev : e) detachListener(new Delegate(this, "forwardEvent"), ev);
 	}
 	
 	public void forwardEvent(IEvent e) {

@@ -8,7 +8,7 @@ public class LclStartGameSentEvent extends AEvent {
 	public final boolean multiplayer;
 	
 	public LclStartGameSentEvent(String mapName, String player, boolean host, boolean multiplayer) {
-		super(IEvent.EventType.LclStartGameSentEvent);
+		super(EventType.LclStartGameSentEvent);
 		this.mapName = mapName;
 		this.player = player;
 		this.host = host;

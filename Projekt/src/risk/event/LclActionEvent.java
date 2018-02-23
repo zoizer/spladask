@@ -6,7 +6,7 @@ public class LclActionEvent extends AEvent {
 	private static final long serialVersionUID = -1325136646688035490L;
 	public Zone zone;
 	public LclActionEvent(Zone z) {
-		super(IEvent.EventType.LclActionEvent);
+		super(EventType.LclActionEvent);
 		this.zone = z;
 		System.out.println("EVENT CREATED: " + toString());
 	}

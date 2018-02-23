@@ -20,4 +20,9 @@ public class ClientGameModel extends AEventSystem implements IGameModel {
 		
 	}
 
+	@Override
+	public void destroy() {
+		detachListeners();
+	}
+
 }

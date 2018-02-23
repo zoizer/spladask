@@ -11,10 +11,10 @@ import risk.event.AEventSystem;
 import risk.event.IEvent;
 import risk.event.LclGenerateMap;
 import risk.event.LclServerHostStartGameEvent;
-import risk.event.LclStartGameEvent;
+import risk.event.LclPreStartGameEvent;
 import risk.event.LclStartGameHostEvent;
 import risk.event.LclStartGameSentEvent;
-import risk.event.RpcStartGameEvent;
+import risk.event.LclStartGameEvent;
 import risk.event.SvrStartGameEvent;
 import risk.net.NetPlayer;
 import risk.util.Delegate;
@@ -147,9 +147,9 @@ public class InstanceController extends AEventSystem {
 		public void actionPerformed(ActionEvent e) {
 			String cmd = e.getActionCommand();
 
-			      if(cmd.equals("New Game")) parent.queueEvent(new LclStartGameEvent("Default", true, false));
-			 else if(cmd.equals("Host Game")) parent.queueEvent(new LclStartGameEvent("Default", true, true));
-			 else if(cmd.equals("Join Game")) parent.queueEvent(new LclStartGameEvent("Default", false, true));
+			      if(cmd.equals("New Game")) parent.queueEvent(new LclPreStartGameEvent("Default", true, false));
+			 else if(cmd.equals("Host Game")) parent.queueEvent(new LclPreStartGameEvent("Default", true, true));
+			 else if(cmd.equals("Join Game")) parent.queueEvent(new LclPreStartGameEvent("Default", false, true));
 			 else if(cmd.equals("Create Map")) parent.queueEvent(new LclGenerateMap("Default"));
 			 else if(cmd.equals("Exit")) System.exit(0); // TEMPORARY
 			 else if(cmd.equals("Start Multiplayer Game")) parent.queueEvent(new LclStartGameHostEvent());
@@ -165,11 +165,11 @@ public class InstanceController extends AEventSystem {
 
 		@Override
 		public void respond(IEvent e, String s) {
-			if (e instanceof LclStartGameEvent) {
-				LclStartGameEvent ev = (LclStartGameEvent)e;
+			if (e instanceof LclPreStartGameEvent) {
+				LclPreStartGameEvent ev = (LclPreStartGameEvent)e;
 				if (ev.host && ev.multiplayer) { // Multiplayer as host
 					parent.queueEvent(new LclStartGameSentEvent(ev.mapName, s, ev.host, ev.multiplayer));
-					parent.queueEvent(new RpcStartGameEvent(ev.mapName, s, "localhost", ev.host, ev.multiplayer)); // BEGIN LISTEN FOR CLIENTS
+					parent.queueEvent(new LclStartGameEvent(ev.mapName, s, "localhost", ev.host, ev.multiplayer)); // BEGIN LISTEN FOR CLIENTS
 				} else if (!ev.host && ev.multiplayer) { // Multiplayer as client
 					String player = null;
 					String hostAddr = null;
@@ -184,10 +184,10 @@ public class InstanceController extends AEventSystem {
 					ErrorHandler.ASSERT(player != null || hostAddr != null); // String format is wrong!
 					
 					parent.queueEvent(new LclStartGameSentEvent(ev.mapName, player, ev.host, ev.multiplayer));
-					parent.queueEvent(new RpcStartGameEvent(ev.mapName, player, hostAddr, ev.host, ev.multiplayer)); // TRY JOIN SERVER
+					parent.queueEvent(new LclStartGameEvent(ev.mapName, player, hostAddr, ev.host, ev.multiplayer)); // TRY JOIN SERVER
 				} else if (ev.host && !ev.multiplayer) { // Singleplayer
 					parent.queueEvent(new LclStartGameSentEvent(ev.mapName, s, ev.host, ev.multiplayer));
-					parent.queueEvent(new RpcStartGameEvent(ev.mapName, s, "localhost", ev.host, ev.multiplayer)); // START GAME
+					parent.queueEvent(new LclStartGameEvent(ev.mapName, s, "localhost", ev.host, ev.multiplayer)); // START GAME
 				}
 			}
 		}

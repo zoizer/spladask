@@ -22,4 +22,9 @@ public class ServerGameModel extends AEventSystem implements IGameModel {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void destroy() {
+		detachListeners();
+	}
 }

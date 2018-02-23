@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import risk.event.AEventSystem;
 import risk.event.IEvent;
-import risk.event.LclKillNetEvent;
 import risk.event.LclServerHostStartGameEvent;
 import risk.event.LclStartGameHostEvent;
 import risk.event.SvrStartGameEvent;
@@ -20,6 +19,7 @@ public class Server extends AEventSystem implements Runnable {
 	private ServerSocket serverSocket;
 	private AtomicBoolean run;
 	private AtomicBoolean clientsLive;
+	private AtomicBoolean listen;
 	private List<NetPlayer> validatedPlayers;
 	private List<ServerClient> remotePlayers;
 	private final Object lock;
@@ -34,6 +34,7 @@ public class Server extends AEventSystem implements Runnable {
 		this.port = port;
 		run = new AtomicBoolean(true);
 		clientsLive = new AtomicBoolean(true);
+		listen = new AtomicBoolean(true);
 		validatedPlayers = new ArrayList<NetPlayer>();
 		remotePlayers = new ArrayList<ServerClient>();
 		
@@ -70,6 +71,10 @@ public class Server extends AEventSystem implements Runnable {
 	}
 	
 	private void stopServerListen() {
+		if (listen.get()) {
+			listen.set(false);
+			detachListeners();
+		}
 		run.set(false);
 		try {
 			serverSocket.close();
@@ -81,7 +86,6 @@ public class Server extends AEventSystem implements Runnable {
 	
 	@Override
 	public void attachListeners() {
-		attachListener(new Delegate(this, "lclKillNet"), IEvent.EventType.LclKillNetEvent); // removed only after LclKillNet is called.
 		attachListener(new Delegate(this, "lclStartGameHost"), IEvent.EventType.LclStartGameHostEvent);
 	}
 
@@ -93,20 +97,17 @@ public class Server extends AEventSystem implements Runnable {
 	@Override
 	public void run() {
 		try {
-			while(run.get()) (new Thread(new ServerClient(this, serverSocket.accept(), clientsLive))).start(); // TODO replace with new ServerClient(serverSocket.accept()) etc.
+			while(run.get()) (new Thread(new ServerClient(this, serverSocket.accept(), clientsLive))).start();
 		} catch(IOException e) {
 		//	e.printStackTrace();
 		//	ErrorHandler.ASSERT(false);
 		} finally {
 			stopServerListen();
-			detachListeners();
 		}
 	}
 	
-	public void lclKillNet(IEvent e) {
-		ErrorHandler.ASSERT(e instanceof LclKillNetEvent);
+	public void destroy() { // Server calls detachListeners automatically when turned off.
 		stopServerListen();
-		detachListener(new Delegate(this, "lclKillNet"), IEvent.EventType.LclKillNetEvent);
 		clientsLive.set(false);
 	}
 	

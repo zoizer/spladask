@@ -9,9 +9,8 @@ import risk.event.AEventSystem;
 import risk.event.IEvent;
 import risk.event.LclGenerateMap;
 import risk.event.LclHostGameEvent;
-import risk.event.LclKillNetEvent;
 import risk.event.LclStartGameSentEvent;
-import risk.event.RpcStartGameEvent;
+import risk.event.LclStartGameEvent;
 import risk.event.SvrStartGameEvent;
 import risk.general.Map;
 import risk.net.Client;
@@ -43,7 +42,7 @@ public class InstanceModel extends AEventSystem {
 	@Override
 	public void attachListeners() {
 		attachListener(new Delegate(this, "lclStartGameSent"), IEvent.EventType.LclStartGameSentEvent);
-		attachListener(new Delegate(this, "rpcStartGame"), IEvent.EventType.RpcStartGameEvent);
+		attachListener(new Delegate(this, "lclStartGame"), IEvent.EventType.LclStartGameEvent);
 		attachListener(new Delegate(this, "svrStartGame"), IEvent.EventType.SvrStartGameEvent);
 		attachListener(new Delegate(this, "generateMap"), IEvent.EventType.LclGenerateMap);
 	}
@@ -51,7 +50,7 @@ public class InstanceModel extends AEventSystem {
 	@Override
 	public void detachListeners() {
 		detachListener(new Delegate(this, "lclStartGameSent"), IEvent.EventType.LclStartGameSentEvent);
-		detachListener(new Delegate(this, "rpcStartGame"), IEvent.EventType.RpcStartGameEvent);
+		detachListener(new Delegate(this, "lclStartGame"), IEvent.EventType.LclStartGameEvent);
 		detachListener(new Delegate(this, "svrStartGame"), IEvent.EventType.SvrStartGameEvent);
 		detachListener(new Delegate(this, "generateMap"), IEvent.EventType.LclGenerateMap);
 	}
@@ -71,20 +70,28 @@ public class InstanceModel extends AEventSystem {
 		player = e.player;
 	}
 	
-	public void rpcStartGame(IEvent ev) {
-		ErrorHandler.ASSERT(ev instanceof RpcStartGameEvent);
-		RpcStartGameEvent e = (RpcStartGameEvent) ev;
+	public void lclStartGame(IEvent ev) {
+		ErrorHandler.ASSERT(ev instanceof LclStartGameEvent);
+		LclStartGameEvent e = (LclStartGameEvent) ev;
 		
 		if (server != null) {
-			IEvent eve = new LclKillNetEvent();
-			server.lclKillNet(eve);
-			queueEvent(eve); // MIGHT NOT WORK AS SAME PORT MAY BE OCCUPIED. // TODO  REMOVE THIS IS IDIOTIC, WILL DESTROY NEXT SERVER !
+			server.destroy();
 			server = null;
 		}
 		
 		if (client != null) {
 			client.destroy();
 			client = null;
+		}
+		
+		if (gameModel != null) {
+			gameModel.destroy();
+			gameModel = null;
+		}
+		
+		if (ui != null) {
+			ui.destroy();
+			ui = null;
 		}
 		
 		ErrorHandler.ASSERT(e.player.equals(player));
@@ -96,19 +103,19 @@ public class InstanceModel extends AEventSystem {
 			queueEvent(new SvrStartGameEvent(m, players)); // OK, start game.
 		} else if (e.host) { // HOST
 			Map m = Map.loadMap(e.mapName);
-			server = new Server(RpcStartGameEvent.hostPort, m, new NetPlayer(e.player, e.host));
+			server = new Server(LclStartGameEvent.hostPort, m, new NetPlayer(e.player, e.host));
 			(new Thread(server)).start();
 			queueEvent(new LclHostGameEvent(new NetPlayer(e.player, e.host))); // BEGIN LISTEN FOR CLIENTS
 		} else if (!e.host) { // CLIENT
 			// TRY TO CONNECT TO HOST
 			// IF SUCCESS SEND LclJoinGameEvent
-			client = new Client(e.hostAddr, RpcStartGameEvent.hostPort, e.player);
+			client = new Client(e.hostAddr, LclStartGameEvent.hostPort, e.player);
 			if (client.initialize()) {
 				Thread t = new Thread(client);
 				t.start();
 			} else {
-				client.stopConnection(); // destroy does too much, stopConnection is just perfect.
-				client = null;
+				client.stopConnection(); // destroy will undo too much, stopConnection is enough.
+				client = null;	// Bad design, but I can't be bothered to fix it ;)
 			}
 			
 		} // THIS MAY BE WRONG. THIS IS PROBABLY NOT WHERE I SHOULD DO THIS AS THE SERVER WILL GET THIS MESSAGE FROM ALL PLAYERS
@@ -118,6 +125,9 @@ public class InstanceModel extends AEventSystem {
 	public void svrStartGame(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof SvrStartGameEvent);
 		SvrStartGameEvent e = (SvrStartGameEvent) ev;
+		
+		ErrorHandler.ASSERT(gameModel == null);
+		ErrorHandler.ASSERT(ui == null);
 		
 		String playerName = this.player;
 		NetPlayer player = null;

@@ -88,7 +88,7 @@ public class Client extends AEventSystem implements Runnable {
 		attachListener(new Delegate(this, "sendMessage"), IEvent.EventType.RpcAttackEvent);
 		attachListener(new Delegate(this, "sendMessage"), IEvent.EventType.RpcConnectEvent);
 		attachListener(new Delegate(this, "sendMessage"), IEvent.EventType.RpcDisconnectEvent);
-		attachListener(new Delegate(this, "sendMessage"), IEvent.EventType.RpcStartGameEvent);
+		attachListener(new Delegate(this, "sendMessage"), IEvent.EventType.LclStartGameEvent);
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class Client extends AEventSystem implements Runnable {
 		detachListener(new Delegate(this, "sendMessage"), IEvent.EventType.RpcAttackEvent);
 		detachListener(new Delegate(this, "sendMessage"), IEvent.EventType.RpcConnectEvent);
 		detachListener(new Delegate(this, "sendMessage"), IEvent.EventType.RpcDisconnectEvent);
-		detachListener(new Delegate(this, "sendMessage"), IEvent.EventType.RpcStartGameEvent);
+		detachListener(new Delegate(this, "sendMessage"), IEvent.EventType.LclStartGameEvent);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package risk.event;
 
 public class LclStartGameSentEvent extends AEvent {
+	private static final long serialVersionUID = -3182974363634236442L;
 	public final String mapName;
 	public final String player;
 	public final boolean host;

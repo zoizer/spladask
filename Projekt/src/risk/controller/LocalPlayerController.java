@@ -47,18 +47,22 @@ public class LocalPlayerController extends AEventSystem implements IPlayerContro
 		else yourTurn = false;
 	}
 	
-	public void leftClick(Point p) {
+	public void leftClick(Point p, Point p2) {
 		int z = map.getZoneId(p);
+		int x = map.getZoneId(p2);
+		if (z != x) return; // miss
 		if (z != -1 && yourTurn) {
 			if (initPhase) queueEvent(new RpcTrainEvent(z, player));
 			// queueEvent(new LclSelectEvent(z));
 		}
 	}
 	
-	public void rightClick(Point p) {
-		Zone z = map.getZone(p);
-		if (z != null && yourTurn) {
-			queueEvent(new LclActionEvent(z));
+	public void rightClick(Point p, Point p2) {
+		int z = map.getZoneId(p);
+		int x = map.getZoneId(p2);
+		if (z != x) return; // miss
+		if (z != -1 && yourTurn) {
+		//	queueEvent(new LclActionEvent(z));
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package risk.controller;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -106,19 +107,35 @@ public class InstanceController extends AEventSystem {
 	// CLASSES
 	public static class MouseAdapterController extends MouseAdapter {
 		private InstanceController parent;
+		private Point leftPrev;
+		private Point rightPrev;
 		
 		public MouseAdapterController(InstanceController ctrl) {
 			parent = ctrl;
+			leftPrev = new Point(-1, -1);
+			rightPrev = new Point(-1, -1);
 		}
 		
 		@Override
-		public void mouseClicked(MouseEvent e) {
+		public void mousePressed(MouseEvent e) {
 			LocalPlayerController player = parent.getLocalPlayer();
 			if (player != null) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
-					player.leftClick(e.getPoint());
+					leftPrev = e.getPoint();
 				} else if (e.getButton() == MouseEvent.BUTTON3) {
-					player.rightClick(e.getPoint());
+					rightPrev = e.getPoint();
+				}
+			}
+		}
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			LocalPlayerController player = parent.getLocalPlayer();
+			if (player != null) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					player.leftClick(e.getPoint(), leftPrev);
+				} else if (e.getButton() == MouseEvent.BUTTON3) {
+					player.rightClick(e.getPoint(), rightPrev);
 				}
 			}
 		}

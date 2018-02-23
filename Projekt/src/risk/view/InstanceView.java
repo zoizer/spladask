@@ -178,7 +178,6 @@ public class InstanceView extends AEventSystem {
 		
 		ErrorHandler.ASSERT(localView == null);
 		ErrorHandler.ASSERT(p.host || remoteViews == null); // if not host then views == null
-		ErrorHandler.ASSERT(!p.host || remoteViews != null);// if host then views == null
 		
 		if (hostPanel != null) {
 			hostPanel.destroy();

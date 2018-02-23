@@ -118,6 +118,24 @@ public class LocalGameView extends AEventSystem implements IGameView {
     		
     		//DrawOutline(g2d);
     		//DrawCenter(g2d);
+    		//drawZoneText(g2d, z);
+    	
+    		g2d.dispose();
+        }
+	}
+	
+	private void paintZonesText(Graphics g) {
+		final int count = map.getZoneCount();
+        for(int i = 0; i < count; i++) {
+        	Zone z = map.getZone(i);
+        	
+        	Graphics2D g2d = (Graphics2D)g.create();
+    		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    		
+    		g2d.setColor(OUTLINE_COLOR); // team color maybe?
+    		
+    		//DrawOutline(g2d);
+    		//DrawCenter(g2d);
     		drawZoneText(g2d, z);
     	
     		g2d.dispose();
@@ -128,6 +146,7 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		g.setColor(new Color(0.0f, 0.0f, 0.0f, 1.0f));
 		Font oldfont = g.getFont();
 		Font font = oldfont.deriveFont(Font.BOLD);
+		font = font.deriveFont(9.0f);
 		g.setFont(font);
 		FontMetrics metrics = g.getFontMetrics(font);
 		
@@ -151,6 +170,7 @@ public class LocalGameView extends AEventSystem implements IGameView {
 	private void paintMap(Graphics g) {
 		paintImage(g);
 		paintZones(g);
+		paintZonesText(g);
 	}
 	
 	private class MapView extends JPanel {

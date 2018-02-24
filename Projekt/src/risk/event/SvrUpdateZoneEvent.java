@@ -1,16 +1,19 @@
 package risk.event;
 
 import risk.general.Zone;
+import risk.model.Phase;
 
-public class SvrTrainEvent extends ANetEvent {
+public class SvrUpdateZoneEvent extends ANetEvent {
 	private static final long serialVersionUID = -4927500976677698213L;
 	public final Zone zone;
 	public final int zoneid;
+	public final Phase phase;
 	
-	public SvrTrainEvent(Zone z, int zoneid) {
-		super(EventType.SvrTrainEvent);
+	public SvrUpdateZoneEvent(Zone z, int zoneid, Phase phase) {
+		super(EventType.SvrUpdateZoneEvent);
 		this.zone = z;
 		this.zoneid = zoneid;
+		this.phase = phase;
 		System.out.println("EVENT CREATED: " + toString());
 	}
 	

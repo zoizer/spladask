@@ -34,8 +34,8 @@ public enum EventType {
 	RpcEndBeginPhaseEvent,	// NO IMPL	// OPTIONAL: Sent by client to say they placed and server can send SvrNextTurn immediatly.
 	
 	
-	RpcTrainEvent,		// Sent by client to attempt to train
-	SvrTrainEvent,		// Sent by server to train
+	RpcUpdateZoneEvent,		// Sent by client to attempt to modify zone
+	SvrUpdateZoneEvent,		// Sent by server to modify zone.
 	
 	LclSelectEvent, 	// NO IMPL	
 	

@@ -5,12 +5,10 @@ import java.awt.Point;
 import risk.event.AEventSystem;
 import risk.event.EventType;
 import risk.event.IEvent;
-import risk.event.LclActionEvent;
-import risk.event.LclSelectEvent;
-import risk.event.RpcTrainEvent;
+import risk.event.RpcUpdateZoneEvent;
 import risk.event.SvrNextTurnEvent;
 import risk.general.Map;
-import risk.general.Zone;
+import risk.model.Phase;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
 
@@ -18,13 +16,13 @@ public class LocalPlayerController extends AEventSystem implements IPlayerContro
 	private Map map;
 	private String player;
 	private boolean yourTurn;
-	private boolean initPhase;
+	private Phase phase;
 	
 	public LocalPlayerController(Map map, String player) {
 		this.map = map;
 		this.player = player;
 		this.yourTurn = false;
-		this.initPhase = false;
+		this.phase = Phase.ERROR_DO_NOT_USE;
 		attachListeners();
 	}
 	
@@ -42,7 +40,7 @@ public class LocalPlayerController extends AEventSystem implements IPlayerContro
 		ErrorHandler.ASSERT(ev instanceof SvrNextTurnEvent);
 		SvrNextTurnEvent e = (SvrNextTurnEvent) ev;
 		
-		this.initPhase = e.initPhase;
+		this.phase = e.phase;
 		if (player.equals(e.playersTurn.name)) yourTurn = true;
 		else yourTurn = false;
 	}
@@ -51,9 +49,12 @@ public class LocalPlayerController extends AEventSystem implements IPlayerContro
 		int z = map.getZoneId(p);
 		int x = map.getZoneId(p2);
 		if (z != x) return; // miss
-		if (z != -1 && yourTurn) {
-			if (initPhase) queueEvent(new RpcTrainEvent(z, player));
-			// queueEvent(new LclSelectEvent(z));
+		if (z == -1) return;
+		if (!map.getZone(z).hasOwner() || map.getZone(z).getOwner().equals(player)) {
+			if (yourTurn) {
+				if (phase == Phase.INIT_PHASE) queueEvent(new RpcUpdateZoneEvent(z, player, 1));
+				// queueEvent(new LclSelectEvent(z));
+			}
 		}
 	}
 	

@@ -20,9 +20,11 @@ import javax.swing.JPanel;
 import risk.event.AEventSystem;
 import risk.event.EventType;
 import risk.event.IEvent;
-import risk.event.SvrTrainEvent;
+import risk.event.SvrNextTurnEvent;
+import risk.event.SvrUpdateZoneEvent;
 import risk.general.Map;
 import risk.general.Zone;
+import risk.model.Phase;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
 
@@ -31,20 +33,25 @@ public class LocalGameView extends AEventSystem implements IGameView {
 	private JFrame parent;
 	private MouseAdapter mouseAdapter;
 	private MapView mapView;
-	private ControlPanel ctrlPanel; // TEMP
+	private UIPanel uiPanel; // TEMP
 	private String playerName;
+	private Phase phase;
+	private int startingStrength;
 	
-	public LocalGameView(Map map, JFrame jFrame, MouseAdapter mouseAdapter, String name) {
+	public LocalGameView(Map map, JFrame jFrame, MouseAdapter mouseAdapter, String name, int startingStrength) {
 		this.map = map;
 		this.parent = jFrame;
 		this.mouseAdapter = mouseAdapter;
 		this.playerName = name;
+		this.phase = Phase.ERROR_DO_NOT_USE;
+		this.startingStrength = startingStrength;
 		mapView = new MapView(this); // should attach to jFrame
 		mapView.addMouseListener(this.mouseAdapter);
 		
-		ctrlPanel =  new ControlPanel(new BorderLayout()); // TEMP
-		ctrlPanel.setPlayer(this.playerName);
-        parent.add(ctrlPanel, BorderLayout.SOUTH); // TEMP
+		uiPanel =  new UIPanel(new BorderLayout()); // TEMP
+		uiPanel.setPlayer(this.playerName);
+		uiPanel.setTrainableUnits(startingStrength);
+        parent.add(uiPanel, BorderLayout.SOUTH); // TEMP
         
 		parent.add(mapView, BorderLayout.NORTH);
 		
@@ -58,26 +65,74 @@ public class LocalGameView extends AEventSystem implements IGameView {
 	
 	@Override
 	public void attachListeners() {
-		attachListener(new Delegate(this, "svrTrain"), EventType.SvrTrainEvent);
+		attachListener(new Delegate(this, "svrNextTurn"), EventType.SvrNextTurnEvent);
+		attachListener(new Delegate(this, "svrUpdateZone"), EventType.SvrUpdateZoneEvent);
 	}
 
 	@Override
 	public void detachListeners() {
-		detachListener(new Delegate(this, "svrTrain"), EventType.SvrTrainEvent);
+		detachListener(new Delegate(this, "svrNextTurn"), EventType.SvrNextTurnEvent);
+		detachListener(new Delegate(this, "svrUpdateZone"), EventType.SvrUpdateZoneEvent);
 	}
 
 	@Override
 	public void destroy() {
 		detachListeners();
-		parent.remove(ctrlPanel);
+		parent.remove(uiPanel);
 		parent.remove(mapView);
 	}
 	
-	public void svrTrain(IEvent ev) {
-		ErrorHandler.ASSERT(ev instanceof SvrTrainEvent);
-		SvrTrainEvent e = (SvrTrainEvent) ev;
+	public void svrNextTurn(IEvent ev) {
+		ErrorHandler.ASSERT(ev instanceof SvrNextTurnEvent);
+		SvrNextTurnEvent e = (SvrNextTurnEvent) ev;
 		
+		//playersTurn = e.playersTurn.name;
+		if (playerName.equals(e.playersTurn.name)) {
+			uiPanel.setYourTurn(true);
+		} else uiPanel.setYourTurn(false);
+		
+		if (phase != e.phase) {
+			phase = e.phase;
+			uiPanel.setPhase(phase);
+		}
+		
+		mapView.repaint();
+	}
+	
+	public void svrUpdateZone(IEvent ev) {
+		ErrorHandler.ASSERT(ev instanceof SvrUpdateZoneEvent);
+		SvrUpdateZoneEvent e = (SvrUpdateZoneEvent) ev;
+		
+		Zone old = map.getZone(e.zoneid);
 		map.setZone(e.zone, e.zoneid);
+		if (old.getArmy() != e.zone.getArmy()) {
+			// update army
+			if (e.zone.hasOwner() && e.zone.getOwner().equals(playerName)) {
+				uiPanel.setStrength(uiPanel.getStrength() + e.zone.getArmy() - old.getArmy());
+				if (e.phase == Phase.INIT_PHASE) {
+					uiPanel.setTrainableUnits(uiPanel.getTrainableUnits() - e.zone.getArmy() + old.getArmy());
+				}
+			}
+		}
+		
+		if (old.hasOwner() != e.zone.hasOwner() || !old.getOwner().equals(e.zone.getOwner())) {
+			// new owner
+			
+			if ((old.hasOwner() && old.getOwner().equals(playerName)) || e.zone.hasOwner() && e.zone.getOwner().equals(playerName)) { 
+				// player owned or owns this zone now.
+				int oldProd = old.getProduction();
+				int newProd = e.zone.getProduction();
+				
+				if (old.hasOwner() && old.getOwner().equals(playerName)) {
+					// Player was the old owner
+					uiPanel.setProduce(uiPanel.getProduce() - oldProd);
+				} else {
+					// Player is the new owner
+					uiPanel.setProduce(uiPanel.getProduce() + newProd);
+				}
+			}
+		}
+	
 		mapView.repaint();
 	}
 	

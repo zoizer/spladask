@@ -64,6 +64,7 @@ public class Client extends AEventSystem implements Runnable {
         	System.out.println("Client: sending message.");
             out.writeObject(msg);
     	} catch (IOException e) {
+    		e.printStackTrace();
     		ErrorHandler.ASSERT(false);
     	}
         //IEvent resp = (IEvent) in.readObject();
@@ -77,6 +78,7 @@ public class Client extends AEventSystem implements Runnable {
             if (out != null) out.close();
             if (clientSocket != null) clientSocket.close();
     	} catch (IOException e) {
+    		e.printStackTrace();
     		ErrorHandler.ASSERT(false);
 		}
     }

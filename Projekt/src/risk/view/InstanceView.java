@@ -184,7 +184,7 @@ public class InstanceView extends AEventSystem {
 			hostPanel = null;
 		}
 		
-		localView = new LocalGameView(e.map, jFrame, mouseAdapter, name);
+		localView = new LocalGameView(e.map, jFrame, mouseAdapter, name, e.startingStrength);
 		
 		
 	}

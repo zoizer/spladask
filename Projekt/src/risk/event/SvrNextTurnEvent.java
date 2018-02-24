@@ -1,16 +1,17 @@
 package risk.event;
 
+import risk.model.Phase;
 import risk.net.NetPlayer;
 
 public class SvrNextTurnEvent extends ANetEvent {
 	private static final long serialVersionUID = 8003248686452798392L;
 	public final NetPlayer playersTurn;
-	public final boolean initPhase;
+	public final Phase phase;
 	
-	public SvrNextTurnEvent(NetPlayer p, boolean initPhase) {
+	public SvrNextTurnEvent(NetPlayer p, Phase phase) {
 		super(EventType.SvrNextTurnEvent);
 		this.playersTurn = p;
-		this.initPhase = initPhase;
+		this.phase = phase;
 		System.out.println("EVENT CREATED: " + toString());
 	}
 

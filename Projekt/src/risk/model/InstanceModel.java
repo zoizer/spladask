@@ -136,7 +136,7 @@ public class InstanceModel extends AEventSystem {
 		
 		ui = new GameInterfaceModel(player.name);
 		if (player.host) {
-			gameModel = new ServerGameModel(e.map, e.players);
+			gameModel = new ServerGameModel(e.map, e.players, e.startingStrength);
 		} else {
 			gameModel = new ClientGameModel(); // dummy class as there should be no model for remote games.
 		}

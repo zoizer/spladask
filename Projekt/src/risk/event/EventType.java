@@ -24,24 +24,23 @@ public enum EventType {
 	
 	
 
-	SvrNextTurnEvent,		// NO IMPL	// Sent by server to say, next player. (should probably be timed) (should contain player name and bool about init phase or game phase) (should be sent 3 sec after SvrStartGameEvent to start the game for real.) (auto sent 16 sec after SvrStartMovePhase)
+	SvrNextTurnEvent,		// IMPL	// Sent by server to say, next player. (should probably be timed) (should contain player name and bool about init phase or game phase) (should be sent 3 sec after SvrStartGameEvent to start the game for real.) (auto sent 16 sec after SvrStartMovePhase)
 //	SvrStartTrainPhaseEvent,// NO IMPL	// Implicit in SvrNextTurn
-	RpcEndTrainPhaseEvent,	// NO IMPL	// OPTIONAL: Sent by client to end their train phase. (auto sent after 15 sec)
-	SvrStartAttackPhaseEvent,// NO IMPL	// Sent by server after some time or if client ended earlier (auto sent after 16 sec)
-	RpcEndAttackPhaseEvent,	// NO IMPL	// OPTIONAL: Sent by client to end their attack phase. (auto sent after 15 sec)
-	SvrStartMovePhaseEvent,	// NO IMPL	// Sent by server after some time or when client send RpcEndAttackPhase. (sent after 16 sec)
-	RpcEndMovePhaseEvent,	// NO IMPL	// OPTIONAL: Sent by client to end their move phase. (auto sent after 15 sec)
-	RpcEndBeginPhaseEvent,	// NO IMPL	// OPTIONAL: Sent by client to say they placed and server can send SvrNextTurn immediatly.
+//	RpcEndTrainPhaseEvent,	// NO IMPL	// OPTIONAL: Sent by client to end their train phase. (auto sent after 15 sec)
+//	SvrStartAttackPhaseEvent,// NO IMPL	// Sent by server after some time or if client ended earlier (auto sent after 16 sec)
+//	RpcEndAttackPhaseEvent,	// NO IMPL	// OPTIONAL: Sent by client to end their attack phase. (auto sent after 15 sec)
+//	SvrStartMovePhaseEvent,	// NO IMPL	// Sent by server after some time or when client send RpcEndAttackPhase. (sent after 16 sec)
+//	RpcEndMovePhaseEvent,	// NO IMPL	// OPTIONAL: Sent by client to end their move phase. (auto sent after 15 sec)
+//	RpcEndBeginPhaseEvent,	// NO IMPL	// OPTIONAL: Sent by client to say they placed and server can send SvrNextTurn immediatly.
 	
 	
 	RpcUpdateZoneEvent,		// Sent by client to attempt to modify zone
 	SvrUpdateZoneEvent,		// Sent by server to modify zone.
+	RpcAttackZoneEvent,		// Sent from client to server in order to attack
+	SvrAttackZoneEvent,		// Sent by server to confirm attack and results.
 	
-	LclSelectEvent, 	// NO IMPL	
-	
-	LclActionEvent,		// NO IMPL	
-	RpcAttackEvent,		// NO IMPL	
-	SvrAttackEvent,		// NO IMPL	
+	LclAttackFromEvent,		// Sent to create visuals of where you can attack.	
+	LclStopAttackFromEvent,	// Sent to stop visuals.
 	
 	LclGenerateMap,
 }

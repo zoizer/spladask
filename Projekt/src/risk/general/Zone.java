@@ -53,6 +53,10 @@ public class Zone implements Serializable, Cloneable { // has no ID, the id is t
 		return outline;
 	}
 	
+	public List<Integer> getNeighbours() {
+		return neighbours;
+	}
+	
 	public Polygon getPolygon() {
 		return area;
 	}

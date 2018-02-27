@@ -122,6 +122,7 @@ public class InstanceController extends AEventSystem {
 			if (player != null) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					leftPrev = e.getPoint();
+					player.downClick(e.getPoint());
 				} else if (e.getButton() == MouseEvent.BUTTON3) {
 					rightPrev = e.getPoint();
 				}
@@ -133,6 +134,7 @@ public class InstanceController extends AEventSystem {
 			LocalPlayerController player = parent.getLocalPlayer();
 			if (player != null) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
+					player.upClick(e.getPoint());
 					player.leftClick(e.getPoint(), leftPrev);
 				} else if (e.getButton() == MouseEvent.BUTTON3) {
 					player.rightClick(e.getPoint(), rightPrev);

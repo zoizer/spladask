@@ -13,6 +13,9 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,6 +23,9 @@ import javax.swing.JPanel;
 import risk.event.AEventSystem;
 import risk.event.EventType;
 import risk.event.IEvent;
+import risk.event.LclAttackFromEvent;
+import risk.event.LclStopAttackFromEvent;
+import risk.event.SvrAttackZoneEvent;
 import risk.event.SvrNextTurnEvent;
 import risk.event.SvrUpdateZoneEvent;
 import risk.general.Map;
@@ -37,6 +43,10 @@ public class LocalGameView extends AEventSystem implements IGameView {
 	private String playerName;
 	private Phase phase;
 	private int startingStrength;
+	private int selected;
+	private List<Integer> neighbours;
+	private final Color FILL_COLOR;
+	private final Color OUTLINE_COLOR;
 	
 	public LocalGameView(Map map, JFrame jFrame, MouseAdapter mouseAdapter, String name, int startingStrength) {
 		this.map = map;
@@ -45,12 +55,18 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		this.playerName = name;
 		this.phase = Phase.ERROR_DO_NOT_USE;
 		this.startingStrength = startingStrength;
+		
+		selected = -1;
+		neighbours = null;
+		FILL_COLOR = new Color(0.0f, 1.0f, 0.0f, 0.3f);
+		OUTLINE_COLOR = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+		
 		mapView = new MapView(this); // should attach to jFrame
 		mapView.addMouseListener(this.mouseAdapter);
 		
 		uiPanel =  new UIPanel(new BorderLayout()); // TEMP
 		uiPanel.setPlayer(this.playerName);
-		uiPanel.setTrainableUnits(startingStrength);
+		uiPanel.setInitTrainableUnits(this.startingStrength);
         parent.add(uiPanel, BorderLayout.SOUTH); // TEMP
         
 		parent.add(mapView, BorderLayout.NORTH);
@@ -67,12 +83,18 @@ public class LocalGameView extends AEventSystem implements IGameView {
 	public void attachListeners() {
 		attachListener(new Delegate(this, "svrNextTurn"), EventType.SvrNextTurnEvent);
 		attachListener(new Delegate(this, "svrUpdateZone"), EventType.SvrUpdateZoneEvent);
+		attachListener(new Delegate(this, "lclAttackFrom"), EventType.LclAttackFromEvent);
+		attachListener(new Delegate(this, "lclStopAttackFrom"), EventType.LclStopAttackFromEvent);
+		attachListener(new Delegate(this, "svrAttackZone"), EventType.SvrAttackZoneEvent);
 	}
 
 	@Override
 	public void detachListeners() {
 		detachListener(new Delegate(this, "svrNextTurn"), EventType.SvrNextTurnEvent);
 		detachListener(new Delegate(this, "svrUpdateZone"), EventType.SvrUpdateZoneEvent);
+		detachListener(new Delegate(this, "lclAttackFrom"), EventType.LclAttackFromEvent);
+		detachListener(new Delegate(this, "lclStopAttackFrom"), EventType.LclStopAttackFromEvent);
+		detachListener(new Delegate(this, "svrAttackZone"), EventType.SvrAttackZoneEvent);
 	}
 
 	@Override
@@ -86,8 +108,10 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		ErrorHandler.ASSERT(ev instanceof SvrNextTurnEvent);
 		SvrNextTurnEvent e = (SvrNextTurnEvent) ev;
 		
+		
 		//playersTurn = e.playersTurn.name;
 		if (playerName.equals(e.playersTurn.name)) {
+			uiPanel.resetTrainableUnits(); // my turn, update trainable units
 			uiPanel.setYourTurn(true);
 		} else uiPanel.setYourTurn(false);
 		
@@ -96,6 +120,7 @@ public class LocalGameView extends AEventSystem implements IGameView {
 			uiPanel.setPhase(phase);
 		}
 		
+		uiPanel.repaint();
 		mapView.repaint();
 	}
 	
@@ -105,34 +130,110 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		
 		Zone old = map.getZone(e.zoneid);
 		map.setZone(e.zone, e.zoneid);
-		if (old.getArmy() != e.zone.getArmy()) {
-			// update army
-			if (e.zone.hasOwner() && e.zone.getOwner().equals(playerName)) {
-				uiPanel.setStrength(uiPanel.getStrength() + e.zone.getArmy() - old.getArmy());
-				if (e.phase == Phase.INIT_PHASE) {
-					uiPanel.setTrainableUnits(uiPanel.getTrainableUnits() - e.zone.getArmy() + old.getArmy());
+		
+		
+		if (e.phase == Phase.INIT_PHASE) {
+			if (old.getArmy() != e.zone.getArmy()) {
+				// update army
+				if (e.zone.hasOwner() && e.zone.getOwner().equals(playerName)) {
+					uiPanel.setStrength(uiPanel.getStrength() + e.zone.getArmy() - old.getArmy());
+					uiPanel.setInitTrainableUnits(uiPanel.getInitTrainableUnits() - e.zone.getArmy() + old.getArmy());
 				}
 			}
-		}
-		
-		if (old.hasOwner() != e.zone.hasOwner() || !old.getOwner().equals(e.zone.getOwner())) {
-			// new owner
 			
-			if ((old.hasOwner() && old.getOwner().equals(playerName)) || e.zone.hasOwner() && e.zone.getOwner().equals(playerName)) { 
-				// player owned or owns this zone now.
-				int oldProd = old.getProduction();
-				int newProd = e.zone.getProduction();
+			if (old.hasOwner() != e.zone.hasOwner() || !old.getOwner().equals(e.zone.getOwner())) { // ownership changed.
+				// new owner
 				
-				if (old.hasOwner() && old.getOwner().equals(playerName)) {
-					// Player was the old owner
-					uiPanel.setProduce(uiPanel.getProduce() - oldProd);
-				} else {
-					// Player is the new owner
-					uiPanel.setProduce(uiPanel.getProduce() + newProd);
+				if ((old.hasOwner() && old.getOwner().equals(playerName)) || e.zone.hasOwner() && e.zone.getOwner().equals(playerName)) { // I was either old or new owner.
+					// player owned or owns this zone now.
+					int oldProd = old.getProduction();
+					int newProd = e.zone.getProduction();
+					
+					if (old.hasOwner() && old.getOwner().equals(playerName)) {
+						// Player was the old owner
+						uiPanel.setProduce(uiPanel.getProduce() - oldProd);
+					} else {
+						// Player is the new owner
+						uiPanel.setProduce(uiPanel.getProduce() + newProd);
+					}
+				}
+			}
+		} else if (e.phase == Phase.TRAIN_PHASE) {
+
+			if (old.getArmy() != e.zone.getArmy()) {
+				// update army
+				if (e.zone.hasOwner() && e.zone.getOwner().equals(playerName)) {
+					int diff = e.zone.getArmy() - old.getArmy();
+					uiPanel.setStrength(uiPanel.getStrength() + diff);
+					uiPanel.setTrainableUnits(uiPanel.getTrainableUnits() - diff);
 				}
 			}
 		}
 	
+		mapView.repaint();
+	}
+	
+	public void lclAttackFrom(IEvent ev) {
+		ErrorHandler.ASSERT(ev instanceof LclAttackFromEvent);
+		LclAttackFromEvent e = (LclAttackFromEvent) ev;
+		selected = e.zoneId;
+		neighbours = map.getZone(e.zoneId).getNeighbours();
+		mapView.repaint();
+	}
+	
+	public void lclStopAttackFrom(IEvent ev) {
+		ErrorHandler.ASSERT(ev instanceof LclStopAttackFromEvent);
+	//	LclAttackFromEvent e = (LclAttackFromEvent) ev;
+		if (selected != -1) {
+			selected = -1;
+			neighbours = null;
+			mapView.repaint();
+		}
+	}
+	
+	public void svrAttackZone(IEvent ev) {
+		ErrorHandler.ASSERT(ev instanceof SvrAttackZoneEvent);
+		SvrAttackZoneEvent e = (SvrAttackZoneEvent) ev;
+		
+		if (e.attack) { // attack
+			Zone oldDst = map.getZone(e.dstid);
+			if (e.dst.hasOwner() && e.dst.getOwner().equals(e.src.getOwner())) { // success attack
+				
+				if (oldDst.hasOwner() && oldDst.getOwner().equals(playerName)) { // I was attacked.
+					uiPanel.setStrength(uiPanel.getStrength() - e.lostArmyDst); // reduce my total strength
+					uiPanel.setProduce(uiPanel.getProduce() - oldDst.getProduction()); // reduce my total production
+					
+				} else if (e.src.hasOwner() && e.src.getOwner().equals(playerName)) { // I attacked!
+					uiPanel.setStrength(uiPanel.getStrength() - e.lostArmySrc); // reduce my total strength (unit may have been lost in battle)
+					uiPanel.setProduce(uiPanel.getProduce() + e.dst.getProduction()); // add my total production
+				}
+				
+				
+				
+			} else { // failed attack.
+				if (oldDst.hasOwner() && oldDst.getOwner().equals(playerName)) { // I was attacked.
+					uiPanel.setStrength(uiPanel.getStrength() - e.lostArmyDst); // reduce my total strength
+					
+				} else if (e.src.hasOwner() && e.src.getOwner().equals(playerName)) { // I attacked!
+					uiPanel.setStrength(uiPanel.getStrength() - e.lostArmySrc); // reduce my total strength (unit may have been lost in battle)
+				}
+			}
+
+			uiPanel.resetTrainableUnits();
+			uiPanel.repaint();
+			
+			if (e.winner != null) {
+				uiPanel.setWinner(e.winner);
+			}
+			
+			map.setZone(e.src, e.srcid);
+			map.setZone(e.dst, e.dstid);
+			
+		} else { // move
+			map.setZone(e.src, e.srcid);
+			map.setZone(e.dst, e.dstid);
+		}
+		
 		mapView.repaint();
 	}
 	
@@ -144,11 +245,6 @@ public class LocalGameView extends AEventSystem implements IGameView {
         g.drawImage(map.getImg(), 0, 0, mapView); // TEMPORARY CONCEPT
 	}
 	
-	private final boolean SELECTED = false;	// TODO replace with real.
-	private final boolean NEIGHBOUR = false;
-	private static Color FILL_COLOR = new Color(0.0f, 1.0f, 0.0f, 0.3f);
-	private static Color OUTLINE_COLOR = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-	
 	private void paintZones(Graphics g) {
 		final int count = map.getZoneCount();
         for(int i = 0; i < count; i++) {
@@ -157,9 +253,9 @@ public class LocalGameView extends AEventSystem implements IGameView {
         	Graphics2D g2d = (Graphics2D)g.create();
     		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     		
-    		if(SELECTED) {
+    		if(i == selected) {
     			g2d.setPaint(new GradientPaint(20,20,Color.green, 5, 5, FILL_COLOR, true));
-    		} else if(NEIGHBOUR) {
+    		} else if(neighbours != null && neighbours.contains(i)) {
     			g2d.setPaint(new GradientPaint(20,20,Color.red, 5, 5, FILL_COLOR, true));
     		} else {
     			g2d.setColor(FILL_COLOR);

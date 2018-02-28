@@ -7,6 +7,6 @@ import java.util.Vector;
  * Last edit: cleanup
  * 
  * @author 		Filip Törnqvist
- * @version 	28/02
+ * @version 	2017-02-28
  */
 public class EventQueue extends Vector<IEvent> {private static final long serialVersionUID = -6986646342615067603L;}

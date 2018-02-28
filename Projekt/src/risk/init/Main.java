@@ -35,7 +35,7 @@ public final class Main {
 		InstanceModel 		m = new InstanceModel();
 		//int a = 0;
 		while (true) {
-			EventManager.get().triggerQueue();
+			EventManager.get().processQueue();
 			//if (a++ == 0) m.queueEvent(new LclGenerateMap("Test"));
 		}
 	}

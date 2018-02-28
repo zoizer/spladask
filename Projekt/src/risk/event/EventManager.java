@@ -9,18 +9,19 @@ import risk.util.ErrorHandler;
 
 /**
  * EventManager a allows for a simple way to handle events.
+ * The registered delegates will be called at some point after an event of the desired type is posted.
  * 
  * @author 		Filip Törnqvist
- * @version 	20/2
+ * @version 	2018-02-28
  */
 public class EventManager implements IEventManager {
-	protected static EventManager eventManager = null;
+	protected static EventManager eventManager = null; // Singleton
 	private Map<EventType, List<Delegate>> listeners;
 	private List<IEvent>[] eventQueues;
 	private AtomicInteger writingQueue;
 	private Object writeLock;
 	
-	@SuppressWarnings("unchecked") // might be an error.
+	@SuppressWarnings("unchecked")
 	protected EventManager() {
 		listeners = new ConcurrentHashMap<EventType, List<Delegate>>();
 		writingQueue = new AtomicInteger();
@@ -31,16 +32,28 @@ public class EventManager implements IEventManager {
 		writeLock = new Object();
 	}
 	
+	/**
+	 * singleton create
+	 */
 	public static final void create() {
 		ErrorHandler.ASSERT(eventManager == null);
 		eventManager = new EventManager();
 	}
 	
+	/**
+	 * singleton getter
+	 * @return the global EventManager
+	 */
 	public static final EventManager get() {
 		ErrorHandler.ASSERT(eventManager != null);
 		return eventManager;
 	}
 	
+	/**
+	 * Attaches a listener to be called when event of desired type is posted
+	 * @param listener the delegate to be called.
+	 * @param eventType the EventType the listener is listening for
+	 */
 	public void attachListener(Delegate listener, EventType eventType) {
 		List<Delegate> delegates = listeners.get(eventType);
 		if(delegates == null) { // list of listeners not found
@@ -54,20 +67,36 @@ public class EventManager implements IEventManager {
 		delegates.add(listener); // listener is now added.
 	}
 
+	/**
+	 * Detaches a listener
+	 * (no-op when this delegate+eventType combo is unused, but there will be a warning)
+	 * 
+	 * @param listener the delegate which would be called.
+	 * @param eventType the EventType the listener was listening for.
+	 */
 	public void detachListener(Delegate listener, EventType eventType) {
 		List<Delegate> delegates = listeners.get(eventType);
 		if (delegates != null && delegates.remove(listener)) {
 			listeners.replace(eventType, delegates);
 		} else ErrorHandler.WARNING("Tried to unregister a non-existing listener of type: " + eventType);
 	}
-
+	
+	/**
+	 * queueEvent queues an event which will be called sometime soon.
+	 * 
+	 * @param event The event which should be queued
+	 */
 	public void queueEvent(IEvent event) {
 		synchronized(writeLock) {
 			eventQueues[writingQueue.get()].add(event); // NOT THREAD SAFE.
 		}
 	}
 
-	public void triggerQueue() {
+	/**
+	 * processes all events in the queue and then returns.
+	 * (it is safe to add new events to the queue while this is happening)
+	 */
+	public void processQueue() {
 		final int oldQueue;
 		synchronized(writeLock) {
 			oldQueue = writingQueue.get();

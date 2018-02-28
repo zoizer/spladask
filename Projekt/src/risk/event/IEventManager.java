@@ -16,5 +16,5 @@ public interface IEventManager {
 	public void queueEvent(IEvent event); // remember thread safety.
 //	public void abortLastEventOfType(EventType eventType);
 //	public void abortAllOfEvent(EventType eventType);
-	public void triggerQueue();
+	public void processQueue();
 }

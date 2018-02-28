@@ -105,8 +105,8 @@ public class LocalPlayerController extends AEventSystem implements IPlayerContro
 	 * Interprets a right click on the map, may send events as a result
 	 * NO IMPL.
 	 * 
-	 * @param now the point the mouse up happened
-	 * @param prev the point the mouse down happened
+	 * @param p the point the mouse up happened
+	 * @param p2 the point the mouse down happened
 	 */
 	public void rightClick(Point p, Point p2) {
 		int z = map.getZoneId(p);

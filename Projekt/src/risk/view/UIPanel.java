@@ -16,7 +16,7 @@ import risk.model.Phase;
  *  
  * 
  * @author 		Filip Törnqvist
- * @version		
+ * @version		2018-02-28
  */
 public class UIPanel extends JPanel {
 	private static final long serialVersionUID = -5022575419076933625L;

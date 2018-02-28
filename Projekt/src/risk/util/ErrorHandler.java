@@ -14,7 +14,7 @@ public final class ErrorHandler {
 	
 	/**
 	 * Special Assert Function.
-	 * @param Expected to be true or exit will occur.
+	 * @param val Expected to be true or log and exit will occur.
 	 */
 	public static void ASSERT(boolean val) { 
 		if(!val) {

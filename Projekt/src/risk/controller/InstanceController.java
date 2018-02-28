@@ -22,26 +22,31 @@ import risk.net.NetPlayer;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
 
+/**
+ * Handles all user input. 
+ * This is instance controller, containing all other smaller controllers.
+ * 
+ * @author Filip Törnqvist
+ * @version 2018-02-28
+ */
 public class InstanceController extends AEventSystem {
-	LocalPlayerController playerCtrl;
-	RemotePlayerControllers remotePlayerCtrl;
-	MouseAdapterController mouseAdapter;
-	WindowAdapterController windowAdapter;
-	ActionListenerController actionListener;
-	EventResponse response;
-	String player;
+	private LocalPlayerController playerCtrl;
+	private RemotePlayerControllers remotePlayerCtrl;
+	private String player;
 	
+	/**
+	 * Ready to use after constructor
+	 */
 	public InstanceController() {
 		playerCtrl = null;
 		remotePlayerCtrl = null;
-		mouseAdapter = new MouseAdapterController(this);
-		windowAdapter = new WindowAdapterController(this);
-		actionListener = new ActionListenerController(this);
-		response = new EventResponse(this);
 		player = null;
 		attachListeners();
 	}
 	
+	/**
+	 * Attaches listeners
+	 */
 	@Override
 	public void attachListeners() {
 		attachListener(new Delegate(this, "lclServerHostStartGame"), EventType.LclServerHostStartGameEvent);
@@ -49,6 +54,9 @@ public class InstanceController extends AEventSystem {
 		attachListener(new Delegate(this, "startGame"), EventType.SvrStartGameEvent);
 	}
 
+	/**
+	 * Detaches listeners
+	 */
 	@Override
 	public void detachListeners() {
 		detachListener(new Delegate(this, "lclServerHostStartGame"), EventType.LclServerHostStartGameEvent);
@@ -56,38 +64,85 @@ public class InstanceController extends AEventSystem {
 		detachListener(new Delegate(this, "startGame"), EventType.SvrStartGameEvent);
 	}
 	
+	/**
+	 * gets the local player.
+	 * 
+	 * @return the local player
+	 */
 	private LocalPlayerController getLocalPlayer() {
 		return playerCtrl;
 	}
 	
+	/**
+	 * Gets a mouse adapter which will route all events to the controller.
+	 * Must be stored to keep alive
+	 * 
+	 * @return customized MouseAdapter
+	 */
 	public MouseAdapter getMouseAdapter() {
-		return mouseAdapter;
+		return new MouseAdapterController(this);
 	}
 	
+	/**
+	 * Gets a WindowAdapter which will route all events to the controller.
+	 * Must be stored to keep alive
+	 * 
+	 * @return customized WindowAdapter
+	 */
 	public WindowAdapter getWindowAdapter() {
-		return windowAdapter;
+		return new WindowAdapterController(this);
 	}
 	
+	/**
+	 * Gets an ActionListener which will route all events to the controller.
+	 * Must be stored to keep alive
+	 * 
+	 * @return customized ActionListener
+	 */
 	public ActionListener getActionListener() {
-		return actionListener;
+		return new ActionListenerController(this);
 	}
 	
+	/**
+	 * Gets an IResponse object which will allow the user to respond directly to specific events without actually sending their events themselves.
+	 * If the messages are applicable then the controller will create these new events.
+	 * 
+	 * @return customized IResponse object
+	 */
 	public IResponse getIResponse() {
-		return response;
+		return new EventResponse(this);
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Called on server only. Purpose is to create the controller which handles remote player input.
+	 * 
+	 * @param ev the requested event
+	 */
 	public void lclServerHostStartGame(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclServerHostStartGameEvent);
 		LclServerHostStartGameEvent e = (LclServerHostStartGameEvent) ev;
 		remotePlayerCtrl = new RemotePlayerControllers(e.remotePlayers);
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Called everywhere, used to specialize controller before game starts
+	 * 
+	 * @param ev the requested event
+	 */
 	public void lclStartGameSentEvent(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclStartGameSentEvent);
 		LclStartGameSentEvent e = (LclStartGameSentEvent) ev;
 		this.player = e.player;
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Called everywhere, used to specialize controller before game starts
+	 * 
+	 * @param ev the requested event
+	 */
 	public void startGame(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof SvrStartGameEvent);
 		SvrStartGameEvent e = (SvrStartGameEvent) ev;

@@ -1,8 +1,6 @@
 package risk.view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.LayoutManager;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +13,18 @@ import javax.swing.JTextField;
 import risk.event.AEventSystem;
 import risk.event.EventType;
 import risk.event.IEvent;
-import risk.event.LclHostGameEvent;
 import risk.event.RpcConnectEvent;
 import risk.net.NetPlayer;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
+import risk.util.IDestroyable;
 
-public class HostPanelView extends AEventSystem {
+public class HostPanelView extends AEventSystem implements IDestroyable {
 	private JFrame parent;
 	private ActionListener actionListener;
 	private JPanel jPanel;
 	private JButton jButton;
 	private JTextField jTextField;
-	private NetPlayer host;
 	private String textFieldBegin;
 	private List<NetPlayer> clients;
 	private final Object lock;
@@ -38,7 +35,6 @@ public class HostPanelView extends AEventSystem {
 		this.jPanel = new JPanel();
 		this.jButton = new JButton();
 		this.jTextField = new JTextField();
-		this.host = host;
 		this.clients = new ArrayList<NetPlayer>();
 		this.lock = new Object();
 		
@@ -46,7 +42,7 @@ public class HostPanelView extends AEventSystem {
 		
 		jButton.setText("Start Multiplayer Game");
 		jButton.setEnabled(false);
-		jButton.addActionListener(actionListener);
+		jButton.addActionListener(this.actionListener);
 		jTextField.setText(textFieldBegin);
 		jTextField.setEditable(false);
 		jTextField.setPreferredSize(new Dimension(400,100));
@@ -67,6 +63,7 @@ public class HostPanelView extends AEventSystem {
 		attachListeners();
 	}
 	
+	@Override
 	public void destroy() {
 		detachListeners();
 		parent.remove(jPanel);

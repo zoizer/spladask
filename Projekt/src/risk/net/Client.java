@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.SocketException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import risk.event.AEventSystem;
 import risk.event.EventType;
 import risk.event.IEvent;
+import risk.event.LclEndGameEvent;
 import risk.event.RpcConnectEvent;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
@@ -35,7 +36,7 @@ public class Client extends AEventSystem implements Runnable {
 			out = new ObjectOutputStream(clientSocket.getOutputStream());
 	        in = new ObjectInputStream(clientSocket.getInputStream());
 	        sendMessage(new RpcConnectEvent(new NetPlayer(name, false)));
-		} catch (IOException e) {
+		} catch (@SuppressWarnings("unused") IOException e) {
 		}
     }
     
@@ -51,7 +52,7 @@ public class Client extends AEventSystem implements Runnable {
 					return true;
 				}
 			}
-		} catch (ClassNotFoundException | IOException e1) {
+		} catch (@SuppressWarnings("unused") ClassNotFoundException | IOException e1) {
 		}
 		
     	
@@ -59,16 +60,16 @@ public class Client extends AEventSystem implements Runnable {
     	return false;
     }
  
-    public void sendMessage(IEvent msg) {
+    public void sendMessage(IEvent msg) { // thread safe shutdown as all events go through the same thread.
     	try {
-        	System.out.println("Client: sending message.");
+			System.out.println("Client: sending message.");
             out.writeObject(msg);
+    	} catch (@SuppressWarnings("unused") SocketException e) {
+    		// do nothing as 'run' will solve this issue.
     	} catch (IOException e) {
     		e.printStackTrace();
     		ErrorHandler.ASSERT(false);
     	}
-        //IEvent resp = (IEvent) in.readObject();
-        //return resp;
     }
  
     public void stopConnection() {
@@ -112,6 +113,9 @@ public class Client extends AEventSystem implements Runnable {
 					queueEvent(e);
 				}
 			}
+		} catch (@SuppressWarnings("unused") SocketException e1) {
+			destroy();
+			queueEvent(new LclEndGameEvent());
 		} catch (ClassNotFoundException | IOException e1) {
 			e1.printStackTrace();
 			ErrorHandler.ASSERT(false);

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -12,6 +13,7 @@ import risk.event.AEventSystem;
 import risk.event.ANetEvent;
 import risk.event.EventType;
 import risk.event.IEvent;
+import risk.event.LclEndGameEvent;
 import risk.event.RpcConnectEvent;
 import risk.event.RpcDisconnectEvent;
 import risk.util.Delegate;
@@ -85,9 +87,8 @@ public class ServerClient extends AEventSystem implements Runnable {
             in.close();
             out.close();
             clientSocket.close();
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-			ErrorHandler.ASSERT(false);
+		} catch (@SuppressWarnings("unused") IOException | ClassNotFoundException e) {
+			queueEvent(new LclEndGameEvent());
 		}
 	}
 
@@ -108,6 +109,8 @@ public class ServerClient extends AEventSystem implements Runnable {
 			ErrorHandler.ASSERT(e instanceof ANetEvent);
 			System.out.println("Server sent: " + e.toString());
 			out.writeObject(e);
+		} catch (@SuppressWarnings("unused") SocketException e1) {
+		//	queueEvent(new LclEndGameEvent()); // run will stop.
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			ErrorHandler.ASSERT(false);

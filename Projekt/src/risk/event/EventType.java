@@ -11,7 +11,7 @@ public enum EventType {
 	// IT BELONGS THERE.
 	ERROR_DO_NOT_USE,
 	LclPreStartGameEvent,			// Sent locally to before attempting to start a new game
-	LclStartGameSentEvent,			// 
+	LclStartGameSentEvent,			// Sent to confirm game is starting
 	LclHostGameEvent,				// Sent by Model to server to start listening for clients.
 	LclJoinGameEvent,				// Sent to server in order to join.
 	LclStartGameEvent,				// Sent to initiate start server / join server / create local game
@@ -41,6 +41,8 @@ public enum EventType {
 	
 	LclAttackFromEvent,		// Sent to create visuals of where you can attack.	
 	LclStopAttackFromEvent,	// Sent to stop visuals.
+	
+	LclEndGameEvent,	// sent to end current game.
 	
 	LclGenerateMap,
 }

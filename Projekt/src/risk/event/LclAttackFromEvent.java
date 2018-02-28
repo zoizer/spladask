@@ -6,6 +6,7 @@ public class LclAttackFromEvent extends AEvent {
 	public LclAttackFromEvent(int zoneid) {
 		super(EventType.LclAttackFromEvent);
 		zoneId = zoneid;
+		System.out.println("EVENT CREATED: " + toString());
 	}
 
 }

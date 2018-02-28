@@ -23,8 +23,9 @@ import risk.event.SvrStartGameEvent;
 import risk.net.NetPlayer;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
+import risk.util.IResetable;
 
-public class InstanceView extends AEventSystem {
+public class InstanceView extends AEventSystem implements IResetable {
 	private MouseAdapter mouseAdapter;
 	private WindowAdapter windowAdapter;
 	private ActionListener actionListener;
@@ -81,6 +82,7 @@ public class InstanceView extends AEventSystem {
 		attachListener(new Delegate(this, "lclPreStartGame"), EventType.LclPreStartGameEvent);
 		attachListener(new Delegate(this, "lclStartGameSent"), EventType.LclStartGameSentEvent);
 		attachListener(new Delegate(this, "svrStartGame"), EventType.SvrStartGameEvent);
+		attachListener(new Delegate(this, "lclEndGame"), EventType.LclEndGameEvent);
 	}
 
 	@Override
@@ -91,6 +93,7 @@ public class InstanceView extends AEventSystem {
 		detachListener(new Delegate(this, "lclPreStartGame"), EventType.LclPreStartGameEvent);
 		detachListener(new Delegate(this, "lclStartGameSent"), EventType.LclStartGameSentEvent);
 		detachListener(new Delegate(this, "svrStartGame"), EventType.SvrStartGameEvent);
+		detachListener(new Delegate(this, "lclEndGame"), EventType.LclEndGameEvent);
 	}
 	
 	private void createMenu() {
@@ -109,20 +112,7 @@ public class InstanceView extends AEventSystem {
 	}
 	
 	public void lclStartGame(@SuppressWarnings("unused") IEvent ev) { // only for cleanup.
-		if (hostPanel != null) {
-			hostPanel.destroy();
-			hostPanel = null;
-		}
-		
-		if (localView != null) {
-			localView.destroy();
-			localView = null;
-		}
-		
-		if (remoteViews != null) {
-			remoteViews.destroy();
-			remoteViews = null;
-		}
+		reset();
 	}
 	
 	public void lclHostGame(IEvent ev) {
@@ -189,5 +179,28 @@ public class InstanceView extends AEventSystem {
 		
 	}
 	
-	
+	public void lclEndGame(@SuppressWarnings("unused") IEvent ev) {
+		reset();
+	}
+
+	@Override
+	public void reset() {
+		if (hostPanel != null) {
+			hostPanel.destroy();
+			hostPanel = null;
+		}
+		
+		if (localView != null) {
+			localView.destroy();
+			localView = null;
+		}
+		
+		if (remoteViews != null) {
+			remoteViews.destroy();
+			remoteViews = null;
+		}
+		
+		jFrame.pack();
+		jFrame.setVisible(true);
+	}
 }

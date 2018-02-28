@@ -2,6 +2,7 @@ package risk.net;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -16,6 +17,11 @@ import risk.general.Map;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
 
+/**
+ * 
+ * @author Filip Törnqvist
+ *
+ */
 public class Server extends AEventSystem implements Runnable {
 	private ServerSocket serverSocket;
 	private AtomicBoolean run;
@@ -99,9 +105,11 @@ public class Server extends AEventSystem implements Runnable {
 	public void run() {
 		try {
 			while(run.get()) (new Thread(new ServerClient(this, serverSocket.accept(), clientsLive))).start();
+		} catch (@SuppressWarnings("unused") SocketException e) {
+		//	queueEvent(new LclEndGameEvent());
 		} catch(IOException e) {
-		//	e.printStackTrace();
-		//	ErrorHandler.ASSERT(false);
+			e.printStackTrace();
+			ErrorHandler.ASSERT(false);
 		} finally {
 			stopServerListen();
 		}

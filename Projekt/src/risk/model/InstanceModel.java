@@ -18,11 +18,11 @@ import risk.net.NetPlayer;
 import risk.net.Server;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
+import risk.util.IResetable;
 
 
-public class InstanceModel extends AEventSystem {
+public class InstanceModel extends AEventSystem implements IResetable {
 	IGameModel gameModel;
-	GameInterfaceModel ui;
 	String player;
 	List<NetPlayer> players;
 	Server server;
@@ -30,7 +30,6 @@ public class InstanceModel extends AEventSystem {
 	
 	public InstanceModel() {
 		gameModel = null;
-		ui = null;
 		player = null;
 		players = null;
 		server = null;
@@ -45,6 +44,7 @@ public class InstanceModel extends AEventSystem {
 		attachListener(new Delegate(this, "lclStartGame"), EventType.LclStartGameEvent);
 		attachListener(new Delegate(this, "svrStartGame"), EventType.SvrStartGameEvent);
 		attachListener(new Delegate(this, "generateMap"), EventType.LclGenerateMap);
+		attachListener(new Delegate(this, "lclEndGame"), EventType.LclEndGameEvent);
 	}
 
 	@Override
@@ -53,6 +53,7 @@ public class InstanceModel extends AEventSystem {
 		detachListener(new Delegate(this, "lclStartGame"), EventType.LclStartGameEvent);
 		detachListener(new Delegate(this, "svrStartGame"), EventType.SvrStartGameEvent);
 		detachListener(new Delegate(this, "generateMap"), EventType.LclGenerateMap);
+		detachListener(new Delegate(this, "lclEndGame"), EventType.LclEndGameEvent);
 	}
 	
 	public void generateMap(IEvent ev) {
@@ -74,25 +75,7 @@ public class InstanceModel extends AEventSystem {
 		ErrorHandler.ASSERT(ev instanceof LclStartGameEvent);
 		LclStartGameEvent e = (LclStartGameEvent) ev;
 		
-		if (server != null) {
-			server.destroy();
-			server = null;
-		}
-		
-		if (client != null) {
-			client.destroy();
-			client = null;
-		}
-		
-		if (gameModel != null) {
-			gameModel.destroy();
-			gameModel = null;
-		}
-		
-		if (ui != null) {
-			ui.destroy();
-			ui = null;
-		}
+		reset();
 		
 		ErrorHandler.ASSERT(e.player.equals(player));
 		
@@ -127,19 +110,41 @@ public class InstanceModel extends AEventSystem {
 		SvrStartGameEvent e = (SvrStartGameEvent) ev;
 		
 		ErrorHandler.ASSERT(gameModel == null);
-		ErrorHandler.ASSERT(ui == null);
 		
 		String playerName = this.player;
 		NetPlayer player = null;
 		for (int i = 0; i < e.players.size(); i++) if (e.players.get(i).name.equals(playerName)) player = e.players.get(i);
 		ErrorHandler.ASSERT(player != null);
 		
-		ui = new GameInterfaceModel(player.name);
 		if (player.host) {
 			gameModel = new ServerGameModel(e.map, e.players, e.startingStrength);
 		} else {
 			gameModel = new ClientGameModel(); // dummy class as there should be no model for remote games.
 		}
 		
+	}
+	
+	public void lclEndGame(@SuppressWarnings("unused") IEvent ev) {
+		reset();
+	}
+
+	@Override
+	public void reset() {
+		if (server != null) {
+			server.destroy();
+			server = null;
+		}
+		
+		if (client != null) {
+			client.destroy();
+			client = null;
+		}
+		
+		if (gameModel != null) {
+			gameModel.destroy();
+			gameModel = null;
+		}
+		
+		players = null;
 	}
 }

@@ -15,12 +15,25 @@ import risk.model.Phase;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
 
+/**
+ * The LocalPlayerController is the controller which handles input from the local player
+ * 
+ * @author Filip Törnqvist
+ * @version 2018-02-28
+ *
+ */
 public class LocalPlayerController extends AEventSystem implements IPlayerController {
 	private Map map;
 	private String player;
 	private boolean yourTurn;
 	private Phase phase;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param map The game map
+	 * @param player The local player
+	 */
 	public LocalPlayerController(Map map, String player) {
 		this.map = map;
 		this.player = player;
@@ -28,17 +41,29 @@ public class LocalPlayerController extends AEventSystem implements IPlayerContro
 		this.phase = Phase.ERROR_DO_NOT_USE;
 		attachListeners();
 	}
-	
+
+	/**
+	 * Attaches listeners
+	 */
 	@Override
 	public void attachListeners() {
 		attachListener(new Delegate(this, "svrNextTurn"), EventType.SvrNextTurnEvent);
 	}
-
+	
+	/**
+	 * Detaches listeners
+	 */
 	@Override
 	public void detachListeners() {
 		detachListener(new Delegate(this, "svrNextTurn"), EventType.SvrNextTurnEvent);
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Called everywhere by the server to change the turn
+	 * 
+	 * @param ev the requested event
+	 */
 	public void svrNextTurn(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof SvrNextTurnEvent);
 		SvrNextTurnEvent e = (SvrNextTurnEvent) ev;
@@ -48,6 +73,12 @@ public class LocalPlayerController extends AEventSystem implements IPlayerContro
 		else yourTurn = false;
 	}
 	
+	/**
+	 * Interprets a left click on the map, may send events as a result
+	 * 
+	 * @param now the point the mouse up happened
+	 * @param prev the point the mouse down happened
+	 */
 	public void leftClick(Point now, Point prev) {
 		int z = map.getZoneId(now);
 		int x = map.getZoneId(prev);
@@ -70,6 +101,13 @@ public class LocalPlayerController extends AEventSystem implements IPlayerContro
 		}
 	}
 	
+	/**
+	 * Interprets a right click on the map, may send events as a result
+	 * NO IMPL.
+	 * 
+	 * @param now the point the mouse up happened
+	 * @param prev the point the mouse down happened
+	 */
 	public void rightClick(Point p, Point p2) {
 		int z = map.getZoneId(p);
 		int x = map.getZoneId(p2);
@@ -79,6 +117,11 @@ public class LocalPlayerController extends AEventSystem implements IPlayerContro
 		}
 	}
 
+	/**
+	 * Interprets a left mouse btn down on the map, may send events as a result
+	 * 
+	 * @param p point at mouse down
+	 */
 	public void downClick(Point p) {
 		int x = map.getZoneId(p);
 		if (x == -1) return;
@@ -87,7 +130,20 @@ public class LocalPlayerController extends AEventSystem implements IPlayerContro
 		}
 	}
 	
+	/**
+	 * Interprets a left mouse btn up on the map, may send events as a result
+	 * 
+	 * @param p point at mouse up
+	 */
 	public void upClick(Point p) {
 		if (phase == Phase.ATTACK_PHASE) queueEvent(new LclStopAttackFromEvent());
+	}
+
+	/**
+	 * no-op, nothing to destroy.
+	 */
+	@Override
+	public void destroy() {
+		
 	}
 }

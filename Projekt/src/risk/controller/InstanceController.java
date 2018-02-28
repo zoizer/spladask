@@ -31,6 +31,7 @@ import risk.util.ErrorHandler;
  */
 public class InstanceController extends AEventSystem {
 	private LocalPlayerController playerCtrl;
+	@SuppressWarnings("unused")
 	private RemotePlayerControllers remotePlayerCtrl;
 	private String player;
 	
@@ -122,6 +123,12 @@ public class InstanceController extends AEventSystem {
 	public void lclServerHostStartGame(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclServerHostStartGameEvent);
 		LclServerHostStartGameEvent e = (LclServerHostStartGameEvent) ev;
+		
+		if (remotePlayerCtrl != null) {
+			remotePlayerCtrl.destroy();
+			remotePlayerCtrl = null;
+		}
+		
 		remotePlayerCtrl = new RemotePlayerControllers(e.remotePlayers);
 	}
 	
@@ -153,6 +160,11 @@ public class InstanceController extends AEventSystem {
 			}
 		}
 		ErrorHandler.ASSERT(p != null);
+		
+		if (playerCtrl != null) {
+			playerCtrl.destroy();
+			playerCtrl = null;
+		}
 		
 		playerCtrl = new LocalPlayerController(e.map, player);
 		

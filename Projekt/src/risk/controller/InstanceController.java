@@ -51,7 +51,7 @@ public class InstanceController extends AEventSystem {
 	public void attachListeners() {
 		attachListener(new Delegate(this, "lclServerHostStartGame"), EventType.LclServerHostStartGameEvent);
 		attachListener(new Delegate(this, "lclStartGameSentEvent"), EventType.LclStartGameSentEvent);
-		attachListener(new Delegate(this, "startGame"), EventType.SvrStartGameEvent);
+		attachListener(new Delegate(this, "svrStartGame"), EventType.SvrStartGameEvent);
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class InstanceController extends AEventSystem {
 	public void detachListeners() {
 		detachListener(new Delegate(this, "lclServerHostStartGame"), EventType.LclServerHostStartGameEvent);
 		detachListener(new Delegate(this, "lclStartGameSentEvent"), EventType.LclStartGameSentEvent);
-		detachListener(new Delegate(this, "startGame"), EventType.SvrStartGameEvent);
+		detachListener(new Delegate(this, "svrStartGame"), EventType.SvrStartGameEvent);
 	}
 	
 	/**
@@ -139,11 +139,11 @@ public class InstanceController extends AEventSystem {
 	
 	/**
 	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
-	 * Called everywhere, used to specialize controller before game starts
+	 * Called everywhere, used to specialize controller to the started game.
 	 * 
 	 * @param ev the requested event
 	 */
-	public void startGame(IEvent ev) {
+	public void svrStartGame(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof SvrStartGameEvent);
 		SvrStartGameEvent e = (SvrStartGameEvent) ev;
 		NetPlayer p = null;
@@ -159,18 +159,31 @@ public class InstanceController extends AEventSystem {
 		if (e.players.size() != 1 && p.host)/* remotePlayerCtrl = new RemotePlayerControllers()*/; // add paramters, like adress.
 	}
 	
-	// CLASSES
-	public static class MouseAdapterController extends MouseAdapter {
+	/**
+	 * This is a MouseAdapter which routes specific events to the controller.
+	 * 
+	 * @author Filip Törnqvist
+	 * @version 2018-02-28
+	 */
+	private static class MouseAdapterController extends MouseAdapter {
 		private InstanceController parent;
 		private Point leftPrev;
 		private Point rightPrev;
 		
+		/**
+		 * Constructor
+		 * 
+		 * @param ctrl the InstanceController (I do not trust member classes!)
+		 */
 		public MouseAdapterController(InstanceController ctrl) {
 			parent = ctrl;
 			leftPrev = new Point(-1, -1);
 			rightPrev = new Point(-1, -1);
 		}
 		
+		/**
+		 * Customized mousePressed, will interpret and route some events to the controller.
+		 */
 		@Override
 		public void mousePressed(MouseEvent e) {
 			LocalPlayerController player = parent.getLocalPlayer();
@@ -184,6 +197,9 @@ public class InstanceController extends AEventSystem {
 			}
 		}
 		
+		/**
+		 * Customized mouseReleased, will interpret and route some events to the controller.
+		 */
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			LocalPlayerController player = parent.getLocalPlayer();
@@ -198,26 +214,55 @@ public class InstanceController extends AEventSystem {
 		}
 	}
 	
-	public static class WindowAdapterController extends WindowAdapter {
+	/**
+	 * This is a WindowAdapter which routes specific events to the controller.
+	 * (WIP)
+	 * 
+	 * @author Filip Törnqvist
+	 * @version 2018-02-28
+	 */
+	private static class WindowAdapterController extends WindowAdapter {
 		@SuppressWarnings("unused")
 		private InstanceController parent;
 		
+		/**
+		 * Constructor
+		 * 
+		 * @param ctrl the InstanceController
+		 */
 		public WindowAdapterController(InstanceController ctrl) {
 			parent = ctrl;
 		}
 		
+		/**
+		 * Temporary impl.
+		 */
 		public void windowClosing(WindowEvent e) {
 	     	System.exit(0); // TEMPORARY
 		}
 	}
 	
-	public static class ActionListenerController implements ActionListener {
+	/**
+	 * This is an ActionListener which will interpret menu events and post events based on them.
+	 * 
+	 * @author Filip Törnqvist
+	 * @version 2018-02-28
+	 */
+	private static class ActionListenerController implements ActionListener {
 		private InstanceController parent;
 		
+		/**
+		 * Constructor
+		 * 
+		 * @param ctrl the InstanceController
+		 */
 		public ActionListenerController(InstanceController ctrl) {
 			parent = ctrl;
 		}
-
+		
+		/**
+		 * The Impl.
+		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String cmd = e.getActionCommand();
@@ -231,13 +276,30 @@ public class InstanceController extends AEventSystem {
 		}
 	}
 	
-	public static class EventResponse implements IResponse {
+	/**
+	 * This is an implementation of IResponse, which will allow non-controllers to request the controller to send an event.
+	 * 
+	 * @author Filip Törnqvist
+	 * @version 2018-02-28
+	 */
+	private static class EventResponse implements IResponse {
 		private InstanceController parent;
 		
+		/**
+		 * Constructor
+		 * 
+		 * @param ctrl the InstanceController
+		 */
 		public EventResponse(InstanceController ctrl) {
 			parent = ctrl;
 		}
-
+		
+		/**
+		 * The response function, used to decorate and send new events.
+		 * 
+		 * @param e The event which the response belongs to
+		 * @param s The response
+		 */
 		@Override
 		public void respond(IEvent e, String s) {
 			if (e instanceof LclPreStartGameEvent) {

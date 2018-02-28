@@ -14,16 +14,33 @@ import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
+/**
+ * The map class represents a complete game map.
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	2018-02-28
+ *
+ */
 public class Map implements Serializable {
 	private static final long serialVersionUID = 3553692940163187630L;
 	private ArrayList<Zone> zones;
 	private Image img;
 	
+	/**
+	 * 
+	 * @param zones The zones which will be in the map.
+	 * @param img The image which the map will have as a background
+	 */
 	private Map(ArrayList<Zone> zones, Image img) {
 		this.zones = zones;
 		this.img = img;
 	}
 	
+	/**
+	 * Load a map by the given name
+	 * @param name The name of the map to be loaded
+	 * @return The loaded map, could be null when error occurs.
+	 */
 	public static Map loadMap(String name) {
 		Map map = null;
 		try {
@@ -39,6 +56,10 @@ public class Map implements Serializable {
 		return map;
 	}
 	
+	/**
+	 * Generates and saves a typical game map
+	 * @param name Name of the generated map
+	 */
 	public static void createMap(String name) {
 		ArrayList<Zone> zones = new ArrayList<Zone>();
 		
@@ -458,6 +479,10 @@ public class Map implements Serializable {
 		
 	}
 	
+	/**
+	 * Saves the map to the harddrive
+	 * @param name Name of the saved map
+	 */
 	public void saveMap(String name) {
 		try {
         	FileOutputStream fileOut = new FileOutputStream(name + ".map");
@@ -471,16 +496,31 @@ public class Map implements Serializable {
         }
 	}
 	
-	public void setZone(Zone z, int i) {
+	/**
+	 * Replace a specific zone
+	 * @param z The new zone which will replace the old
+	 * @param id The index of the old zone, undefined behavior if id is invalid
+	 */
+	public void setZone(Zone z, int id) {
 		synchronized (zones) {
-			zones.set(i, z);
+			zones.set(id, z);
 		}
 	}
 	
-	public Zone getZone(int index) {
-		return zones.get(index);
+	/**
+	 * Retrieves the zone by id
+	 * @param id The id of the zone
+	 * @return returns the zone, undefined behavior if id is invalid
+	 */
+	public Zone getZone(int id) {
+		return zones.get(id);
 	}
 	
+	/**
+	 * Tries to get the zone at the point
+	 * @param p Point to check for zone
+	 * @return Returns the zone at p or null if there is none.
+	 */
 	public Zone getZone(Point p) {
 		synchronized (zones) {
 			for (Zone z : zones) {
@@ -491,6 +531,11 @@ public class Map implements Serializable {
 		return null;
 	}
 	
+	/**
+	 * tries to get the zone id of the zone at the point
+	 * @param p Point to check for zone
+	 * @return Returns the zone at p or null if there is none.
+	 */
 	public int getZoneId(Point p) {
 		synchronized (zones) {
 			for (int i = 0; i < zones.size(); i++) {
@@ -501,10 +546,18 @@ public class Map implements Serializable {
 		return -1;
 	}
 	
+	/**
+	 * Retrieves the amount of zones
+	 * @return The amount of zones
+	 */
 	public int getZoneCount() {
 		return zones.size();
 	}
 	
+	/**
+	 * Get the background image
+	 * @return The background image
+	 */
 	public BufferedImage getImg() {
 		return img.get();
 	}

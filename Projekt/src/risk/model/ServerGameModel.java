@@ -19,6 +19,12 @@ import risk.util.Delegate;
 import risk.util.ErrorHandler;
 import risk.util.TimedEvent;
 
+/**
+ * The server game model is the implementation of the actual game logic.
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	2018-02-28
+ */
 public class ServerGameModel extends AEventSystem implements IGameModel {
 	private Map map;
 	private List<NetPlayer> players; // should not change anymore.
@@ -29,6 +35,12 @@ public class ServerGameModel extends AEventSystem implements IGameModel {
 	private List<Integer> trainableUnitsMax;
 	private Random rand;
 	
+	/**
+	 * 
+	 * @param map The map which will be played on
+	 * @param players The players
+	 * @param startingStrength The starting strength
+	 */
 	public ServerGameModel(Map map, List<NetPlayer> players, int startingStrength) {
 		this.map = map;
 		this.players = players;
@@ -50,6 +62,10 @@ public class ServerGameModel extends AEventSystem implements IGameModel {
 		new TimedEvent(1, ev, EventType.ERROR_DO_NOT_USE);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see risk.event.IEventSystem#attachListeners()
+	 */
 	@Override
 	public void attachListeners() {
 		attachListener(new Delegate(this, "svrNextTurn"), EventType.SvrNextTurnEvent);
@@ -58,6 +74,10 @@ public class ServerGameModel extends AEventSystem implements IGameModel {
 		
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see risk.event.IEventSystem#detachListeners()
+	 */
 	@Override
 	public void detachListeners() {
 		detachListener(new Delegate(this, "svrNextTurn"), EventType.SvrNextTurnEvent);
@@ -65,11 +85,21 @@ public class ServerGameModel extends AEventSystem implements IGameModel {
 		detachListener(new Delegate(this, "rpcAttackZone"), EventType.RpcAttackZoneEvent);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see risk.util.IDestroyable#destroy()
+	 */
 	@Override
 	public void destroy() {
 		detachListeners();
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * This function will handle the changing of game phases
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void svrNextTurn(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof SvrNextTurnEvent);
 		SvrNextTurnEvent e = (SvrNextTurnEvent) ev;
@@ -77,14 +107,21 @@ public class ServerGameModel extends AEventSystem implements IGameModel {
 		activePlayer = players.indexOf(e.playersTurn);
 	}
 	
-	
-	
+	/**
+	 * Retrieves the index of the next player
+	 * @return The next players index
+	 */
 	private int getNextPlayerIndex() {
 		int tmp = activePlayer + 1;
 		if (tmp == players.size()) return 0;
 		return tmp;
 	}
 	
+	/**
+	 * Retrieves the index of a specific player
+	 * @param name Name of the player
+	 * @return Index of the player, will be -1 if the player doesnt exists.
+	 */
 	private int getIndexOfPlayer(String name) {
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).name.equals(name)) return i;
@@ -93,6 +130,10 @@ public class ServerGameModel extends AEventSystem implements IGameModel {
 		return -1;
 	}
 	
+	/**
+	 * Determies if someone won and returns the name of that player
+	 * @return Name of the winner or null if there is none
+	 */
 	private String whoWon() {
 		if (map.getZoneCount() == 0 || !map.getZone(0).hasOwner()) return null;
 		String winner = map.getZone(0).getOwner();
@@ -108,6 +149,10 @@ public class ServerGameModel extends AEventSystem implements IGameModel {
 		return winner;
 	}
 	
+	/**
+	 * Updates the phase if able to
+	 * @return The (potentially updated) phase
+	 */
 	private Phase TryUpdatePhase() {
 		
 		if (phase == Phase.INIT_PHASE) {
@@ -150,6 +195,12 @@ public class ServerGameModel extends AEventSystem implements IGameModel {
 		return Phase.ERROR_DO_NOT_USE;
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * This function will handle zone updates based on the current phase
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void rpcUpdateZone(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof RpcUpdateZoneEvent);
 		RpcUpdateZoneEvent e = (RpcUpdateZoneEvent) ev;
@@ -201,6 +252,12 @@ public class ServerGameModel extends AEventSystem implements IGameModel {
 		
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * This function will handle an attack or move event
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void rpcAttackZone(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof RpcAttackZoneEvent);
 		RpcAttackZoneEvent e = (RpcAttackZoneEvent) ev;

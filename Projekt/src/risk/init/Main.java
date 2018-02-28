@@ -1,61 +1,34 @@
 package risk.init;
 
-/**
- * Main. the startup
- * 
- * 
- * @author 		Filip Törnqvist
- * @version 	28/02
- */
-
 import risk.model.InstanceModel;
 import risk.view.InstanceView;
 import risk.controller.InstanceController;
 import risk.event.EventManager;
 
+/**
+ * Dummy class containing the main function
+ * @author 		Filip Törnqvist
+ * @version 	2018-02-28
+ *
+ */
 public final class Main {
 	
+	/**
+	 * The game entrypoint
+	 * @param args Unused
+	 */
 	@SuppressWarnings("unused") 
 	public static void main(String[] args) {
 		EventManager.create();	// must be created to allow event registrations.
 		
-		/*EventManager m = EventManager.get();
-		Main ma = new Main();
-		
-		m.queueEvent(new LclGenerateMap("Test"));
-		m.attachListener(new Delegate(ma, "testF"), EventType.LclGenerateMap);
-		m.attachListener(new Delegate(ma, "testF"), EventType.LclGenerateMap);
-		m.queueEvent(new LclGenerateMap("Test"));
-		m.attachListener(new Delegate(ma, "testA"), EventType.LclGenerateMap);
-		m.attachListener(new Delegate(ma, "testB"), EventType.LclGenerateMap);
-		m.attachListener(new Delegate(ma, "testC"), EventType.LclGenerateMap);*/
-		
 		InstanceController 	c = new InstanceController();
 		InstanceView 		v = new InstanceView(c.getMouseAdapter(), c.getWindowAdapter(), c.getActionListener(), c.getIResponse());
 		InstanceModel 		m = new InstanceModel();
-		//int a = 0;
+
 		while (true) {
 			EventManager.get().processQueue();
-			//if (a++ == 0) m.queueEvent(new LclGenerateMap("Test"));
 		}
 	}
-	/*int x = 0;
-	
-	public void testF(IEvent e) {
-		x++;
-	}
-	
-	public void testA(IEvent e) {
-		x++;
-	}
-	
-	public void testB(IEvent e) {
-		x++;
-	}
-	
-	public void testC(IEvent e) {
-		x++;
-	}*/
 }
 
 // TODO MAKE GOOD CLEANUP FOR SERVER AND CLIENT TO PREVENT CASCADING ERRORS.

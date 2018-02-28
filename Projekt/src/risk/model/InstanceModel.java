@@ -20,13 +20,19 @@ import risk.util.Delegate;
 import risk.util.ErrorHandler;
 import risk.util.IResetable;
 
-
+/**
+ * The instance model contains mainly setup data and logic, which will coordinate what other game models will be created.
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	2018-02-28
+ *
+ */
 public class InstanceModel extends AEventSystem implements IResetable {
-	IGameModel gameModel;
-	String player;
-	List<NetPlayer> players;
-	Server server;
-	Client client;
+	private IGameModel gameModel;
+	private String player;
+	private List<NetPlayer> players;
+	private Server server;
+	private Client client;
 	
 	public InstanceModel() {
 		gameModel = null;
@@ -38,6 +44,9 @@ public class InstanceModel extends AEventSystem implements IResetable {
 		attachListeners();
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void attachListeners() {
 		attachListener(new Delegate(this, "lclStartGameSent"), EventType.LclStartGameSentEvent);
@@ -47,6 +56,9 @@ public class InstanceModel extends AEventSystem implements IResetable {
 		attachListener(new Delegate(this, "lclEndGame"), EventType.LclEndGameEvent);
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void detachListeners() {
 		detachListener(new Delegate(this, "lclStartGameSent"), EventType.LclStartGameSentEvent);
@@ -56,12 +68,24 @@ public class InstanceModel extends AEventSystem implements IResetable {
 		detachListener(new Delegate(this, "lclEndGame"), EventType.LclEndGameEvent);
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Handles the generation of the map and saving of the map.
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void generateMap(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclGenerateMap);
 		LclGenerateMap e = (LclGenerateMap) ev;
 		Map.createMap(e.name);
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Handles some game initialization.
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void lclStartGameSent(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclStartGameSentEvent);
 		LclStartGameSentEvent e = (LclStartGameSentEvent) ev;
@@ -71,6 +95,12 @@ public class InstanceModel extends AEventSystem implements IResetable {
 		player = e.player;
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Handles the start game request by either starting a local / host / client game
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void lclStartGame(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclStartGameEvent);
 		LclStartGameEvent e = (LclStartGameEvent) ev;
@@ -101,10 +131,16 @@ public class InstanceModel extends AEventSystem implements IResetable {
 				client = null;	// Bad design, but I can't be bothered to fix it ;)
 			}
 			
-		} // THIS MAY BE WRONG. THIS IS PROBABLY NOT WHERE I SHOULD DO THIS AS THE SERVER WILL GET THIS MESSAGE FROM ALL PLAYERS
+		}
 		
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * The purpose of this function is to actually start the game.
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void svrStartGame(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof SvrStartGameEvent);
 		SvrStartGameEvent e = (SvrStartGameEvent) ev;
@@ -119,15 +155,24 @@ public class InstanceModel extends AEventSystem implements IResetable {
 		if (player.host) {
 			gameModel = new ServerGameModel(e.map, e.players, e.startingStrength);
 		} else {
-			gameModel = new ClientGameModel(); // dummy class as there should be no model for remote games.
+		//	gameModel = new ClientGameModel(); // dummy class as there should be no model for remote games.
 		}
 		
 	}
 	
-	public void lclEndGame(@SuppressWarnings("unused") IEvent ev) {
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * The purpose of this is to reset the game.
+	 * 
+	 * @param ev the event which was listened to
+	 */
+	public void lclEndGame(IEvent ev) {
 		reset();
 	}
 
+	/**
+	 * Reset function will reset this class so it can be reused as if new.
+	 */
 	@Override
 	public void reset() {
 		if (server != null) {

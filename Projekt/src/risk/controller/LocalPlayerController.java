@@ -62,7 +62,7 @@ public class LocalPlayerController extends AEventSystem implements IPlayerContro
 	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
 	 * Called everywhere by the server to change the turn
 	 * 
-	 * @param ev the requested event
+	 * @param ev the event which was listened to
 	 */
 	public void svrNextTurn(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof SvrNextTurnEvent);

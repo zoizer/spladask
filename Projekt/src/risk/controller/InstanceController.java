@@ -118,7 +118,7 @@ public class InstanceController extends AEventSystem {
 	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
 	 * Called on server only. Purpose is to create the controller which handles remote player input.
 	 * 
-	 * @param ev the requested event
+	 * @param ev the event which was listened to
 	 */
 	public void lclServerHostStartGame(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclServerHostStartGameEvent);
@@ -136,7 +136,7 @@ public class InstanceController extends AEventSystem {
 	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
 	 * Called everywhere, used to specialize controller before game starts
 	 * 
-	 * @param ev the requested event
+	 * @param ev the event which was listened to
 	 */
 	public void lclStartGameSentEvent(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclStartGameSentEvent);
@@ -148,7 +148,7 @@ public class InstanceController extends AEventSystem {
 	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
 	 * Called everywhere, used to specialize controller to the started game.
 	 * 
-	 * @param ev the requested event
+	 * @param ev the event which was listened to
 	 */
 	public void svrStartGame(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof SvrStartGameEvent);

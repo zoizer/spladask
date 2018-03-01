@@ -5,7 +5,7 @@ package risk.util;
  * 
  * 
  * @author 		Filip Törnqvist
- * @version 	11/02
+ * @version 	2017-02-11
  */
 public final class ErrorHandler {
 	private ErrorHandler() {}
@@ -13,7 +13,7 @@ public final class ErrorHandler {
 	private static int warningCount = 0;
 	
 	/**
-	 * Special Assert Function.
+	 * Special Assert Function, writes log and crashes program.
 	 * @param val Expected to be true or log and exit will occur.
 	 */
 	public static void ASSERT(boolean val) { 

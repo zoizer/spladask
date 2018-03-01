@@ -32,6 +32,13 @@ import risk.model.Phase;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
 
+/**
+ * The local game view, displays the game
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	2018-03-01
+ *
+ */
 public class LocalGameView extends AEventSystem implements IGameView {
 	private Map map;
 	private JFrame parent;
@@ -46,6 +53,14 @@ public class LocalGameView extends AEventSystem implements IGameView {
 	private final Color FILL_COLOR;
 	private final Color OUTLINE_COLOR;
 	
+	/**
+	 * 
+	 * @param map The game map
+	 * @param jFrame The owning JFrame
+	 * @param mouseAdapter The MouseAdapter taking all mouse input in the game
+	 * @param name The name of the local player
+	 * @param startingStrength The starting strength of players
+	 */
 	public LocalGameView(Map map, JFrame jFrame, MouseAdapter mouseAdapter, String name, int startingStrength) {
 		this.map = map;
 		this.parent = jFrame;
@@ -77,6 +92,10 @@ public class LocalGameView extends AEventSystem implements IGameView {
     	attachListeners();
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see risk.event.IEventSystem#attachListeners()
+	 */
 	@Override
 	public void attachListeners() {
 		attachListener(new Delegate(this, "svrNextTurn"), EventType.SvrNextTurnEvent);
@@ -86,6 +105,10 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		attachListener(new Delegate(this, "svrAttackZone"), EventType.SvrAttackZoneEvent);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see risk.event.IEventSystem#detachListeners()
+	 */
 	@Override
 	public void detachListeners() {
 		detachListener(new Delegate(this, "svrNextTurn"), EventType.SvrNextTurnEvent);
@@ -95,6 +118,10 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		detachListener(new Delegate(this, "svrAttackZone"), EventType.SvrAttackZoneEvent);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see risk.util.IDestroyable#destroy()
+	 */
 	@Override
 	public void destroy() {
 		detachListeners();
@@ -102,6 +129,12 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		parent.remove(mapView);
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Updates graphics based on the next turn
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void svrNextTurn(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof SvrNextTurnEvent);
 		SvrNextTurnEvent e = (SvrNextTurnEvent) ev;
@@ -122,6 +155,12 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		mapView.repaint();
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Updates a zone
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void svrUpdateZone(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof SvrUpdateZoneEvent);
 		SvrUpdateZoneEvent e = (SvrUpdateZoneEvent) ev;
@@ -171,6 +210,12 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		mapView.repaint();
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Sets visual indicators of where you can move/attack
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void lclAttackFrom(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclAttackFromEvent);
 		LclAttackFromEvent e = (LclAttackFromEvent) ev;
@@ -179,6 +224,12 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		mapView.repaint();
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Removes visual indicators of where you can move/attack
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void lclStopAttackFrom(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclStopAttackFromEvent);
 	//	LclAttackFromEvent e = (LclAttackFromEvent) ev;
@@ -189,6 +240,12 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		}
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Updates game visuals based on an attack
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void svrAttackZone(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof SvrAttackZoneEvent);
 		SvrAttackZoneEvent e = (SvrAttackZoneEvent) ev;
@@ -235,14 +292,26 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		mapView.repaint();
 	}
 	
+	/**
+	 * Retrieves the map dimensions
+	 * @return The map dimensions
+	 */
 	private Dimension getMapDimensions() {
 		return new Dimension(map.getImg().getWidth(), map.getImg().getHeight());
 	}
 	
+	/**
+	 * Paints the image
+	 * @param g The graphics to be used when painting
+	 */
 	private void paintImage(Graphics g) {
         g.drawImage(map.getImg(), 0, 0, mapView); // TEMPORARY CONCEPT
 	}
 	
+	/**
+	 * Paint zones
+	 * @param g The graphics to be used when painting
+	 */
 	private void paintZones(Graphics g) {
 		final int count = map.getZoneCount();
         for(int i = 0; i < count; i++) {
@@ -273,6 +342,10 @@ public class LocalGameView extends AEventSystem implements IGameView {
         }
 	}
 	
+	/**
+	 * Paints the text info for the different zones
+	 * @param g The graphics to be used when painting
+	 */
 	private void paintZonesText(Graphics g) {
 		final int count = map.getZoneCount();
         for(int i = 0; i < count; i++) {
@@ -291,6 +364,11 @@ public class LocalGameView extends AEventSystem implements IGameView {
         }
 	}
 	
+	/**
+	 * The internal paint zone text function for painting a specific zones text
+	 * @param g The Graphics2D to be used when painting
+	 * @param z The zone whos text will be painted
+	 */
 	private void drawZoneText(Graphics2D g, Zone z) {
 		g.setColor(new Color(0.0f, 0.0f, 0.0f, 1.0f));
 		Font oldfont = g.getFont();
@@ -309,6 +387,15 @@ public class LocalGameView extends AEventSystem implements IGameView {
 		g.setFont(oldfont);
 	}
 	
+	/**
+	 * Draws a line of text on a specific location
+	 * @param g The Graphics2D to be used when painting
+	 * @param str The text line
+	 * @param index The index of the line location (zero is farthest down, 1 above and so on.)
+	 * @param outline Outline of the area the text should appear in
+	 * @param metrics The font metrics of the used font
+	 * @param font The desired font
+	 */
 	private void drawZoneTextLine(Graphics2D g, String str, int index, Rectangle outline, FontMetrics metrics, Font font) {
 		int x = (outline.width - metrics.stringWidth(str)) / 2;
 	    int y = ((outline.height - (metrics.getHeight() + 6) * index) / 2) + metrics.getAscent();
@@ -316,25 +403,47 @@ public class LocalGameView extends AEventSystem implements IGameView {
 	    g.drawString(str, x + outline.x, y + outline.y);
 	}
 	
+	/**
+	 * Paints the game map
+	 * @param g The Graphics to be used when painting
+	 */
 	private void paintMap(Graphics g) {
 		paintImage(g);
 		paintZones(g);
 		paintZonesText(g);
 	}
 	
+	/**
+	 * This class represents the game map visuals
+	 * 
+	 * @author 		Filip Törnqvist
+	 * @version 	2018-03-01
+	 *
+	 */
 	private class MapView extends JPanel {
 		private static final long serialVersionUID = -5605412038304313665L;
 		private LocalGameView parent;
 		
+		/**
+		 * @param parent The Game View who owns this map
+		 */
 		public MapView(LocalGameView parent) {
 			this.parent = parent;
 		}
 		
+		/*
+		 * (non-Javadoc)
+		 * @see javax.swing.JComponent#getPreferredSize()
+		 */
 		@Override
 		public Dimension getPreferredSize() {
 			return parent.getMapDimensions();
 		}
 		
+		/*
+		 * (non-Javadoc)
+		 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+		 */
 		@Override
 		public void paintComponent(Graphics g) {
 	        super.paintComponent(g);

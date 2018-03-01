@@ -19,6 +19,13 @@ import risk.util.Delegate;
 import risk.util.ErrorHandler;
 import risk.util.IDestroyable;
 
+/**
+ * A Graphical panel which will display some host specific information
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	2018-03-01
+ *
+ */
 public class HostPanelView extends AEventSystem implements IDestroyable {
 	private JFrame parent;
 	private ActionListener actionListener;
@@ -29,6 +36,12 @@ public class HostPanelView extends AEventSystem implements IDestroyable {
 	private List<NetPlayer> clients;
 	private final Object lock;
 	
+	/**
+	 * 
+	 * @param jFrame The JFrame to be attached to
+	 * @param actionListener The action listener for clickable buttons
+	 * @param host The host player
+	 */
 	public HostPanelView(JFrame jFrame, ActionListener actionListener, NetPlayer host) {
 		this.parent = jFrame;
 		this.actionListener = actionListener;
@@ -63,6 +76,10 @@ public class HostPanelView extends AEventSystem implements IDestroyable {
 		attachListeners();
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see risk.util.IDestroyable#destroy()
+	 */
 	@Override
 	public void destroy() {
 		detachListeners();
@@ -71,6 +88,12 @@ public class HostPanelView extends AEventSystem implements IDestroyable {
 		actionListener = null;
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Adds a player to the client list
+	 * 
+	 * @param e the event which was listened to
+	 */
 	public void addPlayer(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof RpcConnectEvent);
 		RpcConnectEvent e = (RpcConnectEvent) ev;
@@ -88,11 +111,19 @@ public class HostPanelView extends AEventSystem implements IDestroyable {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see risk.event.IEventSystem#attachListeners()
+	 */
 	@Override
 	public void attachListeners() {
 		attachListener(new Delegate(this, "addPlayer"), EventType.RpcConnectEvent);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see risk.event.IEventSystem#detachListeners()
+	 */
 	@Override
 	public void detachListeners() {
 		detachListener(new Delegate(this, "addPlayer"), EventType.RpcConnectEvent);

@@ -1,5 +1,6 @@
 package risk.net;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -18,6 +19,14 @@ import risk.util.ErrorHandler;
 import risk.util.Utility;
 
 
+/**
+ * 
+ * This Client class will handle all network IO for a client
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	2018-02-28
+ *
+ */
 public class Client extends AEventSystem implements Runnable {
 	private Socket clientSocket;
     private ObjectOutputStream out;
@@ -25,6 +34,12 @@ public class Client extends AEventSystem implements Runnable {
     private AtomicBoolean run;
     private String name;
     
+    /**
+     * 
+     * @param ip IP of the host to connect to
+     * @param port Port of the host to connect to
+     * @param name Name of the local player
+     */
     public Client(String ip, int port, String name) {
     	run = new AtomicBoolean(false);
     	this.name = name;
@@ -40,6 +55,10 @@ public class Client extends AEventSystem implements Runnable {
 		}
     }
     
+    /**
+     * Initializes the client connection
+     * @return true if success and usable, else false
+     */
     public boolean initialize() {
 		try {
 	    	if (in == null) return false;
@@ -60,6 +79,10 @@ public class Client extends AEventSystem implements Runnable {
     	return false;
     }
  
+    /**
+     * This function sends a message of type IEvent to the host
+     * @param msg Message to send
+     */
     public void sendMessage(IEvent msg) { // thread safe shutdown as all events go through the same thread.
     	try {
 			System.out.println("Client: sending message.");
@@ -72,6 +95,9 @@ public class Client extends AEventSystem implements Runnable {
     	}
     }
  
+    /**
+     * stops the connection and shuts down the input handling
+     */
     public void stopConnection() {
     	run.set(false);
     	try {
@@ -84,6 +110,9 @@ public class Client extends AEventSystem implements Runnable {
 		}
     }
     
+    /**
+     * completely destroys the class.
+     */
     public void destroy() {
     	detachListeners();
     	stopConnection();
@@ -113,7 +142,7 @@ public class Client extends AEventSystem implements Runnable {
 					queueEvent(e);
 				}
 			}
-		} catch (@SuppressWarnings("unused") SocketException e1) {
+		} catch (@SuppressWarnings("unused") SocketException | EOFException e1) {
 			destroy();
 			queueEvent(new LclEndGameEvent());
 		} catch (ClassNotFoundException | IOException e1) {

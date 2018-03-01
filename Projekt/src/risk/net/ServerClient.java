@@ -6,7 +6,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import risk.event.AEventSystem;
@@ -18,22 +17,32 @@ import risk.event.RpcConnectEvent;
 import risk.event.RpcDisconnectEvent;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
+import risk.util.IDestroyable;
 import risk.util.Utility;
 
-public class ServerClient extends AEventSystem implements Runnable {
-	Server parent;
-	Socket clientSocket;
-	AtomicBoolean live;
-	ObjectOutputStream out;	// must be initialized before run.
-	ObjectInputStream in;	// must be initialized before run.
-	AtomicReference<AEventSystem> controller;
+/**
+ * Handles a client on the server
+ * @author 		Filip Törnqvist
+ * @version 	2018-03-01
+ */
+public class ServerClient extends AEventSystem implements Runnable, IDestroyable {
+	private Server parent;
+	private Socket clientSocket;
+	private ObjectOutputStream out;	// must be initialized before run.
+	private ObjectInputStream in;	// must be initialized before run.
+	private AtomicReference<AEventSystem> controller;
 	// AEventSystem view;
 	// ^ Not valid. view must probably be implemented in ServerClient extending its own AEventSystem, which listens and forwards all those messages.
 	
-	public ServerClient(Server server, Socket socket, AtomicBoolean live) {
+	
+	/**
+	 * 
+	 * @param server The owning server
+	 * @param socket The client socket
+	 */
+	public ServerClient(Server server, Socket socket) {
 		this.parent = server;
 		this.clientSocket = socket;
-		this.live = live;
 		this.controller = new AtomicReference<AEventSystem>();
 		this.controller.set(null);
 		
@@ -46,15 +55,27 @@ public class ServerClient extends AEventSystem implements Runnable {
 		}
 	}
 	
+	/**
+	 * Sets the controller to receive the input
+	 * @param sys The input event system
+	 */
 	public void setController(AEventSystem sys) {
 		controller.set(sys);
 	}
 
-	public void remoteView(boolean v) {
+	/**
+	 * Sets the status of the server client
+	 * @param v True if this should work as a remote view, false if not.
+	 */
+	public void setRemoteViewStatus(boolean v) {
 		if (v) attachListeners();
 		else detachListeners();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		try {
@@ -83,7 +104,7 @@ public class ServerClient extends AEventSystem implements Runnable {
               //  System.out.println("Server: " + inputLine);
               //  out.writeObject(inputLine);
             }
- 
+
             in.close();
             out.close();
             clientSocket.close();
@@ -92,18 +113,32 @@ public class ServerClient extends AEventSystem implements Runnable {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see risk.event.IEventSystem#attachListeners()
+	 */
 	@Override
 	public void attachListeners() {
 		List<EventType> e = Utility.getEventsOfType("Svr");
 		for (EventType ev : e) attachListener(new Delegate(this, "forwardEvent"), ev);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see risk.event.IEventSystem#detachListeners()
+	 */
 	@Override
 	public void detachListeners() {
 		List<EventType> e = Utility.getEventsOfType("Svr");
 		for (EventType ev : e) detachListener(new Delegate(this, "forwardEvent"), ev);
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Forwards events to the client.
+	 * 
+	 * @param e the event which was listened to
+	 */
 	public void forwardEvent(IEvent e) {
 		try {
 			ErrorHandler.ASSERT(e instanceof ANetEvent);
@@ -114,6 +149,18 @@ public class ServerClient extends AEventSystem implements Runnable {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			ErrorHandler.ASSERT(false);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see risk.util.IDestroyable#destroy()
+	 */
+	@Override
+	public void destroy() {
+		try {
+			in.close();
+		} catch (@SuppressWarnings("unused") IOException e) {
 		}
 	}
 }

@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 import risk.model.Phase;
 
 /**
- * the ControlPanel displays and manages some ui directly connected to the game.
+ * The UIPanel displays and manages some ui directly connected to the game.
  *  
  * 
  * @author 		Filip Törnqvist
@@ -39,6 +39,10 @@ public class UIPanel extends JPanel {
 	private JTextField yourTurn;
 	private boolean bYourTurn;
 	
+	/**
+	 * 
+	 * @param bl The desired Layout of the UIPanel
+	 */
 	public UIPanel(LayoutManager bl) {
 		super(bl);
 		layout = new GridLayout(0,5);
@@ -86,31 +90,59 @@ public class UIPanel extends JPanel {
     	this.setBorder(BorderFactory.createLineBorder(Color.darkGray));
 	}
 	
+	/**
+	 * 
+	 * @param str The local player
+	 */
 	public void setPlayer(String str) {
 		name = str;
 		player.setText(strPlayer + name);
 	}
 	
+	/**
+	 * 
+	 * getProduce(getProduce() + change) is a good example if usage
+	 * 
+	 * @param n The total produce for the local player
+	 */
 	public void setProduce(int n) { // MAY NEED TO RE-RENDER.
 		prod = n;
 		production.setText(strProd + prod);
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @return The total produce for the local player
+	 */
 	public int getProduce() {
 		return prod;
 	}
 	
-	
+	/**
+	 * setStrength(getStrength() + change) is a good example if usage
+	 * 
+	 * @param n The total unit strength for the local player
+	 */
 	public void setStrength(int n) {
 		str = n;
 		strength.setText(strStren + str);
 	}
 	
+	/**
+	 * 
+	 * @return The total unit strength for the local player
+	 */
 	public int getStrength() {
 		return str;
 	}
 
-	
+	/**
+	 * 
+	 * setTrainableUnits(setTrainableUnits() + change) is a good example if usage
+	 * 
+	 * @param n The currently trainable units for the local player
+	 */
 	public void setTrainableUnits(int n) {
 		trainableUnits = n;
 		if (phase == Phase.TRAIN_PHASE) {
@@ -118,10 +150,17 @@ public class UIPanel extends JPanel {
 		} 
 	}
 	
+	/**
+	 * 
+	 * @return The currently trainable units
+	 */
 	public int getTrainableUnits() {
 		return trainableUnits;
 	}
 	
+	/**
+	 * Resets the trainable units to the production value
+	 */
 	public void resetTrainableUnits() {
 		trainableUnits = prod;
 		if (phase == Phase.TRAIN_PHASE) {
@@ -129,20 +168,35 @@ public class UIPanel extends JPanel {
 		} 
 	}
 	
+	/**
+	 * Set the initial trainable units for the initialization phase of the game
+	 * @param n The initial trainable units
+	 */
 	public void setInitTrainableUnits(int n) {
 		initTrainableUnits = n;
 		if (phase == Phase.INIT_PHASE) ftfPhase.setText("Starting phase, units left to place: " + initTrainableUnits);
 	}
 	
+	/**
+	 * @return The initial trainable units
+	 */
 	public int getInitTrainableUnits() {
 		return initTrainableUnits;
 	}
 	
-	
+	/**
+	 * Sets the winner (if set then game visuals cant continue)
+	 * @param name Name of the winner
+	 */
 	public void setWinner(String name) {
 		winner = name;
 	}
 	
+	/**
+	 * Updates the phase and graphics for that phase
+	 * 
+	 * @param phase The new (or old) phase
+	 */
 	public void setPhase(Phase phase) {
 		if (winner != null) {
 			ftfPhase.setText("Victory for " + winner + "!");
@@ -161,15 +215,20 @@ public class UIPanel extends JPanel {
 		}
 	}
 	
-	
-	
-	
+	/**
+	 * Sets graphics to display whether or not its your turn
+	 * @param v True if it's your turn, false if not.
+	 */
 	public void setYourTurn(boolean v) {
 		bYourTurn = v;
 		if (v) yourTurn.setText(sYourTurn);
 		else yourTurn.setText("");
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		this.setBorder(BorderFactory.createLineBorder(bYourTurn ? Color.green : Color.lightGray));

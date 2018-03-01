@@ -16,16 +16,18 @@ import risk.event.SvrStartGameEvent;
 import risk.general.Map;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
+import risk.util.IDestroyable;
 
 /**
+ * This server class purpose is to handle the setup and running of the sever, allowing clients the ability to connect to the server.
  * 
- * @author Filip Törnqvist
+ * @author 		Filip Törnqvist
+ * @version 	2018-03-01
  *
  */
-public class Server extends AEventSystem implements Runnable {
+public class Server extends AEventSystem implements Runnable, IDestroyable {
 	private ServerSocket serverSocket;
 	private AtomicBoolean run;
-	private AtomicBoolean clientsLive;
 	private AtomicBoolean listen;
 	private List<NetPlayer> validatedPlayers;
 	private List<ServerClient> remotePlayers;
@@ -34,13 +36,18 @@ public class Server extends AEventSystem implements Runnable {
 	private Map map;
 	private NetPlayer host;
 	
+	/**
+	 * 
+	 * @param port Port of the server
+	 * @param map The game map
+	 * @param host The local (host) player
+	 */
 	public Server(int port, Map map, NetPlayer host) {
 		lock = new Object();
 		this.map = map;
 		this.host = host;
 		this.port = port;
 		run = new AtomicBoolean(true);
-		clientsLive = new AtomicBoolean(true);
 		listen = new AtomicBoolean(true);
 		validatedPlayers = new ArrayList<NetPlayer>();
 		remotePlayers = new ArrayList<ServerClient>();
@@ -55,6 +62,12 @@ public class Server extends AEventSystem implements Runnable {
 		attachListeners();
 	}
 	
+	/**
+	 * Adds a client and player to the server (if allowed)
+	 * @param c The ServerClient of this specific player
+	 * @param p The Player which joined
+	 * @return True if success, false if not
+	 */
 	public boolean addValidatedPlayer(ServerClient c, NetPlayer p) {
 		synchronized (lock) {
 			if (run.get()) { // is the server actually allowing new players?
@@ -77,6 +90,9 @@ public class Server extends AEventSystem implements Runnable {
 		return false;
 	}
 	
+	/**
+	 * Stops the server from accepting new clients
+	 */
 	private void stopServerListen() {
 		if (listen.get()) {
 			listen.set(false);
@@ -91,20 +107,31 @@ public class Server extends AEventSystem implements Runnable {
 		}
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see risk.event.IEventSystem#attachListeners()
+	 */
 	@Override
 	public void attachListeners() {
 		attachListener(new Delegate(this, "lclStartGameHost"), EventType.LclStartGameHostEvent);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see risk.event.IEventSystem#detachListeners()
+	 */
 	@Override
 	public void detachListeners() {
 		detachListener(new Delegate(this, "lclStartGameHost"), EventType.LclStartGameHostEvent);
 	}
 
+	/**
+	 * Runs the server
+	 */
 	@Override
 	public void run() {
 		try {
-			while(run.get()) (new Thread(new ServerClient(this, serverSocket.accept(), clientsLive))).start();
+			while(run.get()) (new Thread(new ServerClient(this, serverSocket.accept()))).start();
 		} catch (@SuppressWarnings("unused") SocketException e) {
 		//	queueEvent(new LclEndGameEvent());
 		} catch(IOException e) {
@@ -115,11 +142,24 @@ public class Server extends AEventSystem implements Runnable {
 		}
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see risk.util.IDestroyable#destroy()
+	 */
+	@Override
 	public void destroy() { // Server calls detachListeners automatically when turned off.
 		stopServerListen();
-		clientsLive.set(false);
+		for (ServerClient c : remotePlayers) {
+			c.destroy();
+		}
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Handles the start of the game and the stopping of new clients
+	 * 
+	 * @param e the event which was listened to
+	 */
 	public void lclStartGameHost(IEvent e) { // do not detachListeners as someone might reuse this class without recreating it.
 		ErrorHandler.ASSERT(e instanceof LclStartGameHostEvent);
 		stopServerListen();

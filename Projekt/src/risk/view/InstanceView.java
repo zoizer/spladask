@@ -25,6 +25,13 @@ import risk.util.Delegate;
 import risk.util.ErrorHandler;
 import risk.util.IResetable;
 
+/**
+ * The InstanceView class is the graphical window which handles all visual output and visual menus
+ * 
+ * @author 		Filip Törnqvist
+ * @version 	2018-03-01
+ *
+ */
 public class InstanceView extends AEventSystem implements IResetable {
 	private MouseAdapter mouseAdapter;
 	private WindowAdapter windowAdapter;
@@ -43,6 +50,13 @@ public class InstanceView extends AEventSystem implements IResetable {
 	private String requestedName;
 	private HostPanelView hostPanel;
 	
+	/**
+	 * 
+	 * @param ma The MouseAdapter handling all mouse events in the game
+	 * @param wa The WindowAdapter handling all window events
+	 * @param al The ActionListener handling all menu events
+	 * @param res The IResponse handling all direct response to certain events
+	 */
 	public InstanceView(MouseAdapter ma, WindowAdapter wa, ActionListener al, IResponse res) {
 		mouseAdapter = ma;
 		windowAdapter = wa;
@@ -74,6 +88,10 @@ public class InstanceView extends AEventSystem implements IResetable {
 		attachListeners();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see risk.event.IEventSystem#attachListeners()
+	 */
 	@Override
 	public void attachListeners() {
 		attachListener(new Delegate(this, "lclStartGame"), EventType.LclStartGameEvent);
@@ -85,6 +103,10 @@ public class InstanceView extends AEventSystem implements IResetable {
 		attachListener(new Delegate(this, "lclEndGame"), EventType.LclEndGameEvent);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see risk.event.IEventSystem#detachListeners()
+	 */
 	@Override
 	public void detachListeners() {
 		detachListener(new Delegate(this, "lclStartGame"), EventType.LclStartGameEvent);
@@ -96,6 +118,9 @@ public class InstanceView extends AEventSystem implements IResetable {
 		detachListener(new Delegate(this, "lclEndGame"), EventType.LclEndGameEvent);
 	}
 	
+	/**
+	 * Creates the game menu
+	 */
 	private void createMenu() {
     	jmiNewGame.addActionListener(actionListener);
     	jmiHostGame.addActionListener(actionListener);
@@ -111,10 +136,22 @@ public class InstanceView extends AEventSystem implements IResetable {
         jFrame.setJMenuBar(jMenuBar);
 	}
 	
-	public void lclStartGame(@SuppressWarnings("unused") IEvent ev) { // only for cleanup.
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Resets the graphics right before a new game starts
+	 * 
+	 * @param ev the event which was listened to
+	 */
+	public void lclStartGame(IEvent ev) { // only for cleanup.
 		reset();
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Adds the visuals for the host player
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void lclHostGame(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclHostGameEvent);
 		LclHostGameEvent e = (LclHostGameEvent) ev;
@@ -125,6 +162,12 @@ public class InstanceView extends AEventSystem implements IResetable {
 		hostPanel = new HostPanelView(jFrame, actionListener, e.host);
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Starts the host game
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void lclServerHostStartGame(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclServerHostStartGameEvent);
 		LclServerHostStartGameEvent e = (LclServerHostStartGameEvent) ev;
@@ -134,6 +177,12 @@ public class InstanceView extends AEventSystem implements IResetable {
 		remoteViews = new RemoteGameViews(e.remotePlayers);
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Opens an input menu to allow input of host and name when joining or creating a game.
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void lclPreStartGame(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclPreStartGameEvent);
 		LclPreStartGameEvent e = (LclPreStartGameEvent) ev;
@@ -151,6 +200,12 @@ public class InstanceView extends AEventSystem implements IResetable {
 		if ((s != null) && (s.length() > 0)) response.respond(e, s);
 	}
 	
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Sets the local player
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void lclStartGameSent(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof LclStartGameSentEvent);
 		LclStartGameSentEvent e = (LclStartGameSentEvent) ev;
@@ -158,6 +213,12 @@ public class InstanceView extends AEventSystem implements IResetable {
 		requestedName = e.player;
 	}
 
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Actually starts the new game
+	 * 
+	 * @param ev the event which was listened to
+	 */
 	public void svrStartGame(IEvent ev) {
 		ErrorHandler.ASSERT(ev instanceof SvrStartGameEvent);
 		SvrStartGameEvent e = (SvrStartGameEvent) ev;
@@ -179,10 +240,20 @@ public class InstanceView extends AEventSystem implements IResetable {
 		
 	}
 	
-	public void lclEndGame(@SuppressWarnings("unused") IEvent ev) {
+	/**
+	 * This is an Event Response function, meaning, you are not intended to call this, only the EventManager should call this function.
+	 * Resets the graphics when a game ended.
+	 * 
+	 * @param ev the event which was listened to
+	 */
+	public void lclEndGame(IEvent ev) {
 		reset();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see risk.util.IResetable#reset()
+	 */
 	@Override
 	public void reset() {
 		if (hostPanel != null) {

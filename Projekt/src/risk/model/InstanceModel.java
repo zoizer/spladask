@@ -22,6 +22,7 @@ import risk.util.IResetable;
 
 /**
  * The instance model contains mainly setup data and logic, which will coordinate what other game models will be created.
+ * Knows about all game initialization data but nothing about the actual game other then if it's active or not
  * 
  * @author 		Filip Törnqvist
  * @version 	2018-02-28

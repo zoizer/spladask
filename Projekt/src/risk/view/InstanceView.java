@@ -27,6 +27,7 @@ import risk.util.IResetable;
 
 /**
  * The InstanceView class is the graphical window which handles all visual output and visual menus
+ * Knows about the window and the menu, knows nothing about the actual game other then if its running or not
  * 
  * @author 		Filip Törnqvist
  * @version 	2018-03-01

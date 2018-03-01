@@ -10,6 +10,7 @@ import risk.util.ErrorHandler;
 
 /**
  * The zone class represents one game zone.
+ * Knows about the name, area, outline, neighbours, production, owner and army of the zone.
  * 
  * @author 		Filip Törnqvist
  * @version 	2018-02-28

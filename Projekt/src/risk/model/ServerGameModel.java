@@ -21,6 +21,7 @@ import risk.util.TimedEvent;
 
 /**
  * The server game model is the implementation of the actual game logic.
+ * Knows about the the entire game
  * 
  * @author 		Filip Törnqvist
  * @version 	2018-02-28

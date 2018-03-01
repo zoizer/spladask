@@ -17,6 +17,7 @@ import risk.util.ErrorHandler;
 
 /**
  * The LocalPlayerController is the controller which handles input from the local player
+ * Knows about some game information relevant to interpreting the input into game events (inc. the map, player, if it's the players turn and what phase the game is in)
  * 
  * @author Filip Törnqvist
  * @version 2018-02-28

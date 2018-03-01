@@ -25,13 +25,13 @@ import risk.util.ErrorHandler;
 /**
  * Handles all user input. 
  * This is instance controller, containing all other smaller controllers.
+ * Knows nothing about the outside world other than if there are players in the current game
  * 
  * @author Filip Törnqvist
  * @version 2018-02-28
  */
 public class InstanceController extends AEventSystem {
 	private LocalPlayerController playerCtrl;
-	@SuppressWarnings("unused")
 	private RemotePlayerControllers remotePlayerCtrl;
 	private String player;
 	

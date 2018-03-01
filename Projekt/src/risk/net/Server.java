@@ -20,6 +20,7 @@ import risk.util.IDestroyable;
 
 /**
  * This server class purpose is to handle the setup and running of the sever, allowing clients the ability to connect to the server.
+ * Knows about the clients and players
  * 
  * @author 		Filip Törnqvist
  * @version 	2018-03-01

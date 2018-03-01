@@ -21,7 +21,9 @@ import risk.util.IDestroyable;
 import risk.util.Utility;
 
 /**
- * Handles a client on the server
+ * Handles client IO on the server
+ * Knows about what input and output is relevant to the client and server
+ * 
  * @author 		Filip Törnqvist
  * @version 	2018-03-01
  */

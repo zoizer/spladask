@@ -8,6 +8,7 @@ import risk.net.ServerClient;
 /**
  * RemotePlayerControllers handles all remote players input
  * (used on server during multiplayer only)
+ * Knows about the servers clients
  * 
  * @author Filip Törnqvist
  * @version 2018-02-28

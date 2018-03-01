@@ -10,6 +10,7 @@ import risk.util.ErrorHandler;
 /**
  * EventManager a allows for a simple way to handle events.
  * The registered delegates will be called at some point after an event of the desired type is posted.
+ * Knows about the IEvent interface but nothing about the actual events
  * 
  * @author 		Filip Törnqvist
  * @version 	2018-02-28

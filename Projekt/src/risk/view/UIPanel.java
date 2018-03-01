@@ -13,7 +13,7 @@ import risk.model.Phase;
 
 /**
  * The UIPanel displays and manages some ui directly connected to the game.
- *  
+ * Knows about the current state of the game
  * 
  * @author 		Filip Törnqvist
  * @version		2018-02-28

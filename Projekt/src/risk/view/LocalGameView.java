@@ -34,6 +34,7 @@ import risk.util.ErrorHandler;
 
 /**
  * The local game view, displays the game
+ * Knows about the current state of the game
  * 
  * @author 		Filip Törnqvist
  * @version 	2018-03-01

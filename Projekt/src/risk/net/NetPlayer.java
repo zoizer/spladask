@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * This class represents a network player, containing some information about their role in the connection
+ * 
  * @author 		Filip Törnqvist
  * @version 	2018-02-28
  *

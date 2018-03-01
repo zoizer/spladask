@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 
 /**
  * The map class represents a complete game map.
+ * Knows about the image and the zones in the map.
  * 
  * @author 		Filip Törnqvist
  * @version 	2018-02-28

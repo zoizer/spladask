@@ -7,7 +7,7 @@ import risk.net.ServerClient;
 
 /**
  * This class represents all remote views
- * 
+ * Knows about the ServerClients
  * @author 		Filip Törnqvist
  * @version 	2018-03-01
  *

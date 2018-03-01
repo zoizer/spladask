@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 
 /**
  * This class represents a serializable image
+ * Knows about the image.
  * 
  * @author 		Filip Törnqvist
  * @version 	2018-02-28

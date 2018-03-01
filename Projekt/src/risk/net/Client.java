@@ -22,6 +22,7 @@ import risk.util.Utility;
 /**
  * 
  * This Client class will handle all network IO for a client
+ * Knows which input and output is relevant to the server and client
  * 
  * @author 		Filip Törnqvist
  * @version 	2018-02-28

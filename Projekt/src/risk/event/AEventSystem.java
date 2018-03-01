@@ -5,6 +5,7 @@ import risk.util.Delegate;
 /**
  * Simplification of event handling, not really necessary, but helpful to reduce code and increase readability.
  * Could be simplified further, but that's too much work atm.
+ * Knows and uses the global EventManager
  * 
  * @author 		Filip Törnqvist
  * @version 	2018-02-28

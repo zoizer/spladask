@@ -21,6 +21,7 @@ import risk.util.IDestroyable;
 
 /**
  * A Graphical panel which will display some host specific information
+ * Knows about the clients
  * 
  * @author 		Filip Törnqvist
  * @version 	2018-03-01

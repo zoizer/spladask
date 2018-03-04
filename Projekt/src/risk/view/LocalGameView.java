@@ -27,8 +27,8 @@ import risk.event.SvrAttackZoneEvent;
 import risk.event.SvrNextTurnEvent;
 import risk.event.SvrUpdateZoneEvent;
 import risk.general.Map;
+import risk.general.Phase;
 import risk.general.Zone;
-import risk.model.Phase;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
 

@@ -11,7 +11,7 @@ import risk.event.RpcAttackZoneEvent;
 import risk.event.RpcUpdateZoneEvent;
 import risk.event.SvrNextTurnEvent;
 import risk.general.Map;
-import risk.model.Phase;
+import risk.general.Phase;
 import risk.util.Delegate;
 import risk.util.ErrorHandler;
 

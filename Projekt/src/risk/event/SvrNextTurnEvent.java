@@ -1,6 +1,6 @@
 package risk.event;
 
-import risk.model.Phase;
+import risk.general.Phase;
 import risk.net.NetPlayer;
 
 /**

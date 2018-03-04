@@ -1,4 +1,4 @@
-package risk.model;
+package risk.general;
 
 /**
  * The phase enums purpose is to create a clean way to know what the game is supposed to do.

@@ -9,7 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import risk.model.Phase;
+import risk.general.Phase;
 
 /**
  * The UIPanel displays and manages some ui directly connected to the game.

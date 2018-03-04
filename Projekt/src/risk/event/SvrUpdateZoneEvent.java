@@ -1,7 +1,7 @@
 package risk.event;
 
+import risk.general.Phase;
 import risk.general.Zone;
-import risk.model.Phase;
 
 /**
  * Sent by server to modify zone.
